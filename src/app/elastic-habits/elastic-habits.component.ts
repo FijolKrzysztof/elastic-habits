@@ -144,11 +144,11 @@ export class ElasticHabitsComponent implements OnInit {
     const jsDay = date.getDay();
     const dayIndex = jsDay === 0 ? 6 : jsDay - 1;
 
-    if (!habit.activeDays[dayIndex]) return;
+    if (!habit.activeDays[jsDay]) return;
 
     const dateStr = this.formatDate(date);
 
-    if (!habit.tracking[dateStr]) {
+    if (!habit.tracking[dateStr] && habit.tracking[dateStr] !== 0) {
       habit.tracking[dateStr] = levelIndex;
     } else if (habit.tracking[dateStr] === levelIndex) {
       delete habit.tracking[dateStr];
@@ -247,8 +247,7 @@ export class ElasticHabitsComponent implements OnInit {
   }
 
   isDayActive(habit: Habit, dayIndex: number): boolean {
-    const appDayIndex = dayIndex === 0 ? 6 : dayIndex - 1;
-    return habit.activeDays[appDayIndex];
+    return habit.activeDays[dayIndex];
   }
 
   toggleDaySelection(dayIndex: number): void {
