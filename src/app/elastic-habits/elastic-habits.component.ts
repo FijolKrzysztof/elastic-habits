@@ -22,8 +22,8 @@ interface Habit {
   imports: [
     NgForOf,
     NgClass,
-    FormsModule,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   standalone: true,
   styleUrls: ['./elastic-habits.component.scss']
@@ -78,7 +78,11 @@ export class ElasticHabitsComponent implements OnInit {
   updateWeekDays(): void {
     const days: Date[] = [];
     const day = new Date(this.currentDate);
-    day.setDate(day.getDate() - day.getDay());
+
+    // Adjust to start from Monday (1) instead of Sunday (0)
+    const currentDay = day.getDay();
+    const daysFromMonday = currentDay === 0 ? 6 : currentDay - 1;
+    day.setDate(day.getDate() - daysFromMonday);
 
     for (let i = 0; i < 7; i++) {
       const date = new Date(day);
@@ -89,11 +93,25 @@ export class ElasticHabitsComponent implements OnInit {
   }
 
   getDayName(dayIndex: number): string {
-    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayIndex];
+    // Rearrange days to start from Monday
+    return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex % 7];
   }
 
   addHabit(): void {
     if (this.newHabitName.trim() === '') return;
+
+    // Convert days selection to match JavaScript day indices (where Sunday is 0)
+    // Our app uses Monday as 0, Sunday as 6, but JavaScript uses Sunday as 0, Saturday as 6
+    // So we need to rotate the array
+    const jsDaysArray = [
+      this.selectedDays[6],  // Sunday (JS: 0) from our Sunday (our: 6)
+      this.selectedDays[0],  // Monday (JS: 1) from our Monday (our: 0)
+      this.selectedDays[1],  // Tuesday (JS: 2) from our Tuesday (our: 1)
+      this.selectedDays[2],  // Wednesday (JS: 3) from our Wednesday (our: 2)
+      this.selectedDays[3],  // Thursday (JS: 4) from our Thursday (our: 3)
+      this.selectedDays[4],  // Friday (JS: 5) from our Friday (our: 4)
+      this.selectedDays[5],  // Saturday (JS: 6) from our Saturday (our: 5)
+    ];
 
     const newHabit: Habit = {
       id: Date.now(),
@@ -104,7 +122,7 @@ export class ElasticHabitsComponent implements OnInit {
         { name: "Elite", desc: this.newEliteDesc || "Advanced level", color: "bg-red-600 text-white" }
       ],
       tracking: {},
-      activeDays: this.selectedDays.slice()
+      activeDays: jsDaysArray
     };
 
     this.habits.push(newHabit);
@@ -112,7 +130,14 @@ export class ElasticHabitsComponent implements OnInit {
     this.saveHabits();
   }
 
+  // Add confirmation before delete
   deleteHabit(habitId: number): void {
+    const habit = this.habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    const confirmDelete = confirm(`Are you sure you want to delete the habit "${habit.name}"?`);
+    if (!confirmDelete) return;
+
     this.habits = this.habits.filter(habit => habit.id !== habitId);
     this.saveHabits();
   }
@@ -121,7 +146,10 @@ export class ElasticHabitsComponent implements OnInit {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
 
-    const dayIndex = date.getDay();
+    // Convert JavaScript day (0=Sunday) to our app's day index (0=Monday)
+    const jsDay = date.getDay(); // 0=Sunday, 1=Monday, etc.
+    const dayIndex = jsDay === 0 ? 6 : jsDay - 1; // Transform to 0=Monday, 6=Sunday
+
     if (!habit.activeDays[dayIndex]) return;
 
     const dateStr = this.formatDate(date);
@@ -225,7 +253,9 @@ export class ElasticHabitsComponent implements OnInit {
   }
 
   isDayActive(habit: Habit, dayIndex: number): boolean {
-    return habit.activeDays[dayIndex];
+    // Convert JavaScript day index to our app's day index (0=Monday, 6=Sunday)
+    const appDayIndex = dayIndex === 0 ? 6 : dayIndex - 1;
+    return habit.activeDays[appDayIndex];
   }
 
   toggleDaySelection(dayIndex: number): void {
