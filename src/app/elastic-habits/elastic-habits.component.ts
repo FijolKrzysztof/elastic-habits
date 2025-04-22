@@ -1,0 +1,203 @@
+import { Component, OnInit } from '@angular/core';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+
+interface Level {
+  name: string;
+  desc: string;
+  color: string;
+}
+
+interface Habit {
+  id: number;
+  name: string;
+  levels: Level[];
+  tracking: { [key: string]: number };
+}
+
+@Component({
+  selector: 'app-elastic-habits',
+  templateUrl: './elastic-habits.component.html',
+  imports: [
+    NgForOf,
+    NgClass,
+    FormsModule,
+    NgIf
+  ],
+  standalone: true,
+  styleUrls: ['./elastic-habits.component.scss']
+})
+export class ElasticHabitsComponent implements OnInit {
+  habits: Habit[] = [];
+  newHabitName: string = '';
+  newMiniDesc: string = '';
+  newPlusDesc: string = '';
+  newEliteDesc: string = '';
+  currentDate: Date = new Date();
+  showAddHabitForm: boolean = false;
+  importError: string = '';
+  weekDays: Date[] = [];
+
+  ngOnInit(): void {
+    const savedHabits = localStorage.getItem('elasticHabits');
+    this.habits = savedHabits ? JSON.parse(savedHabits) : [];
+    this.updateWeekDays();
+  }
+
+  saveHabits(): void {
+    localStorage.setItem('elasticHabits', JSON.stringify(this.habits));
+  }
+
+  formatDate(date: Date): string {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+
+  displayDate(date: Date): string {
+    return date.getDate() + '/' + (date.getMonth() + 1);
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+  }
+
+  updateWeekDays(): void {
+    const days: Date[] = [];
+    const day = new Date(this.currentDate);
+    day.setDate(day.getDate() - day.getDay());
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(day);
+      days.push(date);
+      day.setDate(day.getDate() + 1);
+    }
+    this.weekDays = days;
+  }
+
+  getDayName(dayIndex: number): string {
+    return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayIndex];
+  }
+
+  addHabit(): void {
+    if (this.newHabitName.trim() === '') return;
+
+    const newHabit: Habit = {
+      id: Date.now(),
+      name: this.newHabitName,
+      levels: [
+        { name: "Mini", desc: this.newMiniDesc || "Basic level", color: "bg-green-600 text-white" },
+        { name: "Plus", desc: this.newPlusDesc || "Medium level", color: "bg-blue-600 text-white" },
+        { name: "Elite", desc: this.newEliteDesc || "Advanced level", color: "bg-red-600 text-white" }
+      ],
+      tracking: {}
+    };
+
+    this.habits.push(newHabit);
+    this.clearForm();
+    this.saveHabits();
+  }
+
+  deleteHabit(habitId: number): void {
+    this.habits = this.habits.filter(habit => habit.id !== habitId);
+    this.saveHabits();
+  }
+
+  toggleHabitLevel(habitId: number, date: Date, levelIndex: number): void {
+    const habit = this.habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    const dateStr = this.formatDate(date);
+
+    if (!habit.tracking[dateStr]) {
+      habit.tracking[dateStr] = levelIndex;
+    } else if (habit.tracking[dateStr] === levelIndex) {
+      delete habit.tracking[dateStr];
+    } else {
+      habit.tracking[dateStr] = levelIndex;
+    }
+
+    this.saveHabits();
+  }
+
+  changeWeek(direction: number): void {
+    const newDate = new Date(this.currentDate);
+    newDate.setDate(newDate.getDate() + (direction * 7));
+    this.currentDate = newDate;
+    this.updateWeekDays();
+  }
+
+  clearForm(): void {
+    this.newHabitName = '';
+    this.newMiniDesc = '';
+    this.newPlusDesc = '';
+    this.newEliteDesc = '';
+    this.showAddHabitForm = false;
+  }
+
+  exportData(): void {
+    const dataStr = JSON.stringify(this.habits, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+    const exportFileDefaultName = `elastic-habits-${new Date().toISOString().slice(0, 10)}.json`;
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  }
+
+  importData(event: any): void {
+    this.importError = '';
+    const file = event.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      try {
+        const importedData = JSON.parse(e.target.result);
+
+        if (!Array.isArray(importedData)) {
+          this.importError = 'Invalid file format. The file must contain an array of habits.';
+          return;
+        }
+
+        const isValidData = importedData.every((habit: any) =>
+          habit.id &&
+          habit.name &&
+          Array.isArray(habit.levels) &&
+          typeof habit.tracking === 'object'
+        );
+
+        if (!isValidData) {
+          this.importError = 'Invalid data format. The habit structure is incorrect.';
+          return;
+        }
+
+        this.habits = importedData;
+        this.saveHabits();
+
+        event.target.value = null;
+      } catch (error) {
+        this.importError = 'An error occurred while importing data. Make sure the selected file is a valid JSON file.';
+        console.error('Import error:', error);
+      }
+    };
+
+    reader.readAsText(file);
+  }
+
+  getCompletedLevelIndex(habit: Habit, date: Date): number {
+    const dateStr = this.formatDate(date);
+    return habit.tracking[dateStr];
+  }
+
+  isLevelCompleted(habit: Habit, date: Date, levelIndex: number): boolean {
+    const dateStr = this.formatDate(date);
+    return habit.tracking[dateStr] === levelIndex;
+  }
+}

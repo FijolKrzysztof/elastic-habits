@@ -1,0 +1,208 @@
+<div class="min-h-screen bg-gray-900 text-gray-100">
+  <div class="p-4 max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-medium">Elastic Habits</h1>
+
+      <div class="flex gap-3">
+        <button
+          (click)="exportData()"
+          class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-200 text-sm"
+        >
+          Export Data
+        </button>
+
+        <label class="px-3 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-200 text-sm cursor-pointer">
+          Import Data
+          <input
+            type="file"
+            accept=".json"
+            (change)="importData($event)"
+            class="hidden"
+          />
+        </label>
+      </div>
+    </div>
+
+    <div *ngIf="importError" class="mb-4 p-3 bg-red-900 text-red-100 rounded">
+      {{ importError }}
+    </div>
+
+    <div class="flex justify-between items-center mb-6 p-3 rounded bg-gray-800">
+      <button
+        (click)="changeWeek(-1)"
+        class="px-6 py-2 rounded bg-gray-700 hover:bg-gray-600"
+      >
+        &larr; Previous
+      </button>
+
+      <div class="text-base">
+        {{ displayDate(weekDays[0]) }} - {{ displayDate(weekDays[6]) }}
+      </div>
+
+      <button
+        (click)="changeWeek(1)"
+        class="px-6 py-2 rounded bg-gray-700 hover:bg-gray-600"
+      >
+        Next &rarr;
+      </button>
+    </div>
+
+    <div class="overflow-x-auto rounded">
+      <table class="w-full border-collapse bg-gray-800">
+        <thead class="bg-gray-800 border-b border-gray-700">
+        <tr>
+          <th class="text-left p-4 w-1/4">Habit</th>
+          <th
+            *ngFor="let day of weekDays; let i = index"
+            class="text-center p-2"
+            [ngClass]="{'bg-gray-700': isToday(day)}"
+          >
+            <div>{{ getDayName(day.getDay()) }}</div>
+            <div class="text-xs text-gray-400">{{ displayDate(day) }}</div>
+          </th>
+          <th class="w-24 p-2"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let habit of habits; let habitIndex = index">
+          <tr class="bg-gray-800 border-t border-gray-700">
+            <td class="p-4">
+              <div class="font-medium">{{ habit.name }}</div>
+            </td>
+
+            <td
+              *ngFor="let day of weekDays; let dayIndex = index"
+              class="text-center align-top p-2"
+              [ngClass]="{'bg-gray-700': isToday(day)}"
+            >
+              <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
+                   class="mx-auto w-6 h-6 flex items-center justify-center rounded-full text-sm"
+                   [ngClass]="habit.levels[getCompletedLevelIndex(habit, day)].color">
+                ✓
+              </div>
+            </td>
+
+            <td class="text-center">
+              <button
+                (click)="deleteHabit(habit.id)"
+                class="p-2 px-4 rounded bg-gray-700 hover:bg-gray-600 text-gray-300"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngFor="let level of habit.levels; let levelIndex = index"
+              class="bg-gray-900 border-t border-gray-800">
+            <td class="pl-8 py-2">
+              <div class="inline-block px-2 py-1 rounded text-xs mr-2"
+                   [ngClass]="level.color">
+                {{ level.name }}
+              </div>
+              <span class="text-sm text-gray-400">{{ level.desc }}</span>
+            </td>
+
+            <td
+              *ngFor="let day of weekDays; let dayIndex = index"
+              class="text-center p-2"
+              [ngClass]="{'bg-gray-800': isToday(day)}"
+            >
+              <button
+                class="w-full px-4 py-4 rounded hover:bg-opacity-70 border"
+                [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
+                  habit.levels[levelIndex].color + ' border-gray-500' :
+                  'bg-gray-800 border-gray-700 hover:bg-gray-700'"
+                (click)="toggleHabitLevel(habit.id, day, levelIndex)"
+              >
+                {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
+              </button>
+            </td>
+
+            <td></td>
+          </tr>
+        </ng-container>
+
+        <tr *ngIf="habits.length === 0">
+          <td
+            colspan="9"
+            class="p-8 text-center text-gray-400"
+          >
+            You don't have any habits yet. Add your first habit.
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button
+      *ngIf="!showAddHabitForm"
+      (click)="showAddHabitForm = true"
+      class="mt-6 px-5 py-3 rounded bg-gray-700 hover:bg-gray-600 text-white font-medium border-t border-gray-600 block w-full md:w-64"
+      style="position: relative; z-index: 10;"
+    >
+      + Add new habit
+    </button>
+
+    <div *ngIf="showAddHabitForm" class="mt-6 p-6 rounded bg-gray-800">
+      <h3 class="font-medium mb-4 text-lg">Add new habit</h3>
+
+      <div class="mb-4">
+        <label for="habit-name" class="block mb-2 text-sm font-medium text-gray-300">Habit name</label>
+        <input
+          id="habit-name"
+          type="text"
+          [(ngModel)]="newHabitName"
+          placeholder="e.g. Reading"
+          class="w-full p-3 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:border-gray-500 focus:outline-none"
+        />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div>
+          <div class="mb-2 px-2 py-1 rounded bg-green-600 text-white text-xs inline-block">Mini</div>
+          <input
+            type="text"
+            [(ngModel)]="newMiniDesc"
+            placeholder="5 minutes daily"
+            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
+          />
+        </div>
+
+        <div>
+          <div class="mb-2 px-2 py-1 rounded bg-blue-600 text-white text-xs inline-block">Plus</div>
+          <input
+            type="text"
+            [(ngModel)]="newPlusDesc"
+            placeholder="15 minutes daily"
+            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
+          />
+        </div>
+
+        <div>
+          <div class="mb-2 px-2 py-1 rounded bg-red-600 text-white text-xs inline-block">Elite</div>
+          <input
+            type="text"
+            [(ngModel)]="newEliteDesc"
+            placeholder="30 minutes daily"
+            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
+          />
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button
+          (click)="addHabit()"
+          class="px-5 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white"
+        >
+          Add
+        </button>
+        <button
+          (click)="clearForm()"
+          class="px-5 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-300"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

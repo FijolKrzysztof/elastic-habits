@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {ElasticHabitsComponent} from './elastic-habits/elastic-habits.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [ElasticHabitsComponent],
+  template: `
+    <app-elastic-habits></app-elastic-habits>`,
+  standalone: true
 })
 export class AppComponent {
-  title = 'elastic-habits';
 }
