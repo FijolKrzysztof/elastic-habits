@@ -1,78 +1,4 @@
-<div *ngIf="showEditForm" class="mt-6 p-6 rounded bg-gray-800">
-  <h3 class="font-medium mb-4 text-lg">Edit habit</h3>
-
-  <div class="mb-4">
-    <label for="edit-habit-name" class="block mb-2 text-sm font-medium text-gray-300">Habit name</label>
-    <input
-      id="edit-habit-name"
-      type="text"
-      [(ngModel)]="newHabitName"
-      placeholder="e.g. Reading"
-      class="w-full p-3 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:border-gray-500 focus:outline-none"
-    />
-  </div>
-
-  <div class="mb-4">
-    <label class="block mb-2 text-sm font-medium text-gray-300">Active days</label>
-    <div class="flex flex-wrap gap-2">
-      <button
-        *ngFor="let day of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; let i = index"
-        (click)="toggleDaySelection(i)"
-        class="px-3 py-2 rounded text-sm border"
-        [ngClass]="selectedDays[i] ? 'bg-gray-600 border-gray-500' : 'bg-gray-800 border-gray-700'"
-      >
-        {{ day }}
-      </button>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div>
-      <div class="mb-2 px-2 py-1 rounded bg-green-600 text-white text-xs inline-block">Mini</div>
-      <input
-        type="text"
-        [(ngModel)]="newMiniDesc"
-        placeholder="5 minutes daily"
-        class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
-      />
-    </div>
-
-    <div>
-      <div class="mb-2 px-2 py-1 rounded bg-blue-600 text-white text-xs inline-block">Plus</div>
-      <input
-        type="text"
-        [(ngModel)]="newPlusDesc"
-        placeholder="15 minutes daily"
-        class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
-      />
-    </div>
-
-    <div>
-      <div class="mb-2 px-2 py-1 rounded bg-red-600 text-white text-xs inline-block">Elite</div>
-      <input
-        type="text"
-        [(ngModel)]="newEliteDesc"
-        placeholder="30 minutes daily"
-        class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
-      />
-    </div>
-  </div>
-
-  <div class="flex gap-3">
-    <button
-      (click)="saveEditedHabit()"
-      class="px-5 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white"
-    >
-      Save changes
-    </button>
-    <button
-      (click)="cancelEdit()"
-      class="px-5 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-300"
-    >
-      Cancel
-    </button>
-  </div>
-</div><div class="min-h-screen bg-gray-900 text-gray-100">
+<div class="min-h-screen bg-gray-900 text-gray-100">
   <div class="p-4 max-w-4xl mx-auto">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-medium">Elastic Habits</h1>
@@ -236,8 +162,8 @@
       + Add new habit
     </button>
 
-    <div *ngIf="showAddHabitForm" class="mt-6 p-6 rounded bg-gray-800">
-      <h3 class="font-medium mb-4 text-lg">Add new habit</h3>
+    <div *ngIf="showAddHabitForm || showEditForm" class="mt-6 p-6 rounded bg-gray-800">
+      <h3 class="font-medium mb-4 text-lg">{{ showEditForm ? 'Edit habit' : 'Add new habit' }}</h3>
 
       <div class="mb-4">
         <label for="habit-name" class="block mb-2 text-sm font-medium text-gray-300">Habit name</label>
@@ -298,13 +224,21 @@
 
       <div class="flex gap-3">
         <button
+          *ngIf="showAddHabitForm"
           (click)="addHabit()"
           class="px-5 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white"
         >
           Add
         </button>
         <button
-          (click)="clearForm()"
+          *ngIf="showEditForm"
+          (click)="saveEditedHabit()"
+          class="px-5 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white"
+        >
+          Save changes
+        </button>
+        <button
+          (click)="showEditForm ? cancelEdit() : clearForm()"
           class="px-5 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-300"
         >
           Cancel
