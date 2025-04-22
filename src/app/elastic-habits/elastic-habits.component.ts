@@ -13,6 +13,7 @@ interface Habit {
   name: string;
   levels: Level[];
   tracking: { [key: string]: number };
+  activeDays: boolean[];
 }
 
 @Component({
@@ -37,11 +38,22 @@ export class ElasticHabitsComponent implements OnInit {
   showAddHabitForm: boolean = false;
   importError: string = '';
   weekDays: Date[] = [];
+  selectedDays: boolean[] = [true, true, true, true, true, true, true];
+
+  constructor() {}
 
   ngOnInit(): void {
     const savedHabits = localStorage.getItem('elasticHabits');
     this.habits = savedHabits ? JSON.parse(savedHabits) : [];
+
+    this.habits.forEach(habit => {
+      if (!habit.activeDays) {
+        habit.activeDays = [true, true, true, true, true, true, true];
+      }
+    });
+
     this.updateWeekDays();
+    this.showAddHabitForm = false;
   }
 
   saveHabits(): void {
@@ -91,7 +103,8 @@ export class ElasticHabitsComponent implements OnInit {
         { name: "Plus", desc: this.newPlusDesc || "Medium level", color: "bg-blue-600 text-white" },
         { name: "Elite", desc: this.newEliteDesc || "Advanced level", color: "bg-red-600 text-white" }
       ],
-      tracking: {}
+      tracking: {},
+      activeDays: this.selectedDays.slice()
     };
 
     this.habits.push(newHabit);
@@ -107,6 +120,9 @@ export class ElasticHabitsComponent implements OnInit {
   toggleHabitLevel(habitId: number, date: Date, levelIndex: number): void {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
+
+    const dayIndex = date.getDay();
+    if (!habit.activeDays[dayIndex]) return;
 
     const dateStr = this.formatDate(date);
 
@@ -133,6 +149,7 @@ export class ElasticHabitsComponent implements OnInit {
     this.newMiniDesc = '';
     this.newPlusDesc = '';
     this.newEliteDesc = '';
+    this.selectedDays = [true, true, true, true, true, true, true];
     this.showAddHabitForm = false;
   }
 
@@ -178,6 +195,12 @@ export class ElasticHabitsComponent implements OnInit {
           return;
         }
 
+        importedData.forEach((habit: any) => {
+          if (!habit.activeDays || !Array.isArray(habit.activeDays) || habit.activeDays.length !== 7) {
+            habit.activeDays = [true, true, true, true, true, true, true];
+          }
+        });
+
         this.habits = importedData;
         this.saveHabits();
 
@@ -199,5 +222,13 @@ export class ElasticHabitsComponent implements OnInit {
   isLevelCompleted(habit: Habit, date: Date, levelIndex: number): boolean {
     const dateStr = this.formatDate(date);
     return habit.tracking[dateStr] === levelIndex;
+  }
+
+  isDayActive(habit: Habit, dayIndex: number): boolean {
+    return habit.activeDays[dayIndex];
+  }
+
+  toggleDaySelection(dayIndex: number): void {
+    this.selectedDays[dayIndex] = !this.selectedDays[dayIndex];
   }
 }
