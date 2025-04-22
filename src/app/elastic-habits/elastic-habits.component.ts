@@ -40,6 +40,9 @@ export class ElasticHabitsComponent implements OnInit {
   weekDays: Date[] = [];
   selectedDays: boolean[] = [true, true, true, true, true, true, true];
 
+  editHabitId: number | null = null;
+  showEditForm: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {
@@ -100,13 +103,13 @@ export class ElasticHabitsComponent implements OnInit {
     if (this.newHabitName.trim() === '') return;
 
     const jsDaysArray = [
-      this.selectedDays[6],
-      this.selectedDays[0],
-      this.selectedDays[1],
-      this.selectedDays[2],
-      this.selectedDays[3],
-      this.selectedDays[4],
-      this.selectedDays[5],
+      this.selectedDays[6],  // Sunday
+      this.selectedDays[0],  // Monday
+      this.selectedDays[1],  // Tuesday
+      this.selectedDays[2],  // Wednesday
+      this.selectedDays[3],  // Thursday
+      this.selectedDays[4],  // Friday
+      this.selectedDays[5],  // Saturday
     ];
 
     const newHabit: Habit = {
@@ -141,8 +144,7 @@ export class ElasticHabitsComponent implements OnInit {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
 
-    const jsDay = date.getDay();
-    const dayIndex = jsDay === 0 ? 6 : jsDay - 1;
+    const jsDay = date.getDay(); // 0=Sunday, 1=Monday, etc.
 
     if (!habit.activeDays[jsDay]) return;
 
@@ -252,5 +254,61 @@ export class ElasticHabitsComponent implements OnInit {
 
   toggleDaySelection(dayIndex: number): void {
     this.selectedDays[dayIndex] = !this.selectedDays[dayIndex];
+  }
+
+  editHabit(habitId: number): void {
+    const habit = this.habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    this.editHabitId = habitId;
+    this.newHabitName = habit.name;
+    this.newMiniDesc = habit.levels[0].desc;
+    this.newPlusDesc = habit.levels[1].desc;
+    this.newEliteDesc = habit.levels[2].desc;
+
+    this.selectedDays = [
+      habit.activeDays[1], // Monday from JS 1
+      habit.activeDays[2], // Tuesday from JS 2
+      habit.activeDays[3], // Wednesday from JS 3
+      habit.activeDays[4], // Thursday from JS 4
+      habit.activeDays[5], // Friday from JS 5
+      habit.activeDays[6], // Saturday from JS 6
+      habit.activeDays[0]  // Sunday from JS 0
+    ];
+
+    this.showEditForm = true;
+    this.showAddHabitForm = false;
+  }
+
+  saveEditedHabit(): void {
+    if (!this.editHabitId) return;
+
+    const habitIndex = this.habits.findIndex(h => h.id === this.editHabitId);
+    if (habitIndex === -1) return;
+
+    const jsDaysArray = [
+      this.selectedDays[6], // Sunday (JS: 0)
+      this.selectedDays[0], // Monday (JS: 1)
+      this.selectedDays[1], // Tuesday (JS: 2)
+      this.selectedDays[2], // Wednesday (JS: 3)
+      this.selectedDays[3], // Thursday (JS: 4)
+      this.selectedDays[4], // Friday (JS: 5)
+      this.selectedDays[5]  // Saturday (JS: 6)
+    ];
+
+    this.habits[habitIndex].name = this.newHabitName;
+    this.habits[habitIndex].levels[0].desc = this.newMiniDesc;
+    this.habits[habitIndex].levels[1].desc = this.newPlusDesc;
+    this.habits[habitIndex].levels[2].desc = this.newEliteDesc;
+    this.habits[habitIndex].activeDays = jsDaysArray;
+
+    this.saveHabits();
+    this.cancelEdit();
+  }
+
+  cancelEdit(): void {
+    this.editHabitId = null;
+    this.showEditForm = false;
+    this.clearForm();
   }
 }
