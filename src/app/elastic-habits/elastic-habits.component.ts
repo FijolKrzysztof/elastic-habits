@@ -65,7 +65,8 @@ export class ElasticHabitsComponent implements OnInit {
   }
 
   displayDate(date: Date): string {
-    return date.getDate() + '/' + (date.getMonth() + 1);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return date.getDate() + ' ' + months[date.getMonth()];
   }
 
   isToday(date: Date): boolean {
@@ -79,7 +80,6 @@ export class ElasticHabitsComponent implements OnInit {
     const days: Date[] = [];
     const day = new Date(this.currentDate);
 
-    // Adjust to start from Monday (1) instead of Sunday (0)
     const currentDay = day.getDay();
     const daysFromMonday = currentDay === 0 ? 6 : currentDay - 1;
     day.setDate(day.getDate() - daysFromMonday);
@@ -93,24 +93,20 @@ export class ElasticHabitsComponent implements OnInit {
   }
 
   getDayName(dayIndex: number): string {
-    // Rearrange days to start from Monday
     return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex % 7];
   }
 
   addHabit(): void {
     if (this.newHabitName.trim() === '') return;
 
-    // Convert days selection to match JavaScript day indices (where Sunday is 0)
-    // Our app uses Monday as 0, Sunday as 6, but JavaScript uses Sunday as 0, Saturday as 6
-    // So we need to rotate the array
     const jsDaysArray = [
-      this.selectedDays[6],  // Sunday (JS: 0) from our Sunday (our: 6)
-      this.selectedDays[0],  // Monday (JS: 1) from our Monday (our: 0)
-      this.selectedDays[1],  // Tuesday (JS: 2) from our Tuesday (our: 1)
-      this.selectedDays[2],  // Wednesday (JS: 3) from our Wednesday (our: 2)
-      this.selectedDays[3],  // Thursday (JS: 4) from our Thursday (our: 3)
-      this.selectedDays[4],  // Friday (JS: 5) from our Friday (our: 4)
-      this.selectedDays[5],  // Saturday (JS: 6) from our Saturday (our: 5)
+      this.selectedDays[6],
+      this.selectedDays[0],
+      this.selectedDays[1],
+      this.selectedDays[2],
+      this.selectedDays[3],
+      this.selectedDays[4],
+      this.selectedDays[5],
     ];
 
     const newHabit: Habit = {
@@ -130,7 +126,6 @@ export class ElasticHabitsComponent implements OnInit {
     this.saveHabits();
   }
 
-  // Add confirmation before delete
   deleteHabit(habitId: number): void {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
@@ -146,9 +141,8 @@ export class ElasticHabitsComponent implements OnInit {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
 
-    // Convert JavaScript day (0=Sunday) to our app's day index (0=Monday)
-    const jsDay = date.getDay(); // 0=Sunday, 1=Monday, etc.
-    const dayIndex = jsDay === 0 ? 6 : jsDay - 1; // Transform to 0=Monday, 6=Sunday
+    const jsDay = date.getDay();
+    const dayIndex = jsDay === 0 ? 6 : jsDay - 1;
 
     if (!habit.activeDays[dayIndex]) return;
 
@@ -253,7 +247,6 @@ export class ElasticHabitsComponent implements OnInit {
   }
 
   isDayActive(habit: Habit, dayIndex: number): boolean {
-    // Convert JavaScript day index to our app's day index (0=Monday, 6=Sunday)
     const appDayIndex = dayIndex === 0 ? 6 : dayIndex - 1;
     return habit.activeDays[appDayIndex];
   }

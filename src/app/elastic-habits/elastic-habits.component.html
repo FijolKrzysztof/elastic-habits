@@ -108,7 +108,7 @@
               [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
             >
               <button
-                class="w-full py-2 px-3 rounded hover:bg-opacity-70 border"
+                class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
                 [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
                   habit.levels[levelIndex].color + ' border-gray-500' :
                   'bg-gray-800 border-gray-700 hover:bg-gray-700'"
