@@ -111,17 +111,20 @@
               <span class="text-sm text-gray-400">{{ level.desc }}</span>
             </td>
 
-            <td *ngIf="habit.isWeekly" colspan="7" class="text-center p-2">
-              <button
-                class="w-3/4 py-3 px-3 rounded hover:bg-opacity-70 border mx-auto"
-                [ngClass]="isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ?
-                    habit.levels[levelIndex].color + ' border-gray-500' :
-                    'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                (click)="toggleWeeklyHabitLevel(habit.id, weekDays[0], levelIndex)"
-              >
-                {{ isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
-              </button>
-            </td>
+            <ng-container *ngIf="habit.isWeekly">
+              <td colspan="7" class="p-2">
+                <button
+                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
+                  [ngClass]="isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ?
+                      level.color + ' border-gray-500' :
+                      'bg-gray-800 border-gray-700 hover:bg-gray-700'"
+                  (click)="toggleWeeklyHabitLevel(habit.id, weekDays[0], levelIndex)"
+                >
+                  {{ isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
+                </button>
+              </td>
+            </ng-container>
+
             <ng-container *ngIf="!habit.isWeekly">
               <td
                 *ngFor="let day of weekDays; let dayIndex = index"
@@ -131,7 +134,7 @@
                 <button
                   class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
                   [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
-                      habit.levels[levelIndex].color + ' border-gray-500' :
+                      level.color + ' border-gray-500' :
                       'bg-gray-800 border-gray-700 hover:bg-gray-700'"
                   (click)="toggleHabitLevel(habit.id, day, levelIndex)"
                   [disabled]="!isDayActive(habit, day.getDay())"
