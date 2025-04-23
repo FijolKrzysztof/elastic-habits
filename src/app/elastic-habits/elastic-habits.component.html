@@ -27,8 +27,6 @@
       {{ importError }}
     </div>
 
-
-
     <div class="flex justify-between items-center mb-6 p-3 rounded bg-gray-800">
       <button
         (click)="changeWeek(-1)"
@@ -120,8 +118,8 @@
               <button
                 class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
                 [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
-                  habit.levels[levelIndex].color + ' border-gray-500' :
-                  'bg-gray-800 border-gray-700 hover:bg-gray-700'"
+                    habit.levels[levelIndex].color + ' border-gray-500' :
+                    'bg-gray-800 border-gray-700 hover:bg-gray-700'"
                 (click)="toggleHabitLevel(habit.id, day, levelIndex)"
                 [disabled]="!isDayActive(habit, day.getDay())"
               >
@@ -237,17 +235,18 @@
         </button>
       </div>
     </div>
-    <!-- SEO Section - Collapsible (Moved to bottom) -->
+
     <div class="mt-12 mb-6">
       <button
         (click)="toggleSeoSection()"
         class="w-full p-3 text-left bg-gray-800 rounded flex justify-between items-center mb-1 hover:bg-gray-750"
+        [class.cursor-pointer]="habits.length > 0"
       >
         <h2 class="text-xl font-medium">What are Elastic Habits?</h2>
-        <span>{{ showSeoSection ? '▲' : '▼' }}</span>
+        <span *ngIf="habits.length > 0">{{ showSeoSection ? '▲' : '▼' }}</span>
       </button>
 
-      <div *ngIf="showSeoSection || habits.length === 0" class="p-5 bg-gray-800 rounded transition-all duration-300 ease-in-out" [@expandCollapse]="showSeoSection || habits.length === 0 ? 'expanded' : 'collapsed'">
+      <div *ngIf="showSeoSection" class="p-5 bg-gray-800 rounded transition-all duration-300 ease-in-out" [@expandCollapse]="showSeoSection ? 'expanded' : 'collapsed'">
         <p class="mb-3">Elastic Habits is a powerful habit tracking system designed for flexibility and consistency. Unlike traditional habit trackers that only offer binary completion options, Elastic Habits provides three difficulty levels for each habit:</p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">

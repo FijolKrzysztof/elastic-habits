@@ -19,14 +19,9 @@ interface Habit {
 
 @Component({
   selector: 'app-elastic-habits',
-  templateUrl: './elastic-habits.component.html',
-  imports: [
-    NgForOf,
-    NgClass,
-    NgIf,
-    FormsModule
-  ],
   standalone: true,
+  imports: [NgForOf, NgClass, NgIf, FormsModule],
+  templateUrl: './elastic-habits.component.html',
   styleUrls: ['./elastic-habits.component.scss'],
   animations: [
     trigger('expandCollapse', [
@@ -57,12 +52,9 @@ export class ElasticHabitsComponent implements OnInit {
   importError: string = '';
   weekDays: Date[] = [];
   selectedDays: boolean[] = [true, true, true, true, true, true, true];
-  showSeoSection: boolean = false;
-
+  showSeoSection: boolean = true;
   editHabitId: number | null = null;
   showEditForm: boolean = false;
-
-  constructor() {}
 
   ngOnInit(): void {
     const savedHabits = localStorage.getItem('elasticHabits');
@@ -74,15 +66,14 @@ export class ElasticHabitsComponent implements OnInit {
       }
     });
 
-    // Set the SEO section state based on habits
-    this.showSeoSection = this.habits.length === 0;
-
     this.updateWeekDays();
     this.showAddHabitForm = false;
   }
 
   toggleSeoSection(): void {
-    this.showSeoSection = !this.showSeoSection;
+    if (this.habits.length > 0) {
+      this.showSeoSection = !this.showSeoSection;
+    }
   }
 
   saveHabits(): void {
@@ -108,14 +99,12 @@ export class ElasticHabitsComponent implements OnInit {
   updateWeekDays(): void {
     const days: Date[] = [];
     const day = new Date(this.currentDate);
-
     const currentDay = day.getDay();
     const daysFromMonday = currentDay === 0 ? 6 : currentDay - 1;
     day.setDate(day.getDate() - daysFromMonday);
 
     for (let i = 0; i < 7; i++) {
-      const date = new Date(day);
-      days.push(date);
+      days.push(new Date(day));
       day.setDate(day.getDate() + 1);
     }
     this.weekDays = days;
@@ -129,13 +118,13 @@ export class ElasticHabitsComponent implements OnInit {
     if (this.newHabitName.trim() === '') return;
 
     const jsDaysArray = [
-      this.selectedDays[6],  // Sunday
-      this.selectedDays[0],  // Monday
-      this.selectedDays[1],  // Tuesday
-      this.selectedDays[2],  // Wednesday
-      this.selectedDays[3],  // Thursday
-      this.selectedDays[4],  // Friday
-      this.selectedDays[5],  // Saturday
+      this.selectedDays[6],
+      this.selectedDays[0],
+      this.selectedDays[1],
+      this.selectedDays[2],
+      this.selectedDays[3],
+      this.selectedDays[4],
+      this.selectedDays[5],
     ];
 
     const newHabit: Habit = {
@@ -153,11 +142,6 @@ export class ElasticHabitsComponent implements OnInit {
     this.habits.push(newHabit);
     this.clearForm();
     this.saveHabits();
-
-    // Auto-collapse the SEO section when we add first habit
-    if (this.habits.length === 1) {
-      this.showSeoSection = false;
-    }
   }
 
   deleteHabit(habitId: number): void {
@@ -169,19 +153,13 @@ export class ElasticHabitsComponent implements OnInit {
 
     this.habits = this.habits.filter(habit => habit.id !== habitId);
     this.saveHabits();
-
-    // Auto-expand the SEO section when we delete the last habit
-    if (this.habits.length === 0) {
-      this.showSeoSection = true;
-    }
   }
 
   toggleHabitLevel(habitId: number, date: Date, levelIndex: number): void {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
 
-    const jsDay = date.getDay(); // 0=Sunday, 1=Monday, etc.
-
+    const jsDay = date.getDay();
     if (!habit.activeDays[jsDay]) return;
 
     const dateStr = this.formatDate(date);
@@ -216,7 +194,6 @@ export class ElasticHabitsComponent implements OnInit {
   exportData(): void {
     const dataStr = JSON.stringify(this.habits, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
     const exportFileDefaultName = `elastic-habits-${new Date().toISOString().slice(0, 10)}.json`;
 
     const linkElement = document.createElement('a');
@@ -228,10 +205,7 @@ export class ElasticHabitsComponent implements OnInit {
   importData(event: any): void {
     this.importError = '';
     const file = event.target.files[0];
-
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -263,12 +237,6 @@ export class ElasticHabitsComponent implements OnInit {
 
         this.habits = importedData;
         this.saveHabits();
-
-        // Update SEO section visibility based on habits
-        if (this.habits.length > 0) {
-          this.showSeoSection = false;
-        }
-
         event.target.value = null;
       } catch (error) {
         this.importError = 'An error occurred while importing data. Make sure the selected file is a valid JSON file.';
@@ -308,13 +276,13 @@ export class ElasticHabitsComponent implements OnInit {
     this.newEliteDesc = habit.levels[2].desc;
 
     this.selectedDays = [
-      habit.activeDays[1], // Monday from JS 1
-      habit.activeDays[2], // Tuesday from JS 2
-      habit.activeDays[3], // Wednesday from JS 3
-      habit.activeDays[4], // Thursday from JS 4
-      habit.activeDays[5], // Friday from JS 5
-      habit.activeDays[6], // Saturday from JS 6
-      habit.activeDays[0]  // Sunday from JS 0
+      habit.activeDays[1],
+      habit.activeDays[2],
+      habit.activeDays[3],
+      habit.activeDays[4],
+      habit.activeDays[5],
+      habit.activeDays[6],
+      habit.activeDays[0]
     ];
 
     this.showEditForm = true;
@@ -328,13 +296,13 @@ export class ElasticHabitsComponent implements OnInit {
     if (habitIndex === -1) return;
 
     const jsDaysArray = [
-      this.selectedDays[6], // Sunday (JS: 0)
-      this.selectedDays[0], // Monday (JS: 1)
-      this.selectedDays[1], // Tuesday (JS: 2)
-      this.selectedDays[2], // Wednesday (JS: 3)
-      this.selectedDays[3], // Thursday (JS: 4)
-      this.selectedDays[4], // Friday (JS: 5)
-      this.selectedDays[5]  // Saturday (JS: 6)
+      this.selectedDays[6],
+      this.selectedDays[0],
+      this.selectedDays[1],
+      this.selectedDays[2],
+      this.selectedDays[3],
+      this.selectedDays[4],
+      this.selectedDays[5]
     ];
 
     this.habits[habitIndex].name = this.newHabitName;
