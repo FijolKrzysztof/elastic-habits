@@ -1,59 +1,53 @@
-# ElasticHabits
+# Elastic Habits - Flexible Habit Tracking System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+Elastic Habits is a flexible, customizable habit tracking application designed to help users build consistent habits through an adaptable system that accommodates life's varying energy levels and time constraints.
 
-## Development server
+## Demo
 
-To start a local development server, run:
+🌐 [Live Demo](https://fijolkrzysztof.github.io/elastic-habits/)
 
-```bash
-ng serve
-```
+## Purpose
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+This application aims to:
+- 🌱 Foster consistent habit building
+- 🧘 Reduce habit-breaking guilt
+- 🛠️ Provide flexibility for real-life fluctuations
+- 📊 Track progress with multiple difficulty levels
+- 🎯 Maintain momentum even on challenging days
 
-## Code scaffolding
+## Core Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Flexible Tracking System
+- 💪 Three difficulty levels for each habit (Mini, Plus, Elite)
+- 📅 Customizable active days per habit
+- 🔄 Weekly navigation and progress view
+- ✅ Simple one-click habit completion
 
-```bash
-ng generate component component-name
-```
+### Habit Management
+- ➕ Easy habit creation with customizable descriptions
+- 🖊️ Edit existing habits and their parameters
+- 🗑️ Remove habits that are no longer relevant
+- 📆 Day-specific habit activation
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Data Management
+- 💾 Automatic local storage of habit data
+- 📤 Export habit data to JSON files
+- 📥 Import habit data from backup files
+- 🔄 Persistence across browser sessions
 
-```bash
-ng generate --help
-```
+### User Experience
+- 🌙 Dark mode interface for comfortable viewing
+- 📱 Responsive design for various screen sizes
+- 🚦 Color-coded levels for visual distinction
+- 📊 Weekly overview of habit completion
 
-## Building
+## Tech Stack
 
-To build the project run:
+- Angular
+- TypeScript
+- Tailwind CSS
+- Local Storage API
 
-```bash
-ng build
-```
+## License
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is licensed under the PROPRIETARY LICENSE - see the [LICENSE](LICENSE) file for details.
