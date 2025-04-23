@@ -15,6 +15,7 @@ interface Habit {
   levels: Level[];
   tracking: { [key: string]: number };
   activeDays: boolean[];
+  isWeekly: boolean;
 }
 
 @Component({
@@ -55,6 +56,7 @@ export class ElasticHabitsComponent implements OnInit {
   showSeoSection: boolean = true;
   editHabitId: number | null = null;
   showEditForm: boolean = false;
+  isWeeklyHabit: boolean = false;
 
   ngOnInit(): void {
     const savedHabits = localStorage.getItem('elasticHabits');
@@ -63,6 +65,9 @@ export class ElasticHabitsComponent implements OnInit {
     this.habits.forEach(habit => {
       if (!habit.activeDays) {
         habit.activeDays = [true, true, true, true, true, true, true];
+      }
+      if (habit.isWeekly === undefined) {
+        habit.isWeekly = false;
       }
     });
 
@@ -117,15 +122,17 @@ export class ElasticHabitsComponent implements OnInit {
   addHabit(): void {
     if (this.newHabitName.trim() === '') return;
 
-    const jsDaysArray = [
-      this.selectedDays[6],
-      this.selectedDays[0],
-      this.selectedDays[1],
-      this.selectedDays[2],
-      this.selectedDays[3],
-      this.selectedDays[4],
-      this.selectedDays[5],
-    ];
+    const jsDaysArray = this.isWeeklyHabit ?
+      [true, true, true, true, true, true, true] :
+      [
+        this.selectedDays[6],
+        this.selectedDays[0],
+        this.selectedDays[1],
+        this.selectedDays[2],
+        this.selectedDays[3],
+        this.selectedDays[4],
+        this.selectedDays[5],
+      ];
 
     const newHabit: Habit = {
       id: Date.now(),
@@ -136,12 +143,26 @@ export class ElasticHabitsComponent implements OnInit {
         { name: "Elite", desc: this.newEliteDesc || "Advanced level", color: "bg-red-600 text-white" }
       ],
       tracking: {},
-      activeDays: jsDaysArray
+      activeDays: jsDaysArray,
+      isWeekly: this.isWeeklyHabit
     };
 
     this.habits.push(newHabit);
     this.clearForm();
     this.saveHabits();
+  }
+
+  toggleHabitType(): void {
+    this.isWeeklyHabit = !this.isWeeklyHabit;
+    if (this.isWeeklyHabit) {
+      this.selectedDays = [true, true, true, true, true, true, true];
+    }
+  }
+
+  toggleDaySelection(dayIndex: number): void {
+    if (!this.isWeeklyHabit) {
+      this.selectedDays[dayIndex] = !this.selectedDays[dayIndex];
+    }
   }
 
   deleteHabit(habitId: number): void {
@@ -188,6 +209,7 @@ export class ElasticHabitsComponent implements OnInit {
     this.newPlusDesc = '';
     this.newEliteDesc = '';
     this.selectedDays = [true, true, true, true, true, true, true];
+    this.isWeeklyHabit = false;
     this.showAddHabitForm = false;
   }
 
@@ -233,6 +255,9 @@ export class ElasticHabitsComponent implements OnInit {
           if (!habit.activeDays || !Array.isArray(habit.activeDays) || habit.activeDays.length !== 7) {
             habit.activeDays = [true, true, true, true, true, true, true];
           }
+          if (habit.isWeekly === undefined) {
+            habit.isWeekly = false;
+          }
         });
 
         this.habits = importedData;
@@ -261,10 +286,6 @@ export class ElasticHabitsComponent implements OnInit {
     return habit.activeDays[dayIndex];
   }
 
-  toggleDaySelection(dayIndex: number): void {
-    this.selectedDays[dayIndex] = !this.selectedDays[dayIndex];
-  }
-
   editHabit(habitId: number): void {
     const habit = this.habits.find(h => h.id === habitId);
     if (!habit) return;
@@ -274,16 +295,21 @@ export class ElasticHabitsComponent implements OnInit {
     this.newMiniDesc = habit.levels[0].desc;
     this.newPlusDesc = habit.levels[1].desc;
     this.newEliteDesc = habit.levels[2].desc;
+    this.isWeeklyHabit = habit.isWeekly;
 
-    this.selectedDays = [
-      habit.activeDays[1],
-      habit.activeDays[2],
-      habit.activeDays[3],
-      habit.activeDays[4],
-      habit.activeDays[5],
-      habit.activeDays[6],
-      habit.activeDays[0]
-    ];
+    if (!habit.isWeekly) {
+      this.selectedDays = [
+        habit.activeDays[1],
+        habit.activeDays[2],
+        habit.activeDays[3],
+        habit.activeDays[4],
+        habit.activeDays[5],
+        habit.activeDays[6],
+        habit.activeDays[0]
+      ];
+    } else {
+      this.selectedDays = [true, true, true, true, true, true, true];
+    }
 
     this.showEditForm = true;
     this.showAddHabitForm = false;
@@ -295,21 +321,24 @@ export class ElasticHabitsComponent implements OnInit {
     const habitIndex = this.habits.findIndex(h => h.id === this.editHabitId);
     if (habitIndex === -1) return;
 
-    const jsDaysArray = [
-      this.selectedDays[6],
-      this.selectedDays[0],
-      this.selectedDays[1],
-      this.selectedDays[2],
-      this.selectedDays[3],
-      this.selectedDays[4],
-      this.selectedDays[5]
-    ];
+    const jsDaysArray = this.isWeeklyHabit ?
+      [true, true, true, true, true, true, true] :
+      [
+        this.selectedDays[6],
+        this.selectedDays[0],
+        this.selectedDays[1],
+        this.selectedDays[2],
+        this.selectedDays[3],
+        this.selectedDays[4],
+        this.selectedDays[5]
+      ];
 
     this.habits[habitIndex].name = this.newHabitName;
     this.habits[habitIndex].levels[0].desc = this.newMiniDesc;
     this.habits[habitIndex].levels[1].desc = this.newPlusDesc;
     this.habits[habitIndex].levels[2].desc = this.newEliteDesc;
     this.habits[habitIndex].activeDays = jsDaysArray;
+    this.habits[habitIndex].isWeekly = this.isWeeklyHabit;
 
     this.saveHabits();
     this.cancelEdit();
