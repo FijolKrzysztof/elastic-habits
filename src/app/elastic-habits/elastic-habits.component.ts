@@ -115,6 +115,17 @@ export class ElasticHabitsComponent implements OnInit {
     this.weekDays = days;
   }
 
+  getWeekDates(startDate: Date): Date[] {
+    const dates: Date[] = [];
+    const start = new Date(startDate);
+
+    for (let i = 0; i < 7; i++) {
+      dates.push(new Date(start));
+      start.setDate(start.getDate() + 1);
+    }
+    return dates;
+  }
+
   getDayName(dayIndex: number): string {
     return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex % 7];
   }
@@ -192,6 +203,33 @@ export class ElasticHabitsComponent implements OnInit {
     } else {
       habit.tracking[dateStr] = levelIndex;
     }
+
+    this.saveHabits();
+  }
+
+  isWeeklyLevelCompleted(habit: Habit, weekStart: Date, levelIndex: number): boolean {
+    const weekDates = this.getWeekDates(weekStart);
+    return weekDates.every(date => {
+      const dateStr = this.formatDate(date);
+      return habit.tracking[dateStr] === levelIndex;
+    });
+  }
+
+  toggleWeeklyHabitLevel(habitId: number, weekStart: Date, levelIndex: number): void {
+    const habit = this.habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    const weekDates = this.getWeekDates(weekStart);
+    const isCompleted = this.isWeeklyLevelCompleted(habit, weekStart, levelIndex);
+
+    weekDates.forEach(date => {
+      const dateStr = this.formatDate(date);
+      if (isCompleted) {
+        delete habit.tracking[dateStr];
+      } else {
+        habit.tracking[dateStr] = levelIndex;
+      }
+    });
 
     this.saveHabits();
   }

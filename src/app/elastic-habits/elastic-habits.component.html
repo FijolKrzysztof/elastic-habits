@@ -111,22 +111,35 @@
               <span class="text-sm text-gray-400">{{ level.desc }}</span>
             </td>
 
-            <td
-              *ngFor="let day of weekDays; let dayIndex = index"
-              class="text-center p-2"
-              [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
-            >
+            <td *ngIf="habit.isWeekly" colspan="7" class="text-center p-2">
               <button
-                class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
-                [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
+                class="w-3/4 py-3 px-3 rounded hover:bg-opacity-70 border mx-auto"
+                [ngClass]="isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ?
                     habit.levels[levelIndex].color + ' border-gray-500' :
                     'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                (click)="toggleHabitLevel(habit.id, day, levelIndex)"
-                [disabled]="!isDayActive(habit, day.getDay())"
+                (click)="toggleWeeklyHabitLevel(habit.id, weekDays[0], levelIndex)"
               >
-                {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
+                {{ isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
               </button>
             </td>
+            <ng-container *ngIf="!habit.isWeekly">
+              <td
+                *ngFor="let day of weekDays; let dayIndex = index"
+                class="text-center p-2"
+                [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
+              >
+                <button
+                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
+                  [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
+                      habit.levels[levelIndex].color + ' border-gray-500' :
+                      'bg-gray-800 border-gray-700 hover:bg-gray-700'"
+                  (click)="toggleHabitLevel(habit.id, day, levelIndex)"
+                  [disabled]="!isDayActive(habit, day.getDay())"
+                >
+                  {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
+                </button>
+              </td>
+            </ng-container>
 
             <td></td>
           </tr>
@@ -148,7 +161,6 @@
       *ngIf="!showAddHabitForm && !showEditForm"
       (click)="showAddHabitForm = true"
       class="mt-6 px-5 py-3 rounded bg-gray-700 hover:bg-gray-600 text-white font-medium border-t border-gray-600 block w-full md:w-64"
-      style="position: relative; z-index: 10;"
     >
       + Add new habit
     </button>
