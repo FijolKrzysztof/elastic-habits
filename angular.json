@@ -19,6 +19,7 @@
           "options": {
             "outputPath": "dist/elastic-habits",
             "index": "src/index.html",
+            "baseHref": "/elastic-habits/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
