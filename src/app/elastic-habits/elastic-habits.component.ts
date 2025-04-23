@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 interface Level {
   name: string;
@@ -26,7 +27,24 @@ interface Habit {
     FormsModule
   ],
   standalone: true,
-  styleUrls: ['./elastic-habits.component.scss']
+  styleUrls: ['./elastic-habits.component.scss'],
+  animations: [
+    trigger('expandCollapse', [
+      state('collapsed', style({
+        height: '0',
+        overflow: 'hidden',
+        opacity: '0',
+        padding: '0'
+      })),
+      state('expanded', style({
+        height: '*',
+        opacity: '1'
+      })),
+      transition('expanded <=> collapsed', [
+        animate('300ms ease-in-out')
+      ])
+    ])
+  ]
 })
 export class ElasticHabitsComponent implements OnInit {
   habits: Habit[] = [];
@@ -39,6 +57,7 @@ export class ElasticHabitsComponent implements OnInit {
   importError: string = '';
   weekDays: Date[] = [];
   selectedDays: boolean[] = [true, true, true, true, true, true, true];
+  showSeoSection: boolean = false;
 
   editHabitId: number | null = null;
   showEditForm: boolean = false;
@@ -55,8 +74,15 @@ export class ElasticHabitsComponent implements OnInit {
       }
     });
 
+    // Set the SEO section state based on habits
+    this.showSeoSection = this.habits.length === 0;
+
     this.updateWeekDays();
     this.showAddHabitForm = false;
+  }
+
+  toggleSeoSection(): void {
+    this.showSeoSection = !this.showSeoSection;
   }
 
   saveHabits(): void {
@@ -127,6 +153,11 @@ export class ElasticHabitsComponent implements OnInit {
     this.habits.push(newHabit);
     this.clearForm();
     this.saveHabits();
+
+    // Auto-collapse the SEO section when we add first habit
+    if (this.habits.length === 1) {
+      this.showSeoSection = false;
+    }
   }
 
   deleteHabit(habitId: number): void {
@@ -138,6 +169,11 @@ export class ElasticHabitsComponent implements OnInit {
 
     this.habits = this.habits.filter(habit => habit.id !== habitId);
     this.saveHabits();
+
+    // Auto-expand the SEO section when we delete the last habit
+    if (this.habits.length === 0) {
+      this.showSeoSection = true;
+    }
   }
 
   toggleHabitLevel(habitId: number, date: Date, levelIndex: number): void {
@@ -227,6 +263,11 @@ export class ElasticHabitsComponent implements OnInit {
 
         this.habits = importedData;
         this.saveHabits();
+
+        // Update SEO section visibility based on habits
+        if (this.habits.length > 0) {
+          this.showSeoSection = false;
+        }
 
         event.target.value = null;
       } catch (error) {
