@@ -25,7 +25,8 @@ export class HabitListComponent {
   }
 
   getDayName(dayIndex: number): string {
-    return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex === 0 ? 6 : dayIndex - 1];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return days[dayIndex];
   }
 
   isToday(date: Date): boolean {
@@ -35,18 +36,29 @@ export class HabitListComponent {
       date.getFullYear() === today.getFullYear();
   }
 
+  getWeekKey(date: Date): string {
+    const firstDay = new Date(date);
+    const day = firstDay.getDay();
+    const diff = firstDay.getDate() - day + (day === 0 ? -6 : 1); // Dostosowanie dla niedzieli
+    firstDay.setDate(diff);
+    return this.formatDate(firstDay);
+  }
+
   getCompletedLevelIndex(habit: Habit, date: Date): number {
-    const dateStr = this.formatDate(date);
+    const dateStr = habit.isWeekly ? this.getWeekKey(this.weekDays[0]) : this.formatDate(date);
     return habit.tracking[dateStr];
   }
 
   isLevelCompleted(habit: Habit, date: Date, levelIndex: number): boolean {
-    const dateStr = this.formatDate(date);
+    const dateStr = habit.isWeekly ? this.getWeekKey(this.weekDays[0]) : this.formatDate(date);
     return habit.tracking[dateStr] === levelIndex;
   }
 
   isDayActive(habit: Habit, dayIndex: number): boolean {
-    return habit.activeDays[dayIndex];
+    if (habit.isWeekly) return true;
+    // Konwersja z indeksu JavaScript (0 = niedziela) na indeks używany w activeDays
+    const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1;
+    return habit.activeDays[adjustedIndex];
   }
 
   onToggleLevel(habitId: number, date: Date, levelIndex: number): void {
@@ -61,5 +73,15 @@ export class HabitListComponent {
     if (confirmDelete) {
       this.deleteHabit.emit(habitId);
     }
+  }
+
+  getWeekDisplay(date: Date): string {
+    const firstDay = new Date(date);
+    const day = firstDay.getDay();
+    const diff = firstDay.getDate() - day + (day === 0 ? -6 : 1);
+    firstDay.setDate(diff);
+    const lastDay = new Date(firstDay);
+    lastDay.setDate(lastDay.getDate() + 6);
+    return `Week of ${this.displayDate(firstDay)} - ${this.displayDate(lastDay)}`;
   }
 }
