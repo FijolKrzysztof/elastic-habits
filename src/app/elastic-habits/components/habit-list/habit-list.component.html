@@ -1,52 +1,51 @@
 <div class="space-y-4">
-  <div class="flex">
-    <div class="w-1/4"></div>
-    <div class="flex-1 bg-gray-800 rounded-xl">
-      <div class="flex">
-        <div *ngFor="let day of weekDays"
-             class="text-center p-4 flex-1"
-             [ngClass]="{'bg-gray-700 rounded': isToday(day)}">
-          <div>{{ getDayName(day.getDay()) }}</div>
-          <div class="text-xs text-gray-400">{{ displayDate(day) }}</div>
-        </div>
+  <div class="grid grid-cols-[25%_auto_6rem]">
+    <div></div>
+    <div class="grid grid-cols-7 bg-gray-800 rounded-xl">
+      <div *ngFor="let day of weekDays"
+           class="text-center p-4"
+           [ngClass]="{'bg-gray-700 rounded': isToday(day)}">
+        <div>{{ getDayName(day.getDay()) }}</div>
+        <div class="text-xs text-gray-400">{{ displayDate(day) }}</div>
       </div>
     </div>
-    <div class="w-24"></div>
+    <div></div>
   </div>
 
   <div class="space-y-4">
     <ng-container *ngFor="let habit of habits">
-      <div class="bg-gray-800 rounded-xl">
-        <table class="w-full border-collapse">
-          <tr>
-            <td class="p-4 w-1/4">
+      <div class="bg-gray-900">
+        <div class="bg-gray-800 rounded-xl mb-4">
+          <div class="grid grid-cols-[25%_auto_6rem]">
+            <div class="py-3 pl-6">
               <div class="font-medium">{{ habit.name }}</div>
               <div class="text-sm text-gray-400">
                 {{ habit.isWeekly ? 'Weekly habit' : 'Specific days' }}
               </div>
-            </td>
+            </div>
 
-            <td *ngFor="let day of weekDays"
-                class="text-center p-4 align-middle"
-                [ngClass]="{'opacity-40': !isDayActive(habit, day.getDay())}">
-              <div class="mx-auto w-8 h-8 flex items-center justify-center rounded-xl bg-gray-800 shadow-inner border border-gray-700">
-                <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
-                     class="text-xl"
-                     [class.text-green-500]="getCompletedLevelIndex(habit, day) === 0"
-                     [class.text-blue-500]="getCompletedLevelIndex(habit, day) === 1"
-                     [class.text-red-500]="getCompletedLevelIndex(habit, day) === 2">
-                  ✓
+            <div class="grid grid-cols-7">
+              <div *ngFor="let day of weekDays"
+                   class="text-center p-4 flex items-center"
+                   [ngClass]="{'opacity-40': !isDayActive(habit, day.getDay())}">
+                <div class="mx-auto w-8 h-8 flex items-center justify-center rounded-xl bg-gray-800 shadow-inner border border-gray-700">
+                  <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
+                       class="text-xl"
+                       [class.text-green-500]="getCompletedLevelIndex(habit, day) === 0"
+                       [class.text-blue-500]="getCompletedLevelIndex(habit, day) === 1"
+                       [class.text-red-500]="getCompletedLevelIndex(habit, day) === 2">
+                    ✓
+                  </div>
                 </div>
               </div>
-            </td>
+            </div>
 
-            <td class="text-center w-24">
+            <div class="p-4 pr-6">
               <div class="flex gap-2 justify-center">
                 <button
                   (click)="editHabit.emit(habit.id)"
                   class="p-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-600/30 transition-all hover:shadow-md"
-                  title="Edit habit"
-                >
+                  title="Edit habit">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
                     <path d="m15 5 4 4"/>
@@ -55,8 +54,7 @@
                 <button
                   (click)="onDelete(habit.id)"
                   class="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-600/30 transition-all hover:shadow-md"
-                  title="Delete habit"
-                >
+                  title="Delete habit">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 6h18"/>
                     <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
@@ -66,11 +64,20 @@
                   </svg>
                 </button>
               </div>
-            </td>
-          </tr>
+            </div>
+          </div>
+        </div>
 
-          <tr *ngFor="let level of habit.levels; let levelIndex = index"
-              class="bg-gray-900 border-t border-gray-800">
+        <table class="w-full border-collapse">
+          <colgroup>
+            <col class="w-1/4">
+            <col class="w-[calc((100%-25%-6rem)/7)]" span="7">
+            <col class="w-24">
+          </colgroup>
+          <tr *ngFor="let level of habit.levels; let levelIndex = index; first as isFirst"
+              class="bg-gray-900"
+              [class.border-t]="!isFirst"
+              [class.border-gray-800]="!isFirst">
             <td class="pl-8 py-2">
               <div class="inline-block px-2 py-1 rounded text-xs mr-2"
                    [ngClass]="level.color">
@@ -82,13 +89,12 @@
             <ng-container *ngIf="habit.isWeekly">
               <td colspan="7" class="p-2">
                 <button
-                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
+                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border border-gray-700 min-w-[40px]"
                   [ngClass]="isLevelCompleted(habit, weekDays[0], levelIndex) ?
-                      level.color + ' border-gray-500' :
-                      'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                  (click)="onToggleLevel(habit.id, weekDays[0], levelIndex)"
-                >
-                  {{ isLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
+                      level.color + ' border-opacity-50' :
+                      'bg-gray-800 hover:bg-gray-700'"
+                  (click)="onToggleLevel(habit.id, weekDays[0], levelIndex)">
+                  {{ isLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '&nbsp;' }}
                 </button>
               </td>
             </ng-container>
@@ -97,17 +103,15 @@
               <td
                 *ngFor="let day of weekDays"
                 class="text-center p-2"
-                [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
-              >
+                [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}">
                 <button
-                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
+                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border border-gray-700 min-w-[40px]"
                   [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
-                      level.color + ' border-gray-500' :
-                      'bg-gray-800 border-gray-700 hover:bg-gray-700'"
+                      level.color + ' border-opacity-50' :
+                      'bg-gray-800 hover:bg-gray-700'"
                   (click)="onToggleLevel(habit.id, day, levelIndex)"
-                  [disabled]="!isDayActive(habit, day.getDay())"
-                >
-                  {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
+                  [disabled]="!isDayActive(habit, day.getDay())">
+                  {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '&nbsp;' }}
                 </button>
               </td>
             </ng-container>
