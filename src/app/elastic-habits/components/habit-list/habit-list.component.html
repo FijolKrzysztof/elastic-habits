@@ -27,9 +27,9 @@
           class="text-center p-4 align-middle"
           [ngClass]="{'opacity-40': !isDayActive(habit, day.getDay())}"
         >
-          <div class="mx-auto w-10 h-10 flex items-center justify-center rounded-2xl bg-gray-800 shadow-inner border border-gray-700">
+          <div class="mx-auto w-8 h-8 flex items-center justify-center rounded-xl bg-gray-800 shadow-inner border border-gray-700">
             <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
-                 class="text-2xl"
+                 class="text-xl"
                  [class.text-green-500]="getCompletedLevelIndex(habit, day) === 0"
                  [class.text-blue-500]="getCompletedLevelIndex(habit, day) === 1"
                  [class.text-red-500]="getCompletedLevelIndex(habit, day) === 2">
