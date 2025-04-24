@@ -39,7 +39,7 @@ export class HabitListComponent {
   getWeekKey(date: Date): string {
     const firstDay = new Date(date);
     const day = firstDay.getDay();
-    const diff = firstDay.getDate() - day + (day === 0 ? -6 : 1); // Dostosowanie dla niedzieli
+    const diff = firstDay.getDate() - day + (day === 0 ? -6 : 1);
     firstDay.setDate(diff);
     return this.formatDate(firstDay);
   }
@@ -56,7 +56,6 @@ export class HabitListComponent {
 
   isDayActive(habit: Habit, dayIndex: number): boolean {
     if (habit.isWeekly) return true;
-    // Konwersja z indeksu JavaScript (0 = niedziela) na indeks używany w activeDays
     const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1;
     return habit.activeDays[adjustedIndex];
   }
