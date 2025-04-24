@@ -1,0 +1,45 @@
+<!-- src/app/features/elastic-habits/components/info-section/info-section.component.html -->
+
+<div class="mt-12 mb-6">
+  <button
+    (click)="toggleSection()"
+    class="w-full p-3 text-left bg-gray-800 rounded flex justify-between items-center mb-1 hover:bg-gray-750"
+    [class.cursor-pointer]="canToggle"
+  >
+    <h2 class="text-xl font-medium">What are Elastic Habits?</h2>
+    <span *ngIf="canToggle">{{ showSection ? '▲' : '▼' }}</span>
+  </button>
+
+  <div *ngIf="showSection" class="p-5 bg-gray-800 rounded transition-all duration-300 ease-in-out" [@expandCollapse]="showSection ? 'expanded' : 'collapsed'">
+    <p class="mb-3">Elastic Habits is a powerful habit tracking system designed for flexibility and consistency. Unlike traditional habit trackers that only offer binary completion options, Elastic Habits provides three difficulty levels for each habit:</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+      <div class="p-3 bg-gray-700 rounded">
+        <div class="mb-2 px-2 py-1 rounded text-green-500 text-xs inline-block">Mini</div>
+        <p class="text-sm">The easiest version of your habit, perfect for busy days or when your energy is low. It's designed to maintain consistency even in challenging circumstances.</p>
+      </div>
+
+      <div class="p-3 bg-gray-700 rounded">
+        <div class="mb-2 px-2 py-1 rounded text-blue-500 text-xs inline-block">Plus</div>
+        <p class="text-sm">The standard version of your habit for normal days. This represents your default target when conditions are favorable.</p>
+      </div>
+
+      <div class="p-3 bg-gray-700 rounded">
+        <div class="mb-2 px-2 py-1 rounded text-red-500 text-xs inline-block">Elite</div>
+        <p class="text-sm">The challenging version for when you want to push yourself. This is your stretch goal that promotes growth and excellence.</p>
+      </div>
+    </div>
+
+    <h3 class="text-lg font-medium mb-2">Benefits of Elastic Habits</h3>
+
+    <ul class="list-disc pl-5 mb-4 space-y-1 text-sm">
+      <li>Greater flexibility adapts to your energy levels and schedule</li>
+      <li>Increased consistency by removing the all-or-nothing approach</li>
+      <li>Progressive improvement through optional challenge levels</li>
+      <li>Customizable to your specific needs with day-specific scheduling</li>
+      <li>Better resilience against habit breaking due to multiple completion options</li>
+    </ul>
+
+    <p class="text-sm text-gray-400">This approach was developed by Stephen Guise, author of "Elastic Habits," as an evolution of his "Mini Habits" system. It combines consistency with adaptability to create sustainable behavior change.</p>
+  </div>
+</div>

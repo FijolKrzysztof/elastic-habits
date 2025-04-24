@@ -47,284 +47,33 @@
       </button>
     </div>
 
-    <div class="overflow-x-auto rounded">
-      <table class="w-full border-collapse bg-gray-800">
-        <thead class="bg-gray-800 border-b border-gray-700">
-        <tr>
-          <th class="text-left p-4 w-1/4">Habit</th>
-          <th
-            *ngFor="let day of weekDays; let i = index"
-            class="text-center p-2"
-            [ngClass]="{'bg-gray-700': isToday(day)}"
-          >
-            <div>{{ getDayName(day.getDay()) }}</div>
-            <div class="text-xs text-gray-400">{{ displayDate(day) }}</div>
-          </th>
-          <th class="w-24 p-2"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-container *ngFor="let habit of habits; let habitIndex = index">
-          <tr class="bg-gray-800 border-t border-gray-700">
-            <td class="p-4">
-              <div class="font-medium">{{ habit.name }}</div>
-              <div class="text-sm text-gray-400">{{ habit.isWeekly ? 'Weekly habit' : 'Specific days' }}</div>
-            </td>
-
-            <td
-              *ngFor="let day of weekDays; let dayIndex = index"
-              class="text-center align-top p-2"
-              [ngClass]="{'bg-gray-700': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
-            >
-              <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
-                   class="mx-auto w-6 h-6 flex items-center justify-center rounded-full text-sm"
-                   [ngClass]="habit.levels[getCompletedLevelIndex(habit, day)].color">
-                ✓
-              </div>
-            </td>
-
-            <td class="text-center">
-              <div class="flex gap-2 justify-center">
-                <button
-                  (click)="editHabit(habit.id)"
-                  class="p-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-600/30 transition-all hover:shadow-md"
-                  title="Edytuj nawyk"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                    <path d="m15 5 4 4"/>
-                  </svg>
-                </button>
-                <button
-                  (click)="deleteHabit(habit.id)"
-                  class="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-600/30 transition-all hover:shadow-md"
-                  title="Usuń nawyk"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18"/>
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                    <line x1="10" x2="10" y1="11" y2="17"/>
-                    <line x1="14" x2="14" y1="11" y2="17"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-
-          <tr *ngFor="let level of habit.levels; let levelIndex = index"
-              class="bg-gray-900 border-t border-gray-800">
-            <td class="pl-8 py-2">
-              <div class="inline-block px-2 py-1 rounded text-xs mr-2"
-                   [ngClass]="level.color">
-                {{ level.name }}
-              </div>
-              <span class="text-sm text-gray-400">{{ level.desc }}</span>
-            </td>
-
-            <ng-container *ngIf="habit.isWeekly">
-              <td colspan="7" class="p-2">
-                <button
-                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
-                  [ngClass]="isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ?
-                      level.color + ' border-gray-500' :
-                      'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                  (click)="toggleWeeklyHabitLevel(habit.id, weekDays[0], levelIndex)"
-                >
-                  {{ isWeeklyLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
-                </button>
-              </td>
-            </ng-container>
-
-            <ng-container *ngIf="!habit.isWeekly">
-              <td
-                *ngFor="let day of weekDays; let dayIndex = index"
-                class="text-center p-2"
-                [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
-              >
-                <button
-                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
-                  [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
-                      level.color + ' border-gray-500' :
-                      'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                  (click)="toggleHabitLevel(habit.id, day, levelIndex)"
-                  [disabled]="!isDayActive(habit, day.getDay())"
-                >
-                  {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
-                </button>
-              </td>
-            </ng-container>
-
-            <td></td>
-          </tr>
-        </ng-container>
-
-        <tr *ngIf="habits.length === 0">
-          <td
-            colspan="9"
-            class="p-8 text-center text-gray-400"
-          >
-            <div class="mb-4 text-lg font-medium">You don't have any habits yet. Add your first habit.</div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-habit-list
+      [habits]="habits"
+      [weekDays]="weekDays"
+      (editHabit)="onEditHabit($event)"
+      (deleteHabit)="onDeleteHabit($event)"
+      (toggleLevel)="onToggleLevel($event)"
+    ></app-habit-list>
 
     <button
-      *ngIf="!showAddHabitForm && !showEditForm"
-      (click)="showAddHabitForm = true"
+      *ngIf="!showForm()"
+      (click)="toggleAddHabitForm()"
       class="mt-6 px-5 py-3 rounded bg-gray-700 hover:bg-gray-600 text-white font-medium border-t border-gray-600 block w-full md:w-64"
     >
       + Add new habit
     </button>
 
-    <div *ngIf="showAddHabitForm || showEditForm" class="mt-6 p-6 rounded bg-gray-800">
-      <h3 class="font-medium mb-4 text-lg">{{ showEditForm ? 'Edit habit' : 'Add new habit' }}</h3>
+    <app-habit-form
+      *ngIf="showForm()"
+      [editMode]="showEditForm"
+      [habitToEdit]="getHabitToEdit()"
+      (submitHabit)="onHabitSubmit($event)"
+      (cancel)="onFormCancel()"
+    ></app-habit-form>
 
-      <div class="mb-4">
-        <label for="habit-name" class="block mb-2 text-sm font-medium text-gray-300">Habit name</label>
-        <input
-          id="habit-name"
-          type="text"
-          [(ngModel)]="newHabitName"
-          placeholder="e.g. Reading"
-          class="w-full p-3 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:border-gray-500 focus:outline-none"
-        />
-      </div>
-
-      <div class="mb-4">
-        <label class="block mb-2 text-sm font-medium text-gray-300">Habit type</label>
-        <div class="flex items-center mb-4">
-          <button
-            (click)="toggleHabitType()"
-            class="px-4 py-2 rounded text-sm"
-            [ngClass]="!isWeeklyHabit ? 'bg-gray-600 text-white' : 'bg-gray-800 text-gray-400 border border-gray-700'"
-          >
-            Specific days
-          </button>
-          <button
-            (click)="toggleHabitType()"
-            class="px-4 py-2 rounded text-sm ml-2"
-            [ngClass]="isWeeklyHabit ? 'bg-gray-600 text-white' : 'bg-gray-800 text-gray-400 border border-gray-700'"
-          >
-            Weekly habit
-          </button>
-        </div>
-      </div>
-
-      <div class="mb-4" *ngIf="!isWeeklyHabit">
-        <label class="block mb-2 text-sm font-medium text-gray-300">Active days</label>
-        <div class="flex flex-wrap gap-2">
-          <button
-            *ngFor="let day of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; let i = index"
-            (click)="toggleDaySelection(i)"
-            class="px-3 py-2 rounded text-sm border"
-            [ngClass]="selectedDays[i] ? 'bg-gray-600 border-gray-500' : 'bg-gray-800 border-gray-700'"
-          >
-            {{ day }}
-          </button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div>
-          <div class="mb-2 px-2 py-1 rounded bg-green-600 text-white text-xs inline-block">Mini</div>
-          <input
-            type="text"
-            [(ngModel)]="newMiniDesc"
-            placeholder="5 minutes daily"
-            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
-          />
-        </div>
-
-        <div>
-          <div class="mb-2 px-2 py-1 rounded bg-blue-600 text-white text-xs inline-block">Plus</div>
-          <input
-            type="text"
-            [(ngModel)]="newPlusDesc"
-            placeholder="15 minutes daily"
-            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
-          />
-        </div>
-
-        <div>
-          <div class="mb-2 px-2 py-1 rounded bg-red-600 text-white text-xs inline-block">Elite</div>
-          <input
-            type="text"
-            [(ngModel)]="newEliteDesc"
-            placeholder="30 minutes daily"
-            class="w-full p-2 rounded bg-gray-700 text-white placeholder-gray-400 border border-gray-600 text-sm"
-          />
-        </div>
-      </div>
-
-      <div class="flex gap-3">
-        <button
-          *ngIf="showAddHabitForm"
-          (click)="addHabit()"
-          class="px-5 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white"
-        >
-          Add
-        </button>
-        <button
-          *ngIf="showEditForm"
-          (click)="saveEditedHabit()"
-          class="px-5 py-2 rounded bg-gray-600 hover:bg-gray-500 text-white"
-        >
-          Save changes
-        </button>
-        <button
-          (click)="showEditForm ? cancelEdit() : clearForm()"
-          class="px-5 py-2 rounded bg-gray-700 hover:bg-gray-600 text-gray-300"
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-
-    <div class="mt-12 mb-6">
-      <button
-        (click)="toggleSeoSection()"
-        class="w-full p-3 text-left bg-gray-800 rounded flex justify-between items-center mb-1 hover:bg-gray-750"
-        [class.cursor-pointer]="habits.length > 0"
-      >
-        <h2 class="text-xl font-medium">What are Elastic Habits?</h2>
-        <span *ngIf="habits.length > 0">{{ showSeoSection ? '▲' : '▼' }}</span>
-      </button>
-
-      <div *ngIf="showSeoSection" class="p-5 bg-gray-800 rounded transition-all duration-300 ease-in-out" [@expandCollapse]="showSeoSection ? 'expanded' : 'collapsed'">
-        <p class="mb-3">Elastic Habits is a powerful habit tracking system designed for flexibility and consistency. Unlike traditional habit trackers that only offer binary completion options, Elastic Habits provides three difficulty levels for each habit:</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-          <div class="p-3 bg-gray-700 rounded">
-            <div class="mb-2 px-2 py-1 rounded bg-green-600 text-white text-xs inline-block">Mini</div>
-            <p class="text-sm">The easiest version of your habit, perfect for busy days or when your energy is low. It's designed to maintain consistency even in challenging circumstances.</p>
-          </div>
-
-          <div class="p-3 bg-gray-700 rounded">
-            <div class="mb-2 px-2 py-1 rounded bg-blue-600 text-white text-xs inline-block">Plus</div>
-            <p class="text-sm">The standard version of your habit for normal days. This represents your default target when conditions are favorable.</p>
-          </div>
-
-          <div class="p-3 bg-gray-700 rounded">
-            <div class="mb-2 px-2 py-1 rounded bg-red-600 text-white text-xs inline-block">Elite</div>
-            <p class="text-sm">The challenging version for when you want to push yourself. This is your stretch goal that promotes growth and excellence.</p>
-          </div>
-        </div>
-
-        <h3 class="text-lg font-medium mb-2">Benefits of Elastic Habits</h3>
-
-        <ul class="list-disc pl-5 mb-4 space-y-1 text-sm">
-          <li>Greater flexibility adapts to your energy levels and schedule</li>
-          <li>Increased consistency by removing the all-or-nothing approach</li>
-          <li>Progressive improvement through optional challenge levels</li>
-          <li>Customizable to your specific needs with day-specific scheduling</li>
-          <li>Better resilience against habit breaking due to multiple completion options</li>
-        </ul>
-
-        <p class="text-sm text-gray-400">This approach was developed by Stephen Guise, author of "Elastic Habits," as an evolution of his "Mini Habits" system. It combines consistency with adaptability to create sustainable behavior change.</p>
-      </div>
-    </div>
+    <app-info-section
+      [showSection]="showSeoSection"
+      [canToggle]="habits.length > 0"
+    ></app-info-section>
   </div>
 </div>
