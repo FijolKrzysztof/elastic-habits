@@ -63,9 +63,9 @@ export class HabitFormComponent {
       id: this.editMode && this.habitToEdit ? this.habitToEdit.id : Date.now(),
       name: this.newHabitName,
       levels: [
-        { name: "Mini", desc: this.newMiniDesc || "Basic level", color: "text-green-500" },
-        { name: "Plus", desc: this.newPlusDesc || "Medium level", color: "text-blue-500" },
-        { name: "Elite", desc: this.newEliteDesc || "Advanced level", color: "text-red-500" }
+        { name: "Mini", desc: this.newMiniDesc || "Basic level", color: "bg-green-600 text-white" },
+        { name: "Plus", desc: this.newPlusDesc || "Medium level", color: "bg-blue-600 text-white" },
+        { name: "Elite", desc: this.newEliteDesc || "Advanced level", color: "bg-red-600 text-white" }
       ],
       tracking: this.editMode && this.habitToEdit ? this.habitToEdit.tracking : {},
       activeDays: jsDaysArray,
