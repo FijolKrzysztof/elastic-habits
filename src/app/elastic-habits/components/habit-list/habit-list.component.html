@@ -1,7 +1,12 @@
+<!-- W pliku habit-list.component.html -->
+
 <div class="overflow-x-auto">
-  <div class="w-full bg-gray-800 rounded-xl p-4 mb-4">
+  <!-- Panel z datami -->
+  <div class="w-full bg-gray-800 rounded-xl">
     <div class="flex">
-      <div class="text-left p-4 w-1/4">Habit</div>
+      <div class="text-left p-4 w-1/4">
+        <img src="assets/icon.svg" alt="Elastic Habits" class="w-8 h-8" />
+      </div>
       <div *ngFor="let day of weekDays"
            class="text-center p-4 flex-1"
            [ngClass]="{'bg-gray-700 rounded': isToday(day)}">
@@ -12,112 +17,111 @@
     </div>
   </div>
 
-  <div class="w-full bg-gray-800 rounded-xl overflow-hidden">
-    <table class="w-full border-collapse">
-      <tbody>
-      <ng-container *ngFor="let habit of habits">
-        <tr class="border-t border-gray-700">
-          <td class="p-4 w-1/4">
-            <div class="font-medium">{{ habit.name }}</div>
-            <div class="text-sm text-gray-400">{{ habit.isWeekly ? 'Weekly habit' : 'Specific days' }}</div>
-          </td>
+  <!-- Panel z checkmarkami -->
+  <div class="w-full space-y-4 mt-4">
+    <ng-container *ngFor="let habit of habits">
+      <div class="bg-gray-800 rounded-xl">
+        <table class="w-full border-collapse">
+          <tr>
+            <td class="p-4 w-1/4">
+              <div class="font-medium">{{ habit.name }}</div>
+              <div class="text-sm text-gray-400">{{ habit.isWeekly ? 'Weekly habit' : 'Specific days' }}</div>
+            </td>
 
-          <td *ngFor="let day of weekDays"
-              class="text-center p-4 align-middle"
-              [ngClass]="{'opacity-40': !isDayActive(habit, day.getDay())}">
-            <div class="mx-auto w-8 h-8 flex items-center justify-center rounded-xl bg-gray-800 shadow-inner border border-gray-700">
-              <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
-                   class="text-xl"
-                   [class.text-green-500]="getCompletedLevelIndex(habit, day) === 0"
-                   [class.text-blue-500]="getCompletedLevelIndex(habit, day) === 1"
-                   [class.text-red-500]="getCompletedLevelIndex(habit, day) === 2">
-                ✓
+            <td *ngFor="let day of weekDays"
+                class="text-center p-4 align-middle"
+                [ngClass]="{'opacity-40': !isDayActive(habit, day.getDay())}">
+              <div class="mx-auto w-8 h-8 flex items-center justify-center rounded-xl bg-gray-800 shadow-inner border border-gray-700">
+                <div *ngIf="getCompletedLevelIndex(habit, day) !== undefined"
+                     class="text-xl"
+                     [class.text-green-500]="getCompletedLevelIndex(habit, day) === 0"
+                     [class.text-blue-500]="getCompletedLevelIndex(habit, day) === 1"
+                     [class.text-red-500]="getCompletedLevelIndex(habit, day) === 2">
+                  ✓
+                </div>
               </div>
-            </div>
-          </td>
+            </td>
 
-          <td class="text-center w-24">
-            <div class="flex gap-2 justify-center">
-              <button
-                (click)="editHabit.emit(habit.id)"
-                class="p-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-600/30 transition-all hover:shadow-md"
-                title="Edit habit"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                  <path d="m15 5 4 4"/>
-                </svg>
-              </button>
-              <button
-                (click)="onDelete(habit.id)"
-                class="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-600/30 transition-all hover:shadow-md"
-                title="Delete habit"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 6h18"/>
-                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
-                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
-                  <line x1="10" x2="10" y1="11" y2="17"/>
-                  <line x1="14" x2="14" y1="11" y2="17"/>
-                </svg>
-              </button>
-            </div>
-          </td>
-        </tr>
+            <td class="text-center w-24">
+              <div class="flex gap-2 justify-center">
+                <button
+                  (click)="editHabit.emit(habit.id)"
+                  class="p-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-600/30 transition-all hover:shadow-md"
+                  title="Edit habit"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                    <path d="m15 5 4 4"/>
+                  </svg>
+                </button>
+                <button
+                  (click)="onDelete(habit.id)"
+                  class="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-600/30 transition-all hover:shadow-md"
+                  title="Delete habit"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"/>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                    <line x1="10" x2="10" y1="11" y2="17"/>
+                    <line x1="14" x2="14" y1="11" y2="17"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
 
-        <tr *ngFor="let level of habit.levels; let levelIndex = index"
-            class="bg-gray-900 border-t border-gray-800">
-          <td class="pl-8 py-2">
-            <div class="inline-block px-2 py-1 rounded text-xs mr-2"
-                 [ngClass]="level.color">
-              {{ level.name }}
-            </div>
-            <span class="text-sm text-gray-400">{{ level.desc }}</span>
-          </td>
+          <tr *ngFor="let level of habit.levels; let levelIndex = index"
+              class="bg-gray-900 border-t border-gray-800">
+            <td class="pl-8 py-2">
+              <div class="inline-block px-2 py-1 rounded text-xs mr-2"
+                   [ngClass]="level.color">
+                {{ level.name }}
+              </div>
+              <span class="text-sm text-gray-400">{{ level.desc }}</span>
+            </td>
 
-          <ng-container *ngIf="habit.isWeekly">
-            <td colspan="7" class="p-2">
-              <button
-                class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
-                [ngClass]="isLevelCompleted(habit, weekDays[0], levelIndex) ?
+            <ng-container *ngIf="habit.isWeekly">
+              <td colspan="7" class="p-2">
+                <button
+                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
+                  [ngClass]="isLevelCompleted(habit, weekDays[0], levelIndex) ?
                       level.color + ' border-gray-500' :
                       'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                (click)="onToggleLevel(habit.id, weekDays[0], levelIndex)"
-              >
-                {{ isLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
-              </button>
-            </td>
-          </ng-container>
+                  (click)="onToggleLevel(habit.id, weekDays[0], levelIndex)"
+                >
+                  {{ isLevelCompleted(habit, weekDays[0], levelIndex) ? '✓' : '' }}
+                </button>
+              </td>
+            </ng-container>
 
-          <ng-container *ngIf="!habit.isWeekly">
-            <td
-              *ngFor="let day of weekDays"
-              class="text-center p-2"
-              [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
-            >
-              <button
-                class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
-                [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
+            <ng-container *ngIf="!habit.isWeekly">
+              <td
+                *ngFor="let day of weekDays"
+                class="text-center p-2"
+                [ngClass]="{'bg-gray-800': isToday(day), 'opacity-40': !isDayActive(habit, day.getDay())}"
+              >
+                <button
+                  class="w-full py-3 px-3 rounded hover:bg-opacity-70 border"
+                  [ngClass]="isLevelCompleted(habit, day, levelIndex) ?
                       level.color + ' border-gray-500' :
                       'bg-gray-800 border-gray-700 hover:bg-gray-700'"
-                (click)="onToggleLevel(habit.id, day, levelIndex)"
-                [disabled]="!isDayActive(habit, day.getDay())"
-              >
-                {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
-              </button>
-            </td>
-          </ng-container>
+                  (click)="onToggleLevel(habit.id, day, levelIndex)"
+                  [disabled]="!isDayActive(habit, day.getDay())"
+                >
+                  {{ isLevelCompleted(habit, day, levelIndex) ? '✓' : '' }}
+                </button>
+              </td>
+            </ng-container>
 
-          <td></td>
-        </tr>
-      </ng-container>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </ng-container>
 
-      <tr *ngIf="habits.length === 0">
-        <td colspan="9" class="p-8 text-center text-gray-400">
-          <div class="mb-4 text-lg font-medium">You don't have any habits yet. Add your first habit.</div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div *ngIf="habits.length === 0" class="bg-gray-800 rounded-xl p-8 text-center text-gray-400">
+      <div class="text-lg font-medium">You don't have any habits yet. Add your first habit.</div>
+    </div>
   </div>
 </div>
