@@ -1,29 +1,39 @@
-<div class="overflow-x-auto">
-  <div class="w-full bg-gray-800 rounded-xl">
-    <div class="flex">
-      <div class="text-left p-2 w-1/4">
-        <img src="icon.svg" alt="Elastic Habits" class="w-14 h-14" />
+<div class="space-y-4">
+  <!-- Days of week header -->
+  <div class="flex">
+    <!-- Left space for habit names -->
+    <div class="w-1/4"></div>
+
+    <!-- Days container -->
+    <div class="flex-1 bg-gray-800 rounded-xl">
+      <div class="flex">
+        <div *ngFor="let day of weekDays"
+             class="text-center p-4 flex-1"
+             [ngClass]="{'bg-gray-700 rounded': isToday(day)}">
+          <div>{{ getDayName(day.getDay()) }}</div>
+          <div class="text-xs text-gray-400">{{ displayDate(day) }}</div>
+        </div>
+        <!-- Space for action buttons -->
+        <div class="w-24 p-4"></div>
       </div>
-      <div *ngFor="let day of weekDays"
-           class="text-center p-4 flex-1"
-           [ngClass]="{'bg-gray-700 rounded': isToday(day)}">
-        <div>{{ getDayName(day.getDay()) }}</div>
-        <div class="text-xs text-gray-400">{{ displayDate(day) }}</div>
-      </div>
-      <div class="w-24 p-2"></div>
     </div>
   </div>
 
-  <div class="w-full space-y-4 mt-4">
+  <!-- Habits list -->
+  <div class="space-y-4">
     <ng-container *ngFor="let habit of habits">
       <div class="bg-gray-800 rounded-xl">
         <table class="w-full border-collapse">
+          <!-- Habit header row -->
           <tr>
             <td class="p-4 w-1/4">
               <div class="font-medium">{{ habit.name }}</div>
-              <div class="text-sm text-gray-400">{{ habit.isWeekly ? 'Weekly habit' : 'Specific days' }}</div>
+              <div class="text-sm text-gray-400">
+                {{ habit.isWeekly ? 'Weekly habit' : 'Specific days' }}
+              </div>
             </td>
 
+            <!-- Checkmark cells -->
             <td *ngFor="let day of weekDays"
                 class="text-center p-4 align-middle"
                 [ngClass]="{'opacity-40': !isDayActive(habit, day.getDay())}">
@@ -38,6 +48,7 @@
               </div>
             </td>
 
+            <!-- Action buttons -->
             <td class="text-center w-24">
               <div class="flex gap-2 justify-center">
                 <button
@@ -67,6 +78,7 @@
             </td>
           </tr>
 
+          <!-- Habit levels rows -->
           <tr *ngFor="let level of habit.levels; let levelIndex = index"
               class="bg-gray-900 border-t border-gray-800">
             <td class="pl-8 py-2">
@@ -77,6 +89,7 @@
               <span class="text-sm text-gray-400">{{ level.desc }}</span>
             </td>
 
+            <!-- Weekly habit -->
             <ng-container *ngIf="habit.isWeekly">
               <td colspan="7" class="p-2">
                 <button
@@ -91,6 +104,7 @@
               </td>
             </ng-container>
 
+            <!-- Daily habit -->
             <ng-container *ngIf="!habit.isWeekly">
               <td
                 *ngFor="let day of weekDays"
@@ -116,6 +130,7 @@
       </div>
     </ng-container>
 
+    <!-- Empty state -->
     <div *ngIf="habits.length === 0" class="bg-gray-800 rounded-xl p-8 text-center text-gray-400">
       <div class="text-lg font-medium">You don't have any habits yet. Add your first habit.</div>
     </div>
