@@ -31,7 +31,7 @@ export class HabitListMobileComponent extends HabitListComponent {
   }
 
   getDayShortName(dayIndex: number): string {
-    const days = ['Nie', 'Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return days[dayIndex];
   }
 
