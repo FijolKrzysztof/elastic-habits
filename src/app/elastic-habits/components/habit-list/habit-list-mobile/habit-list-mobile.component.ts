@@ -40,15 +40,11 @@ export class HabitListMobileComponent extends HabitListComponent {
     return habit.tracking[dateStr] !== undefined ? 1 : 0;
   }
 
-  getDayActive(habit: Habit, dayIndex: number): boolean {
-    if (habit.isWeekly) return true;
-    return habit.activeDays[dayIndex];
-  }
-
   selectHabit(index: number): void {
     this.selectedHabit = index;
   }
 
+  // Przywrócona metoda do powrotu do listy głównej
   backToList(): void {
     this.selectedHabit = null;
   }
