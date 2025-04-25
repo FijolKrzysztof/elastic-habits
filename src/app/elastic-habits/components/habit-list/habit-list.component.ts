@@ -73,14 +73,4 @@ export class HabitListComponent {
       this.deleteHabit.emit(habitId);
     }
   }
-
-  getWeekDisplay(date: Date): string {
-    const firstDay = new Date(date);
-    const day = firstDay.getDay();
-    const diff = firstDay.getDate() - day + (day === 0 ? -6 : 1);
-    firstDay.setDate(diff);
-    const lastDay = new Date(firstDay);
-    lastDay.setDate(lastDay.getDate() + 6);
-    return `Week of ${this.displayDate(firstDay)} - ${this.displayDate(lastDay)}`;
-  }
 }

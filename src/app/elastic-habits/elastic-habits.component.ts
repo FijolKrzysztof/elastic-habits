@@ -50,6 +50,7 @@ export class ElasticHabitsComponent implements OnInit {
       days.push(new Date(day));
       day.setDate(day.getDate() + 1);
     }
+    console.log('days123', days)
     this.weekDays = days;
   }
 

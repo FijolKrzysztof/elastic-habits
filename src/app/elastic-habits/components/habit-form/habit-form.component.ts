@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Habit } from '../../models/habit.model';
@@ -9,7 +9,7 @@ import { Habit } from '../../models/habit.model';
   imports: [NgForOf, NgClass, NgIf, FormsModule],
   templateUrl: './habit-form.component.html',
 })
-export class HabitFormComponent {
+export class HabitFormComponent implements OnInit {
   @Input() editMode = false;
   @Input() habitToEdit: Habit | null = null;
   @Output() submitHabit = new EventEmitter<Habit>();
@@ -32,13 +32,13 @@ export class HabitFormComponent {
 
       if (!this.habitToEdit.isWeekly) {
         this.selectedDays = [
+          this.habitToEdit.activeDays[0],
           this.habitToEdit.activeDays[1],
           this.habitToEdit.activeDays[2],
           this.habitToEdit.activeDays[3],
           this.habitToEdit.activeDays[4],
           this.habitToEdit.activeDays[5],
           this.habitToEdit.activeDays[6],
-          this.habitToEdit.activeDays[0]
         ];
       }
     }
@@ -50,13 +50,13 @@ export class HabitFormComponent {
     const jsDaysArray = this.isWeeklyHabit ?
       [true, true, true, true, true, true, true] :
       [
-        this.selectedDays[6],
         this.selectedDays[0],
         this.selectedDays[1],
         this.selectedDays[2],
         this.selectedDays[3],
         this.selectedDays[4],
         this.selectedDays[5],
+        this.selectedDays[6],
       ];
 
     const habit: Habit = {
