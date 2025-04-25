@@ -38,20 +38,24 @@ export class HabitListComponent {
 
   getWeekKey(date: Date): string {
     const firstDay = new Date(date);
-    const day = firstDay.getDay();
-    const diff = firstDay.getDate() - day + (day === 0 ? -6 : 1);
-    firstDay.setDate(diff);
+    firstDay.setDate(firstDay.getDate() - firstDay.getDay() + (firstDay.getDay() === 0 ? -6 : 1));
     return this.formatDate(firstDay);
   }
 
-  getCompletedLevelIndex(habit: Habit, date: Date): number {
-    const dateStr = habit.isWeekly ? this.getWeekKey(this.weekDays[0]) : this.formatDate(date);
-    return habit.tracking[dateStr];
+  getCompletedLevelIndex(habit: Habit, date: Date): number | undefined {
+    if (habit.isWeekly) {
+      const weekKey = this.getWeekKey(this.weekDays[0]);
+      return habit.tracking[weekKey];
+    }
+    return habit.tracking[this.formatDate(date)];
   }
 
   isLevelCompleted(habit: Habit, date: Date, levelIndex: number): boolean {
-    const dateStr = habit.isWeekly ? this.getWeekKey(this.weekDays[0]) : this.formatDate(date);
-    return habit.tracking[dateStr] === levelIndex;
+    if (habit.isWeekly) {
+      const weekKey = this.getWeekKey(this.weekDays[0]);
+      return habit.tracking[weekKey] === levelIndex;
+    }
+    return habit.tracking[this.formatDate(date)] === levelIndex;
   }
 
   isDayActive(habit: Habit, dayIndex: number): boolean {
@@ -68,7 +72,12 @@ export class HabitListComponent {
       return;
     }
 
-    this.toggleLevel.emit({habitId, date, levelIndex});
+    if (habit.isWeekly) {
+      const firstDayOfWeek = new Date(this.weekDays[0]);
+      this.toggleLevel.emit({habitId, date: firstDayOfWeek, levelIndex});
+    } else {
+      this.toggleLevel.emit({habitId, date, levelIndex});
+    }
   }
 
   onDelete(habitId: number): void {
