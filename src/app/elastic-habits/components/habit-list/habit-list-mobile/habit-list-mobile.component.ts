@@ -44,7 +44,6 @@ export class HabitListMobileComponent extends HabitListComponent {
     this.selectedHabit = index;
   }
 
-  // Przywrócona metoda do powrotu do listy głównej
   backToList(): void {
     this.selectedHabit = null;
   }

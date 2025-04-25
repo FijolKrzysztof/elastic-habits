@@ -1,6 +1,4 @@
-<!-- Główny kontener -->
 <div>
-  <!-- Nagłówek z datą, zawsze widoczny -->
   <div class="bg-gray-800 rounded-xl p-3 mb-3">
     <div class="flex justify-between items-center">
       <button (click)="previousDay()" class="p-2 rounded-lg bg-gray-700">
@@ -24,7 +22,6 @@
     </div>
   </div>
 
-  <!-- Widok pełnej listy nawyków -->
   <div *ngIf="selectedHabit === null" class="space-y-3">
     <div
       *ngFor="let habit of habits; let i = index"
@@ -36,7 +33,7 @@
         <div class="flex justify-between items-center">
           <div class="flex-1">
             <h3 class="font-medium">{{ habit.name }}</h3>
-            <p class="text-xs text-gray-400">{{ habit.isWeekly ? 'Nawyk tygodniowy' : 'Wybrane dni' }}</p>
+            <p class="text-xs text-gray-400">{{ habit.isWeekly ? 'Weekly habit' : 'Selected days' }}</p>
           </div>
 
           <div class="flex flex-col items-end">
@@ -51,25 +48,23 @@
               ></div>
             </div>
             <div class="text-xs text-gray-400">
-              {{ getCompletedLevelCount(habit, weekDays[currentDayIndex]) }}/{{ habit.levels.length }} poziomów
+              {{ getCompletedLevelCount(habit, weekDays[currentDayIndex]) }}/{{ habit.levels.length }} levels
             </div>
           </div>
         </div>
 
         <div *ngIf="!isDayActive(habit, weekDays[currentDayIndex].getDay())" class="mt-2 text-xs text-gray-500">
-          Nieaktywny w {{ getDayName(weekDays[currentDayIndex].getDay()) }}
+          Inactive on {{ getDayName(weekDays[currentDayIndex].getDay()) }}
         </div>
       </div>
     </div>
 
     <div *ngIf="habits.length === 0" class="bg-gray-800 rounded-xl p-8 text-center text-gray-400">
-      <div class="text-lg font-medium">Nie masz jeszcze żadnych nawyków. Dodaj swój pierwszy nawyk.</div>
+      <div class="text-lg font-medium">You don't have any habits yet. Add your first habit.</div>
     </div>
   </div>
 
-  <!-- Widok szczegółowy nawyku -->
   <div *ngIf="selectedHabit !== null">
-    <!-- Przycisk powrotu do listy -->
     <button
       class="flex items-center text-gray-400 mb-4"
       (click)="backToList()"
@@ -78,10 +73,9 @@
         <path d="m12 19-7-7 7-7"/>
         <path d="M19 12H5"/>
       </svg>
-      <span>Powrót do listy</span>
+      <span>Back to list</span>
     </button>
 
-    <!-- Skompaktowana lista nawyków -->
     <div class="bg-gray-800 rounded-xl p-2 mb-3 overflow-x-auto">
       <div class="flex space-x-2">
         <div
@@ -114,7 +108,7 @@
         <div>
           <h2 class="text-xl font-medium">{{ habits[selectedHabit].name }}</h2>
           <p class="text-sm text-gray-400">
-            {{ habits[selectedHabit].isWeekly ? 'Nawyk tygodniowy' : 'Wybrane dni' }}
+            {{ habits[selectedHabit].isWeekly ? 'Weekly habit' : 'Selected days' }}
           </p>
         </div>
 
@@ -145,7 +139,7 @@
     </div>
 
     <div class="bg-gray-800 rounded-xl p-4 mb-4">
-      <div class="text-sm text-gray-400 mb-3">Przegląd tygodnia:</div>
+      <div class="text-sm text-gray-400 mb-3">Week overview:</div>
       <div class="grid grid-cols-7 gap-1">
         <div
           *ngFor="let day of weekDays; let idx = index"
@@ -182,12 +176,12 @@
           <polyline points="12 6 12 12 16 14"/>
         </svg>
         <span class="text-sm font-medium">
-              {{ getDayName(weekDays[currentDayIndex].getDay()) }}, {{ displayDate(weekDays[currentDayIndex]) }}
-            </span>
+          {{ getDayName(weekDays[currentDayIndex].getDay()) }}, {{ displayDate(weekDays[currentDayIndex]) }}
+        </span>
       </div>
 
       <div *ngIf="!isDayActive(habits[selectedHabit], weekDays[currentDayIndex].getDay())" class="p-6 text-center text-gray-500">
-        Ten nawyk nie jest zaplanowany na {{ getDayName(weekDays[currentDayIndex].getDay()) }}
+        This habit is not scheduled for {{ getDayName(weekDays[currentDayIndex].getDay()) }}
       </div>
 
       <div *ngIf="isDayActive(habits[selectedHabit], weekDays[currentDayIndex].getDay())" class="p-4 space-y-4">
@@ -195,19 +189,19 @@
           *ngFor="let level of habits[selectedHabit].levels; let idx = index"
           class="p-3 rounded-lg border border-gray-700"
           [ngClass]="{
-                'bg-green-500 bg-opacity-20': idx === 0,
-                'bg-blue-500 bg-opacity-20': idx === 1,
-                'bg-red-500 bg-opacity-20': idx === 2
-              }"
+            'bg-green-500 bg-opacity-20': idx === 0,
+            'bg-blue-500 bg-opacity-20': idx === 1,
+            'bg-red-500 bg-opacity-20': idx === 2
+          }"
         >
           <div class="flex items-center justify-between">
             <div>
-                  <span class="inline-block px-2 py-0.5 rounded text-xs mr-2 font-medium"
-                        [class.bg-green-600]="idx === 0"
-                        [class.bg-blue-600]="idx === 1"
-                        [class.bg-red-600]="idx === 2">
-                    {{ level.name }}
-                  </span>
+              <span class="inline-block px-2 py-0.5 rounded text-xs mr-2 font-medium"
+                    [class.bg-green-600]="idx === 0"
+                    [class.bg-blue-600]="idx === 1"
+                    [class.bg-red-600]="idx === 2">
+                {{ level.name }}
+              </span>
               <span class="text-sm">{{ level.desc }}</span>
             </div>
 
