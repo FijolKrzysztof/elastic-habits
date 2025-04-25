@@ -61,6 +61,13 @@ export class HabitListComponent {
   }
 
   onToggleLevel(habitId: number, date: Date, levelIndex: number): void {
+    const habit = this.habits.find(h => h.id === habitId);
+    if (!habit) return;
+
+    if (!habit.isWeekly && !this.isDayActive(habit, date.getDay())) {
+      return;
+    }
+
     this.toggleLevel.emit({habitId, date, levelIndex});
   }
 

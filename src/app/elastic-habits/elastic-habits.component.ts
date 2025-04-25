@@ -50,7 +50,6 @@ export class ElasticHabitsComponent implements OnInit {
       days.push(new Date(day));
       day.setDate(day.getDate() + 1);
     }
-    console.log('days123', days)
     this.weekDays = days;
   }
 
@@ -74,7 +73,9 @@ export class ElasticHabitsComponent implements OnInit {
     if (!habit) return;
 
     const jsDay = event.date.getDay();
-    if (!habit.activeDays[jsDay]) return;
+    const adjustedIndex = jsDay === 0 ? 6 : jsDay - 1;
+
+    if (!habit.isWeekly && !habit.activeDays[adjustedIndex]) return;
 
     const dateStr = this.formatDate(event.date);
 
@@ -183,12 +184,6 @@ export class ElasticHabitsComponent implements OnInit {
     if (this.showAddHabitForm) {
       this.showEditForm = false;
       this.editHabitId = null;
-    }
-  }
-
-  toggleSeoSection(): void {
-    if (this.habits.length > 0) {
-      this.showSeoSection = !this.showSeoSection;
     }
   }
 }
