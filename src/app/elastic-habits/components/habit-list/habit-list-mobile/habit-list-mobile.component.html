@@ -1,0 +1,213 @@
+<div class="bg-gray-800 rounded-xl p-3 mb-6">
+  <div class="flex justify-between items-center">
+    <button (click)="previousDay()" class="p-2 rounded-lg bg-gray-700">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    </button>
+
+    <div class="text-center">
+      <div class="text-lg font-medium" [class.text-blue-400]="isToday(weekDays[currentDayIndex])">
+        {{ getDayName(weekDays[currentDayIndex].getDay()) }}
+      </div>
+      <div class="text-sm text-gray-400">{{ displayDate(weekDays[currentDayIndex]) }}</div>
+    </div>
+
+    <button (click)="nextDay()" class="p-2 rounded-lg bg-gray-700">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m9 18 6-6-6-6"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="space-y-3" *ngIf="!selectedHabit">
+  <div
+    *ngFor="let habit of habits; let i = index"
+    class="bg-gray-800 rounded-xl overflow-hidden cursor-pointer"
+    [class.opacity-60]="!isDayActive(habit, weekDays[currentDayIndex].getDay())"
+    (click)="selectHabit(i)"
+  >
+    <div class="p-4">
+      <div class="flex justify-between items-center">
+        <div class="flex-1">
+          <h3 class="font-medium">{{ habit.name }}</h3>
+          <p class="text-xs text-gray-400">{{ habit.isWeekly ? 'Nawyk tygodniowy' : 'Określone dni' }}</p>
+        </div>
+
+        <div class="flex flex-col items-end">
+          <div class="flex space-x-1 mb-1">
+            <div
+              *ngFor="let level of habit.levels; let idx = index"
+              class="w-3 h-3 rounded-full"
+              [class.bg-green-600]="isLevelCompleted(habit, weekDays[currentDayIndex], 0) && idx === 0"
+              [class.bg-blue-600]="isLevelCompleted(habit, weekDays[currentDayIndex], 1) && idx === 1"
+              [class.bg-red-600]="isLevelCompleted(habit, weekDays[currentDayIndex], 2) && idx === 2"
+              [class.bg-gray-600]="!isLevelCompleted(habit, weekDays[currentDayIndex], idx)"
+            ></div>
+          </div>
+          <div class="text-xs text-gray-400">
+            {{ getCompletedLevelCount(habit, weekDays[currentDayIndex]) }}/{{ habit.levels.length }} poziomów
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!isDayActive(habit, weekDays[currentDayIndex].getDay())" class="mt-2 text-xs text-gray-500">
+        Nieaktywny w {{ getDayName(weekDays[currentDayIndex].getDay()) }}
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="habits.length === 0" class="bg-gray-800 rounded-xl p-8 text-center text-gray-400">
+    <div class="text-lg font-medium">Nie masz jeszcze żadnych nawyków. Dodaj swój pierwszy nawyk.</div>
+  </div>
+</div>
+
+<div *ngIf="selectedHabit !== null">
+  <button
+    class="flex items-center text-gray-400 mb-4"
+    (click)="backToList()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+      <path d="m12 19-7-7 7-7"/>
+      <path d="M19 12H5"/>
+    </svg>
+    <span>Powrót do listy</span>
+  </button>
+
+  <div class="bg-gray-800 rounded-xl p-4 mb-4">
+    <div class="flex justify-between items-start">
+      <div>
+        <h2 class="text-xl font-medium">{{ habits[selectedHabit].name }}</h2>
+        <p class="text-sm text-gray-400">
+          {{ habits[selectedHabit].isWeekly ? 'Nawyk tygodniowy' : 'Określone dni' }}
+        </p>
+      </div>
+
+      <div class="flex gap-2">
+        <button
+          (click)="editHabit.emit(habits[selectedHabit].id); backToList();"
+          class="p-2 rounded-lg bg-blue-500 bg-opacity-20 text-blue-400"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+            <path d="m15 5 4 4"/>
+          </svg>
+        </button>
+        <button
+          (click)="onDelete(habits[selectedHabit].id); backToList();"
+          class="p-2 rounded-lg bg-red-500 bg-opacity-20 text-red-400"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"/>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+            <line x1="10" x2="10" y1="11" y2="17"/>
+            <line x1="14" x2="14" y1="11" y2="17"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-gray-800 rounded-xl p-4 mb-4">
+    <div class="text-sm text-gray-400 mb-3">Przegląd tygodnia:</div>
+    <div class="grid grid-cols-7 gap-1">
+      <div
+        *ngFor="let day of weekDays; let idx = index"
+        class="rounded p-2 text-center cursor-pointer"
+        [class.bg-gray-700]="idx === currentDayIndex"
+        [class.border]="idx === currentDayIndex"
+        [class.border-gray-600]="idx === currentDayIndex"
+        [class.ring-1]="isToday(day)"
+        [class.ring-blue-500]="isToday(day)"
+        [class.opacity-40]="!isDayActive(habits[selectedHabit], day.getDay())"
+        (click)="currentDayIndex = idx"
+      >
+        <div class="text-xs font-medium">{{ getDayShortName(day.getDay()) }}</div>
+        <div class="text-xs text-gray-500">{{ getDateDay(day) }}</div>
+
+        <div *ngIf="isDayActive(habits[selectedHabit], day.getDay())" class="mt-1 flex justify-center space-x-1">
+          <div
+            *ngFor="let level of habits[selectedHabit].levels; let levelIdx = index"
+            class="w-2 h-2 rounded-full"
+            [class.bg-green-600]="isLevelCompleted(habits[selectedHabit], day, 0) && levelIdx === 0"
+            [class.bg-blue-600]="isLevelCompleted(habits[selectedHabit], day, 1) && levelIdx === 1"
+            [class.bg-red-600]="isLevelCompleted(habits[selectedHabit], day, 2) && levelIdx === 2"
+            [class.bg-gray-600]="!isLevelCompleted(habits[selectedHabit], day, levelIdx)"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-gray-800 rounded-xl overflow-hidden mb-4">
+    <div class="bg-gray-700 p-3 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-gray-400">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span class="text-sm font-medium">
+            {{ getDayName(weekDays[currentDayIndex].getDay()) }}, {{ displayDate(weekDays[currentDayIndex]) }}
+          </span>
+    </div>
+
+    <div *ngIf="!isDayActive(habits[selectedHabit], weekDays[currentDayIndex].getDay())" class="p-6 text-center text-gray-500">
+      Ten nawyk nie jest zaplanowany na {{ getDayName(weekDays[currentDayIndex].getDay()) }}
+    </div>
+
+    <div *ngIf="isDayActive(habits[selectedHabit], weekDays[currentDayIndex].getDay())" class="p-4 space-y-4">
+      <div
+        *ngFor="let level of habits[selectedHabit].levels; let idx = index"
+        class="p-3 rounded-lg border border-gray-700"
+        [ngClass]="{
+              'bg-green-500 bg-opacity-20': idx === 0,
+              'bg-blue-500 bg-opacity-20': idx === 1,
+              'bg-red-500 bg-opacity-20': idx === 2
+            }"
+      >
+        <div class="flex items-center justify-between">
+          <div>
+                <span class="inline-block px-2 py-0.5 rounded text-xs mr-2 font-medium"
+                      [class.bg-green-600]="idx === 0"
+                      [class.bg-blue-600]="idx === 1"
+                      [class.bg-red-600]="idx === 2">
+                  {{ level.name }}
+                </span>
+            <span class="text-sm">{{ level.desc }}</span>
+          </div>
+
+          <button
+            (click)="onToggleLevel(habits[selectedHabit].id, weekDays[currentDayIndex], idx)"
+            class="w-8 h-8 rounded-full flex items-center justify-center"
+            [class.bg-green-600]="isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx) && idx === 0"
+            [class.bg-blue-600]="isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx) && idx === 1"
+            [class.bg-red-600]="isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx) && idx === 2"
+            [class.text-white]="isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx)"
+            [class.bg-gray-700]="!isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx)"
+            [class.text-gray-400]="!isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx)"
+          >
+            <span *ngIf="isLevelCompleted(habits[selectedHabit], weekDays[currentDayIndex], idx)">✓</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-gray-800 rounded-xl p-4">
+    <h3 class="font-medium mb-2">Aktywne dni</h3>
+    <div class="flex justify-between">
+      <div *ngFor="let day of ['Pon', 'Wto', 'Śro', 'Czw', 'Pią', 'Sob', 'Nie']; let idx = index" class="text-center w-8">
+        <div class="text-xs text-gray-400 mb-1">{{ day }}</div>
+        <div class="w-6 h-6 mx-auto rounded-full flex items-center justify-center"
+             [class.bg-blue-500]="getDayActive(habits[selectedHabit], idx)"
+             [class.bg-opacity-30]="getDayActive(habits[selectedHabit], idx)"
+             [class.text-blue-400]="getDayActive(habits[selectedHabit], idx)"
+             [class.bg-gray-700]="!getDayActive(habits[selectedHabit], idx)"
+             [class.text-gray-500]="!getDayActive(habits[selectedHabit], idx)">
+          <span *ngIf="getDayActive(habits[selectedHabit], idx)">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

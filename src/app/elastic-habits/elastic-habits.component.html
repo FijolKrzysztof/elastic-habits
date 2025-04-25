@@ -51,12 +51,22 @@
     </div>
 
     <app-habit-list
+      *ngIf="!isMobile"
       [habits]="habits"
       [weekDays]="weekDays"
       (editHabit)="onEditHabit($event)"
       (deleteHabit)="onDeleteHabit($event)"
       (toggleLevel)="onToggleLevel($event)"
     ></app-habit-list>
+
+    <app-habit-list-mobile
+      *ngIf="isMobile"
+      [habits]="habits"
+      [weekDays]="weekDays"
+      (editHabit)="onEditHabit($event)"
+      (deleteHabit)="onDeleteHabit($event)"
+      (toggleLevel)="onToggleLevel($event)"
+    ></app-habit-list-mobile>
 
     <button
       *ngIf="!showForm()"

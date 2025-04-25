@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, HostListener} from '@angular/core';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HabitService} from './services/habit.service';
@@ -6,6 +6,7 @@ import {Habit} from './models/habit.model';
 import {HabitFormComponent} from './components/habit-form/habit-form.component';
 import {HabitListComponent} from './components/habit-list/habit-list.component';
 import {InfoSectionComponent} from './components/info-section/info-section.component';
+import {HabitListMobileComponent} from './components/habit-list/habit-list-mobile/habit-list-mobile.component';
 
 @Component({
   selector: 'app-elastic-habits',
@@ -15,9 +16,10 @@ import {InfoSectionComponent} from './components/info-section/info-section.compo
     FormsModule,
     HabitFormComponent,
     HabitListComponent,
+    HabitListMobileComponent,
     InfoSectionComponent
   ],
-  templateUrl: './elastic-habits.component.html',
+  templateUrl: `./elastic-habits.component.html`,
   styleUrls: ['./elastic-habits.component.scss']
 })
 export class ElasticHabitsComponent implements OnInit {
@@ -29,8 +31,20 @@ export class ElasticHabitsComponent implements OnInit {
   showSeoSection = true;
   editHabitId: number | null = null;
   showEditForm = false;
+  isMobile = false;
 
-  constructor(private habitService: HabitService) {}
+  constructor(private habitService: HabitService) {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 768;
+  }
 
   ngOnInit(): void {
     this.habitService.getHabits().subscribe(habits => {
