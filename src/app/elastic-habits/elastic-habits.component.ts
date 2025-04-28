@@ -1,4 +1,4 @@
-import {Component, OnInit, HostListener} from '@angular/core';
+import {Component, OnInit, HostListener, inject} from '@angular/core';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HabitService} from './services/habit.service';
@@ -7,6 +7,7 @@ import {HabitFormComponent} from './components/habit-form/habit-form.component';
 import {HabitListComponent} from './components/habit-list/habit-list.component';
 import {InfoSectionComponent} from './components/info-section/info-section.component';
 import {HabitListMobileComponent} from './components/habit-list/habit-list-mobile/habit-list-mobile.component';
+import {AnalyticsService} from '../services/analytics.service';
 
 @Component({
   selector: 'app-elastic-habits',
@@ -33,7 +34,10 @@ export class ElasticHabitsComponent implements OnInit {
   showEditForm = false;
   isMobile = false;
 
-  constructor(private habitService: HabitService) {
+  private readonly habitService = inject(HabitService);
+  private readonly analytics = inject(AnalyticsService);
+
+  constructor() {
     this.checkScreenSize();
   }
 
@@ -113,6 +117,11 @@ export class ElasticHabitsComponent implements OnInit {
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', exportFileDefaultName);
     linkElement.click();
+
+    this.analytics.event('data_exported', {
+      category: 'Data',
+      habits_count: this.habits.length
+    });
   }
 
   importData(event: any): void {
@@ -144,9 +153,20 @@ export class ElasticHabitsComponent implements OnInit {
 
         this.habitService.importHabits(importedData);
         event.target.value = null;
+
+        this.analytics.event('data_imported', {
+          category: 'Data',
+          habits_count: importedData.length,
+          success: true
+        });
       } catch (error) {
         this.importError = 'An error occurred while importing data. Make sure the selected file is a valid JSON file.';
         console.error('Import error:', error);
+
+        this.analytics.event('data_import_error', {
+          category: 'Data',
+          error_message: this.importError
+        });
       }
     };
 
@@ -158,6 +178,12 @@ export class ElasticHabitsComponent implements OnInit {
     newDate.setDate(newDate.getDate() + (direction * 7));
     this.currentDate = newDate;
     this.updateWeekDays();
+
+    this.analytics.event('week_changed', {
+      category: 'Navigation',
+      direction: direction > 0 ? 'forward' : 'backward',
+      new_date: this.formatDate(this.currentDate)
+    });
   }
 
   formatDate(date: Date): string {
@@ -199,5 +225,11 @@ export class ElasticHabitsComponent implements OnInit {
       this.showEditForm = false;
       this.editHabitId = null;
     }
+
+    this.analytics.event('add_habit_form_opened', {
+      category: 'UI',
+      current_habits_count: this.habits.length,
+      device_type: this.isMobile ? 'mobile' : 'desktop'
+    });
   }
 }

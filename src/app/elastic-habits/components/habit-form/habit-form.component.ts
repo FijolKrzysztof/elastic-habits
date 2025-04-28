@@ -1,7 +1,8 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, inject} from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Habit } from '../../models/habit.model';
+import {AnalyticsService} from '../../../services/analytics.service';
 
 @Component({
   selector: 'app-habit-form',
@@ -14,6 +15,8 @@ export class HabitFormComponent implements OnInit {
   @Input() habitToEdit: Habit | null = null;
   @Output() submitHabit = new EventEmitter<Habit>();
   @Output() cancel = new EventEmitter<void>();
+
+  private readonly analytics = inject(AnalyticsService);
 
   newHabitName = '';
   newMiniDesc = '';
@@ -74,6 +77,14 @@ export class HabitFormComponent implements OnInit {
 
     this.submitHabit.emit(habit);
     this.clearForm();
+
+    this.analytics.event('form_submitted', {
+      category: 'Form',
+      is_edit_mode: this.editMode,
+      habit_name: this.newHabitName,
+      is_weekly: this.isWeeklyHabit,
+      selected_days_count: this.selectedDays.filter(day => day).length
+    });
   }
 
   toggleHabitType(): void {
@@ -81,15 +92,26 @@ export class HabitFormComponent implements OnInit {
     if (this.isWeeklyHabit) {
       this.selectedDays = [true, true, true, true, true, true, true];
     }
+
+    this.analytics.event('habit_type_changed', {
+      category: 'Form',
+      new_type: this.isWeeklyHabit ? 'weekly' : 'daily'
+    });
   }
 
   toggleDaySelection(dayIndex: number): void {
     if (!this.isWeeklyHabit) {
       this.selectedDays[dayIndex] = !this.selectedDays[dayIndex];
+
+      this.analytics.event('day_selection_changed', {
+        category: 'Form',
+        day_index: dayIndex,
+        is_selected: this.selectedDays[dayIndex]
+      });
     }
   }
 
-  clearForm(): void {
+  private clearForm(): void {
     this.newHabitName = '';
     this.newMiniDesc = '';
     this.newPlusDesc = '';
@@ -99,6 +121,19 @@ export class HabitFormComponent implements OnInit {
   }
 
   onCancel(): void {
+    this.analytics.event('habit_form_cancelled', {
+      category: 'Form',
+      is_edit_mode: this.editMode,
+      had_name: this.newHabitName.trim() !== '',
+      had_descriptions: {
+        mini: this.newMiniDesc.trim() !== '',
+        plus: this.newPlusDesc.trim() !== '',
+        elite: this.newEliteDesc.trim() !== ''
+      },
+      selected_days_count: this.selectedDays.filter(day => day).length,
+      is_weekly_selected: this.isWeeklyHabit
+    });
+
     this.cancel.emit();
     this.clearForm();
   }

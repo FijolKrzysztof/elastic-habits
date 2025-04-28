@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import {AnalyticsService} from '../../../services/analytics.service';
 
 @Component({
   selector: 'app-info-section',
@@ -29,9 +30,23 @@ export class InfoSectionComponent {
   @Input() showSection = true;
   @Input() canToggle = true;
 
+  private readonly analytics = inject(AnalyticsService);
+
   toggleSection(): void {
     if (this.canToggle) {
       this.showSection = !this.showSection;
+      this.analytics.event('info_section_toggled', {
+        category: 'UI',
+        new_state: this.showSection ? 'expanded' : 'collapsed',
+        can_toggle: this.canToggle,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      this.analytics.event('info_section_toggle_blocked', {
+        category: 'UI',
+        current_state: this.showSection ? 'expanded' : 'collapsed',
+        reason: 'toggle_disabled'
+      });
     }
   }
 }
