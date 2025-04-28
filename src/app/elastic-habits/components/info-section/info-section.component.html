@@ -4,40 +4,57 @@
     class="w-full p-3 text-left bg-gray-800 rounded flex justify-between items-center mb-1 hover:bg-gray-750"
     [class.cursor-pointer]="canToggle"
   >
-    <h2 class="text-xl font-medium">What are Elastic Habits?</h2>
+    <h2 class="text-xl font-medium">How to Use ElasticHabits</h2>
     <span *ngIf="canToggle">{{ showSection ? '▲' : '▼' }}</span>
   </button>
 
   <div *ngIf="showSection" class="p-5 bg-gray-800 rounded transition-all duration-300 ease-in-out" [@expandCollapse]="showSection ? 'expanded' : 'collapsed'">
-    <p class="mb-3">Elastic Habits is a powerful habit tracking system designed for flexibility and consistency. Unlike traditional habit trackers that only offer binary completion options, Elastic Habits provides three difficulty levels for each habit:</p>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
-      <div class="p-3 bg-gray-700 rounded">
-        <div class="mb-2 px-2 py-1 rounded bg-green-600 text-white text-xs inline-block">Mini</div>
-        <p class="text-sm">The easiest version of your habit, perfect for busy days or when your energy is low. It's designed to maintain consistency even in challenging circumstances.</p>
-      </div>
-
-      <div class="p-3 bg-gray-700 rounded">
-        <div class="mb-2 px-2 py-1 rounded bg-blue-600 text-white text-xs inline-block">Plus</div>
-        <p class="text-sm">The standard version of your habit for normal days. This represents your default target when conditions are favorable.</p>
-      </div>
-
-      <div class="p-3 bg-gray-700 rounded">
-        <div class="mb-2 px-2 py-1 rounded bg-red-600 text-white text-xs inline-block">Elite</div>
-        <p class="text-sm">The challenging version for when you want to push yourself. This is your stretch goal that promotes growth and excellence.</p>
-      </div>
+    <div class="mb-4">
+      <h3 class="text-lg font-medium mb-2">Getting Started in 3 Simple Steps</h3>
+      <ol class="list-decimal pl-5 mb-4 space-y-3">
+        <li>
+          <strong>Create Your Habit</strong>
+          <p class="text-sm mt-1">Click the "+" button to add a new habit. Give it a clear name that describes the action you want to perform regularly.</p>
+        </li>
+        <li>
+          <strong>Set Your Three Levels</strong>
+          <p class="text-sm mt-1">For each habit, define your Mini, Plus, and Elite versions - from easy to challenging. For example, for "Exercise":</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 my-3">
+            <div class="p-3 bg-gray-700 rounded">
+              <div class="mb-2 px-2 py-1 rounded bg-green-600 text-white text-xs inline-block">Mini</div>
+              <p class="text-sm">5 minutes of any movement</p>
+            </div>
+            <div class="p-3 bg-gray-700 rounded">
+              <div class="mb-2 px-2 py-1 rounded bg-blue-600 text-white text-xs inline-block">Plus</div>
+              <p class="text-sm">20-minute workout session</p>
+            </div>
+            <div class="p-3 bg-gray-700 rounded">
+              <div class="mb-2 px-2 py-1 rounded bg-red-600 text-white text-xs inline-block">Elite</div>
+              <p class="text-sm">45-minute intense workout</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <strong>Track Daily Progress</strong>
+          <p class="text-sm mt-1">Each day, click on the level you completed. You can choose any of the three options based on your energy, time, and motivation that day.</p>
+        </li>
+      </ol>
     </div>
 
-    <h3 class="text-lg font-medium mb-2">Benefits of Elastic Habits</h3>
+    <div class="mb-4">
+      <h3 class="text-lg font-medium mb-2">Daily Usage Tips</h3>
+      <ul class="list-disc pl-5 mb-4 space-y-2 text-sm">
+        <li><strong>Low energy day?</strong> Just hit your Mini level to maintain your streak.</li>
+        <li><strong>Feeling motivated?</strong> Go for Elite and challenge yourself.</li>
+        <li><strong>Track patterns</strong> in the weekly and monthly views to understand your consistency.</li>
+        <li><strong>Schedule specific days</strong> for certain habits using the calendar feature.</li>
+        <li><strong>Check your stats</strong> to see your progress and improvement over time.</li>
+      </ul>
+    </div>
 
-    <ul class="list-disc pl-5 mb-4 space-y-1 text-sm">
-      <li>Greater flexibility adapts to your energy levels and schedule</li>
-      <li>Increased consistency by removing the all-or-nothing approach</li>
-      <li>Progressive improvement through optional challenge levels</li>
-      <li>Customizable to your specific needs with day-specific scheduling</li>
-      <li>Better resilience against habit breaking due to multiple completion options</li>
-    </ul>
-
-    <p class="text-sm text-gray-400">This approach was developed by Stephen Guise, author of "Elastic Habits," as an evolution of his "Mini Habits" system. It combines consistency with adaptability to create sustainable behavior change.</p>
+    <div class="p-3 bg-gray-700 rounded mb-4">
+      <h3 class="text-md font-medium mb-2">Why ElasticHabits Works</h3>
+      <p class="text-sm">ElasticHabits succeeds where traditional habit trackers fail because it adapts to real life. By offering three difficulty levels, you can maintain consistency even during busy or difficult days, while still challenging yourself when conditions are favorable.</p>
+    </div>
   </div>
 </div>
