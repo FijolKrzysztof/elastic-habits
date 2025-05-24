@@ -346,17 +346,6 @@
   }
 }
 
-/* Znaczek wyboru z ręcznym stylem */
-.selection-badge {
-  position: relative;
-  transform: rotate(-3deg);
-
-  svg {
-    color: #059669;
-    filter: drop-shadow(0.5px 0.5px 1px rgba(0, 0, 0, 0.2));
-  }
-}
-
 /* Różne kolory i rotacje dla każdego poziomu */
 .level-card:nth-child(1) {
   --note-bg: linear-gradient(147deg, #dcfce7 0%, #bbf7d0 65%, #a7f3d0 100%);

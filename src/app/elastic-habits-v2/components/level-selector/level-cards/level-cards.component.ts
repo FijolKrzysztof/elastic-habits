@@ -24,13 +24,6 @@ import { LevelEntry, LevelKey } from '../../../models/habit.model';
               <div class="level-dot" [style.background-color]="level.data.color"></div>
             </div>
             <h3 class="level-title">{{ level.data.name }}</h3>
-            @if (selectedLevel() === level.key) {
-              <div class="selection-badge">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                </svg>
-              </div>
-            }
           </div>
 
           <div class="progress-section">
