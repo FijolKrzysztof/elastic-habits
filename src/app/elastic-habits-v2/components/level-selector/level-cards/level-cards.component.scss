@@ -213,15 +213,10 @@
   letter-spacing: 0.2px;
 }
 
-/* Obszar opisu jak notatka - tylko dla wybranej kartki */
+/* Obszar opisu jak notatka */
 .description-area {
   margin-top: 10px; // Zmniejszono z 12px
   position: relative;
-
-  /* Ukryj dla niewybranych kartek */
-  .level-card:not(.selected) & {
-    display: none;
-  }
 }
 
 .description-display {
@@ -234,7 +229,13 @@
   border-radius: 3px;
   transition: background-color 0.2s ease;
 
-  &:hover {
+  /* Zmień cursor dla niewybranych kartek */
+  .level-card:not(.selected) & {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .level-card.selected &:hover {
     background-color: rgba(0, 0, 0, 0.02);
   }
 }
@@ -261,7 +262,12 @@
   opacity: 0.6;
   transition: opacity 0.2s ease;
 
-  .description-display:hover & {
+  /* Ukryj ikonę edycji dla niewybranych kartek */
+  .level-card:not(.selected) & {
+    opacity: 0.3;
+  }
+
+  .level-card.selected .description-display:hover & {
     opacity: 1;
   }
 }

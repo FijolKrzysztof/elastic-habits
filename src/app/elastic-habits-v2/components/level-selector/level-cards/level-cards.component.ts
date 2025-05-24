@@ -50,35 +50,33 @@ import { LevelEntry, LevelKey } from '../../../models/habit.model';
             </div>
           </div>
 
-          <!-- Obszar opisu - tylko dla wybranej kartki -->
-          @if (selectedLevel() === level.key) {
-            <div class="description-area">
-              @if (editingDescription() === habitService.currentHabitId() + '-' + level.key) {
-                <div class="description-edit" (click)="$event.stopPropagation()">
-                  <input
-                    type="text"
-                    [value]="habitService.getHabitDescription(level.key)"
-                    (input)="updateDescription(level.key, $event)"
-                    (blur)="editingDescription.set(null)"
-                    (keyup.enter)="editingDescription.set(null)"
-                    (keyup.escape)="editingDescription.set(null)"
-                    class="description-input"
-                    placeholder="np. 20 pompek, 10 min biegania"
-                    #descInput
-                  />
-                </div>
-              } @else {
-                <div class="description-display" (click)="startEditing(level.key); $event.stopPropagation()">
-                  <svg class="edit-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                  </svg>
-                  <span class="description-text">
-                    {{ habitService.getHabitDescription(level.key) || 'Kliknij aby opisać...' }}
-                  </span>
-                </div>
-              }
-            </div>
-          }
+          <!-- Obszar opisu - zawsze widoczny -->
+          <div class="description-area">
+            @if (editingDescription() === habitService.currentHabitId() + '-' + level.key) {
+              <div class="description-edit" (click)="$event.stopPropagation()">
+                <input
+                  type="text"
+                  [value]="habitService.getHabitDescription(level.key)"
+                  (input)="updateDescription(level.key, $event)"
+                  (blur)="editingDescription.set(null)"
+                  (keyup.enter)="editingDescription.set(null)"
+                  (keyup.escape)="editingDescription.set(null)"
+                  class="description-input"
+                  placeholder="np. 20 pompek, 10 min biegania"
+                  #descInput
+                />
+              </div>
+            } @else {
+              <div class="description-display" (click)="startEditing(level.key); $event.stopPropagation()">
+                <svg class="edit-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                <span class="description-text">
+                  {{ habitService.getHabitDescription(level.key) || 'Kliknij aby opisać...' }}
+                </span>
+              </div>
+            }
+          </div>
         </div>
       }
     </div>
