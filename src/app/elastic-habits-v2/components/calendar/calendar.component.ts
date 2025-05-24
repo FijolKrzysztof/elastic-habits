@@ -10,10 +10,7 @@ import { CalendarDayComponent } from './calendar-day.component';
   standalone: true,
   imports: [CommonModule, LevelSelectorComponent, CalendarDayComponent],
   template: `
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-xl font-semibold" [style.color]="habitService.currentHabit()?.color">
-        {{ habitService.currentHabit()?.name }}
-      </h2>
+    <div class="flex items-center justify-end mb-6">
       <div class="flex gap-2">
         <button
           (click)="dateService.navigateMonth(-1)"

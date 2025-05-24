@@ -10,6 +10,12 @@ import {LevelEntry, LevelKey} from '../models/habit.model';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="w-64 space-y-4">
+      @if (habitService.currentHabit()) {
+        <h2 class="text-xl font-semibold mb-4" [style.color]="habitService.currentHabit()?.color">
+          {{ habitService.currentHabit()?.name }}
+        </h2>
+      }
+
       <h3 class="font-semibold text-gray-700 mb-4">Poziomy wykonania:</h3>
       @for (level of levels; track level.key) {
         <div class="space-y-2">
