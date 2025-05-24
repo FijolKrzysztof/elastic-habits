@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../services/habit.service';
 import { DateService } from '../../services/date.service';
-import { LevelSelectorComponent } from '../level-selector.component';
+import { LevelSelectorComponent } from '../level-selector/level-selector.component';
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 
 @Component({
