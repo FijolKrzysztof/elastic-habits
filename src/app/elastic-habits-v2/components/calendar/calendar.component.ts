@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HabitService } from '../services/habit.service';
-import { DateService } from '../services/date.service';
-import {LevelSelectorComponent} from './level-selector.component';
+import { HabitService } from '../../services/habit.service';
+import { DateService } from '../../services/date.service';
+import { LevelSelectorComponent } from '../level-selector.component';
+import { CalendarDayComponent } from './calendar-day.component';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, LevelSelectorComponent, LevelSelectorComponent],
+  imports: [CommonModule, LevelSelectorComponent, CalendarDayComponent],
   template: `
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-semibold" [style.color]="habitService.currentHabit()?.color">
@@ -52,25 +53,11 @@ import {LevelSelectorComponent} from './level-selector.component';
           @for (date of dateService.getCalendarDays(); track $index) {
             <div class="aspect-square">
               @if (date) {
-                <button
-                  (click)="toggleDay(date)"
-                  class="w-full h-full rounded-lg font-medium transition-all border-2 border-gray-300 hover:border-gray-400 flex flex-col bg-white hover:bg-gray-50 text-gray-700 shadow-sm"
-                  [class.border-blue-500]="dateService.isToday(date)"
-                  [class.border-4]="dateService.isToday(date)"
-                >
-                  <div class="flex-none pt-1">
-                    <span class="text-sm">{{ date.getDate() }}</span>
-                  </div>
-                  <div class="flex-1 flex items-center justify-center">
-                    @if (habitService.getDayStatus(date)) {
-                      <svg class="w-13 h-13" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                           [style.color]="habitService.levels[habitService.getDayStatus(date)!].color"
-                           style="stroke-width: 3; width: 52px; height: 52px;">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    }
-                  </div>
-                </button>
+                <app-calendar-day
+                  [date]="date"
+                  [isAnimating]="isAnimating(date)"
+                  (dayClicked)="onDayClicked($event)"
+                ></app-calendar-day>
               }
             </div>
           }
@@ -81,14 +68,32 @@ import {LevelSelectorComponent} from './level-selector.component';
 })
 export class CalendarComponent {
   @ViewChild('levelSelector') levelSelector!: LevelSelectorComponent;
+  private animatingDates = new Set<string>();
 
   constructor(
     public habitService: HabitService,
     public dateService: DateService
   ) {}
 
-  toggleDay(date: Date): void {
+  onDayClicked(date: Date): void {
     const selectedLevel = this.levelSelector.getSelectedLevel();
+    const dateKey = date.toDateString();
+
+    // Dodaj animację tylko jeśli dodajemy nowy status (nie usuwamy)
+    const currentStatus = this.habitService.getDayStatus(date);
+    if (!currentStatus && selectedLevel) {
+      this.animatingDates.add(dateKey);
+
+      // Usuń animację po zakończeniu
+      setTimeout(() => {
+        this.animatingDates.delete(dateKey);
+      }, 800);
+    }
+
     this.habitService.toggleDayStatus(date, selectedLevel);
+  }
+
+  isAnimating(date: Date): boolean {
+    return this.animatingDates.has(date.toDateString());
   }
 }

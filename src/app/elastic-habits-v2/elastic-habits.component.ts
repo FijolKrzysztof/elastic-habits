@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HabitListComponent} from './components/habit-list.component';
-import {CalendarComponent} from './components/calendar.component';
+import {CalendarComponent} from './components/calendar/calendar.component';
 
 @Component({
   selector: 'app-elastic-habits',
