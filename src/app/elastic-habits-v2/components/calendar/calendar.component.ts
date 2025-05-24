@@ -63,6 +63,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
         background: white;
         border-radius: 0 0 16px 16px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+        overflow: hidden; /* Kluczowe - wymusza respektowanie border-radius przez dzieci */
       }
 
       .weekdays-grid {
@@ -93,6 +94,8 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
         height: 96px;
         border-right: 1px solid #f3f4f6;
         border-bottom: 1px solid #f3f4f6;
+        overflow: hidden; /* Wymusza zaokrąglenie dla przycisków wewnątrz */
+        position: relative;
       }
 
       .day-slot:nth-child(7n) {
@@ -101,6 +104,29 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 
       .day-slot:nth-child(6n), .day-slot:nth-child(7n) {
         background: #fef2f2;
+      }
+
+      /* Usunięcie dolnej ramki z ostatniego rzędu */
+      .day-slot:nth-last-child(-n+7) {
+        border-bottom: none;
+      }
+
+      /* Zaokrąglenie TYLKO dla lewego dolnego rogu - element musi być zarówno w ostatnim rzędzie JAK I w pierwszej kolumnie */
+      .day-slot:nth-last-child(-n+7):nth-child(7n+1) {
+        border-bottom-left-radius: 16px;
+      }
+
+      .day-slot:nth-last-child(-n+7):nth-child(7n+1) ::ng-deep .calendar-day-btn {
+        border-bottom-left-radius: 16px;
+      }
+
+      /* Zaokrąglenie TYLKO dla prawego dolnego rogu - ostatni element w gridzie */
+      .day-slot:last-child {
+        border-bottom-right-radius: 16px;
+      }
+
+      .day-slot:last-child ::ng-deep .calendar-day-btn {
+        border-bottom-right-radius: 16px;
       }
     </style>
 
