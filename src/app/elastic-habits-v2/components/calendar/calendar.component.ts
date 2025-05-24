@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../services/habit.service';
 import { DateService } from '../../services/date.service';
@@ -55,8 +55,6 @@ import { CalendarDayComponent } from './calendar-day.component';
               @if (date) {
                 <app-calendar-day
                   [date]="date"
-                  [isAnimating]="isAnimating(date)"
-                  [animationLevel]="getAnimationLevel(date)"
                   (dayClicked)="onDayClicked($event)"
                 ></app-calendar-day>
               }
@@ -69,49 +67,27 @@ import { CalendarDayComponent } from './calendar-day.component';
 })
 export class CalendarComponent {
   @ViewChild('levelSelector') levelSelector!: LevelSelectorComponent;
-  private animatingDates = new Set<string>();
-  private animationLevels = new Map<string, string>();
+  @ViewChildren(CalendarDayComponent) calendarDays!: QueryList<CalendarDayComponent>;
 
   constructor(
     public habitService: HabitService,
     public dateService: DateService
   ) {}
 
-  onDayClicked(date: Date): void {
+  onDayClicked(event: { date: Date; selectedLevel: string }): void {
     const selectedLevel = this.levelSelector.getSelectedLevel();
-    const dateKey = date.toDateString();
+    const { date } = event;
 
-    // Dodaj animację tylko jeśli dodajemy nowy status (nie usuwamy)
-    const currentStatus = this.habitService.getDayStatus(date);
-    if (!currentStatus && selectedLevel) {
-      this.animatingDates.add(dateKey);
-      this.animationLevels.set(dateKey, selectedLevel);
+    // Znajdź odpowiedni CalendarDayComponent i uruchom animację
+    const dayComponent = this.calendarDays.find(
+      component => component.date.toDateString() === date.toDateString()
+    );
 
-      // Usuń animację po zakończeniu (różny czas dla różnych poziomów)
-      const duration = this.getAnimationDuration(selectedLevel);
-      setTimeout(() => {
-        this.animatingDates.delete(dateKey);
-        this.animationLevels.delete(dateKey);
-      }, duration);
+    if (dayComponent && selectedLevel) {
+      dayComponent.triggerAnimation(selectedLevel);
     }
 
+    // Aktualizuj status w serwisie
     this.habitService.toggleDayStatus(date, selectedLevel);
-  }
-
-  isAnimating(date: Date): boolean {
-    return this.animatingDates.has(date.toDateString());
-  }
-
-  getAnimationLevel(date: Date): string | null {
-    return this.animationLevels.get(date.toDateString()) || null;
-  }
-
-  private getAnimationDuration(level: string): number {
-    switch (level) {
-      case 'easy': return 600;      // 0.6s
-      case 'standard': return 800;  // 0.8s
-      case 'plus': return 1200;     // 1.2s
-      default: return 800;
-    }
   }
 }
