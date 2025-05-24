@@ -4,15 +4,15 @@
 .levels-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px; // Zmniejszono z 16px
 }
 
-/* Level Cards - Bardziej realistyczne karteczki */
+/* Level Cards - Bardziej kompaktowe karteczki */
 .level-card {
   background: var(--note-bg, linear-gradient(145deg, #dcfce7 0%, #bbf7d0 100%));
   border: 1px solid var(--note-border, #86efac);
   border-radius: 5px 4px 6px 4px;
-  padding: 18px;
+  padding: 14px; // Zmniejszono z 18px
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -21,8 +21,8 @@
 
   /* Bardziej dramatyczny cień karteczki */
   box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.15),
-    0 2px 6px rgba(0, 0, 0, 0.1),
+    0 4px 15px rgba(0, 0, 0, 0.12), // Zmniejszono z 6px 20px
+    0 2px 5px rgba(0, 0, 0, 0.08), // Zmniejszono z 2px 6px
     0 1px 2px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.5),
     inset 0 -1px 0 rgba(0, 0, 0, 0.03);
@@ -54,8 +54,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 18px;
-    height: 18px;
+    width: 16px; // Zmniejszono z 18px
+    height: 16px; // Zmniejszono z 18px
     background:
       linear-gradient(315deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.04) 50%, transparent 70%);
     border-top-right-radius: 5px;
@@ -68,13 +68,13 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px; // Zmniejszono z 12px
   position: relative;
 }
 
 .level-title {
   font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive;
-  font-size: 1rem;
+  font-size: 0.95rem; // Zmniejszono z 1rem
   font-weight: 600;
   color: #2d3748;
   margin: 0;
@@ -91,15 +91,15 @@
 }
 
 .level-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px; // Zmniejszono z 8px
+  height: 7px; // Zmniejszono z 8px
   border-radius: 50%;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Realistyczny progress bar - jak narysowany */
 .progress-section {
-  margin: 16px 0;
+  margin: 12px 0; // Zmniejszono z 16px 0
   position: relative;
 }
 
@@ -107,13 +107,13 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 8px;
+  margin-bottom: 6px; // Zmniejszono z 8px
   position: relative;
 }
 
 .progress-text {
   font-family: 'Caveat', 'Kalam', cursive;
-  font-size: 0.9rem;
+  font-size: 0.85rem; // Zmniejszono z 0.9rem
   color: #4a5568;
   transform: rotate(-0.2deg);
   font-weight: 500;
@@ -122,7 +122,7 @@
 
 .progress-value {
   font-family: 'Patrick Hand', 'Kalam', cursive;
-  font-size: 1rem;
+  font-size: 0.9rem; // Zmniejszono z 1rem
   font-weight: 700;
   color: #2d3748;
   transform: rotate(0.3deg);
@@ -131,7 +131,7 @@
 
 /* Progress bar jak narysowany ręcznie */
 .progress-bar {
-  height: 12px;
+  height: 10px; // Zmniejszono z 12px
   background:
     /* Nieregularne tło jak narysowane ołówkiem */
     linear-gradient(90deg,
@@ -140,7 +140,7 @@
       rgba(0, 0, 0, 0.08) 50%,
       rgba(0, 0, 0, 0.05) 75%,
       rgba(0, 0, 0, 0.1) 100%);
-  border-radius: 8px 6px 7px 8px;
+  border-radius: 6px 5px 6px 7px; // Zmniejszono
   position: relative;
   transform: rotate(-0.2deg);
   box-shadow:
@@ -164,10 +164,11 @@
 
 .progress-fill {
   height: 100%;
-  border-radius: 7px 5px 6px 7px;
+  border-radius: 6px 4px 5px 6px; // Zmniejszono
   position: relative;
   transition: width 0.8s ease-out;
   transform: rotate(0.1deg);
+  width: 0%; // Zaczyna od 0%
 
   /* Efekt ręcznego kolorowania */
   background: linear-gradient(90deg,
@@ -199,32 +200,37 @@
 }
 
 .progress-details {
-  margin-top: 6px;
+  margin-top: 5px; // Zmniejszono z 6px
   text-align: right;
 }
 
 .days-count {
   font-family: 'Caveat', 'Patrick Hand', cursive;
-  font-size: 0.85rem;
+  font-size: 0.8rem; // Zmniejszono z 0.85rem
   color: #6b7280;
   transform: rotate(0.4deg);
   font-weight: 500;
   letter-spacing: 0.2px;
 }
 
-/* Obszar opisu jak notatka */
+/* Obszar opisu jak notatka - tylko dla wybranej kartki */
 .description-area {
-  margin-top: 12px;
+  margin-top: 10px; // Zmniejszono z 12px
   position: relative;
+
+  /* Ukryj dla niewybranych kartek */
+  .level-card:not(.selected) & {
+    display: none;
+  }
 }
 
 .description-display {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 4px;
+  padding: 6px 4px; // Zmniejszono z 8px 4px
   cursor: text;
-  min-height: 28px;
+  min-height: 24px; // Zmniejszono z 28px
   border-radius: 3px;
   transition: background-color 0.2s ease;
 
@@ -235,7 +241,7 @@
 
 .description-text {
   font-family: 'Caveat', 'Kalam', cursive;
-  font-size: 0.9rem;
+  font-size: 0.85rem; // Zmniejszono z 0.9rem
   color: #4a5568;
   font-style: italic;
   transform: rotate(-0.1deg);
@@ -262,12 +268,12 @@
 
 .description-input {
   width: 100%;
-  padding: 6px 8px;
+  padding: 5px 7px; // Zmniejszono z 6px 8px
   border: 1px dashed #9ca3af;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.8);
   font-family: 'Caveat', 'Kalam', cursive;
-  font-size: 0.9rem;
+  font-size: 0.85rem; // Zmniejszono z 0.9rem
   color: #374151;
   transform: rotate(-0.1deg);
   letter-spacing: 0.2px;
@@ -372,10 +378,10 @@
   &::before {
     content: '';
     position: absolute;
-    top: -10px;
+    top: -8px; // Zmniejszono z -10px
     left: 15px;
-    width: 50px;
-    height: 20px;
+    width: 40px; // Zmniejszono z 50px
+    height: 16px; // Zmniejszono z 20px
     background:
       /* Tekstura taśmy */
       linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(0,0,0,0.05) 100%),
@@ -428,11 +434,11 @@
 }
 
 .level-card:hover {
-  transform: var(--note-rotation, rotate(0.5deg)) translateY(-8px) scale(1.03);
+  transform: var(--note-rotation, rotate(0.5deg)) translateY(-6px) scale(1.02); // Zmniejszono efekt
   box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.2),
-    0 8px 15px rgba(0, 0, 0, 0.15),
-    0 3px 6px rgba(0, 0, 0, 0.1),
+    0 12px 30px rgba(0, 0, 0, 0.18), // Zmniejszono z 15px 40px
+    0 6px 12px rgba(0, 0, 0, 0.12), // Zmniejszono z 8px 15px
+    0 2px 5px rgba(0, 0, 0, 0.08), // Zmniejszono z 3px 6px
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     inset 0 -1px 0 rgba(0, 0, 0, 0.05);
   z-index: 10;
@@ -442,17 +448,17 @@
 .level-card.selected .level-indicator::after {
   content: '';
   position: absolute;
-  top: -12px;
+  top: -10px; // Zmniejszono z -12px
   left: 50%;
   transform: translateX(-50%);
-  width: 16px;
-  height: 16px;
+  width: 14px; // Zmniejszono z 16px
+  height: 14px; // Zmniejszono z 16px
   background:
     radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6) 0%, var(--level-color) 30%, rgba(0,0,0,0.2) 100%);
   border-radius: 50%;
   box-shadow:
-    0 3px 6px rgba(0, 0, 0, 0.25),
-    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 2px 5px rgba(0, 0, 0, 0.2), // Zmniejszono z 3px 6px
+    0 1px 2px rgba(0, 0, 0, 0.25), // Zmniejszono z 0.3
     inset 0 1px 2px rgba(255, 255, 255, 0.4),
     inset 0 -1px 1px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -462,10 +468,10 @@
 @keyframes floatIn {
   from {
     opacity: 0;
-    transform: var(--note-rotation, rotate(0.5deg)) translateY(40px) scale(0.9) rotateX(10deg);
+    transform: var(--note-rotation, rotate(0.5deg)) translateY(30px) scale(0.95) rotateX(8deg); // Zmniejszono efekt
   }
   50% {
-    transform: var(--note-rotation, rotate(0.5deg)) translateY(-5px) scale(1.02) rotateX(2deg);
+    transform: var(--note-rotation, rotate(0.5deg)) translateY(-3px) scale(1.01) rotateX(1deg); // Zmniejszono efekt
   }
   to {
     opacity: 1;
@@ -473,20 +479,24 @@
   }
 }
 
-/* Animacja dla progress bar - jak wypełnianie markerem */
+/* Animacja dla progress bar - jak wypełnianie markerem z opóźnieniem */
 @keyframes fillProgress {
-  from {
+  0% {
     width: 0%;
     opacity: 0.7;
   }
-  to {
+  20% {
+    width: 0%;
+    opacity: 0.8;
+  }
+  100% {
     width: var(--target-width);
     opacity: 1;
   }
 }
 
 .progress-fill {
-  animation: fillProgress 1.2s ease-out forwards;
+  animation: fillProgress 1.5s ease-out 0.5s forwards; // Dodano opóźnienie 0.5s
 }
 
 /* Efekt "drżenia" pisma dla większego realizmu */
@@ -513,15 +523,15 @@
 /* Responsywność z zachowaniem realizmu */
 @media (max-width: 768px) {
   .level-card {
-    padding: 16px;
+    padding: 12px; // Zmniejszono z 16px
   }
 
   .level-title {
-    font-size: 0.95rem;
+    font-size: 0.9rem; // Zmniejszono z 0.95rem
   }
 
   .progress-text, .progress-value, .days-count {
-    font-size: 0.85rem;
+    font-size: 0.8rem; // Zmniejszono z 0.85rem
   }
 
   .level-card:nth-child(1) { --note-rotation: rotate(-1deg); }
