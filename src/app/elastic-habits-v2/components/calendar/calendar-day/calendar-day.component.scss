@@ -1,0 +1,326 @@
+/* calendar-day.component.css */
+
+/* Poprawiony styl buttona - bez obramowań */
+.calendar-day-btn {
+  width: 100%;
+  height: 100%;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  color: #374151;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.calendar-day-btn:hover {
+  background: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.calendar-day-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.calendar-day-btn:disabled:hover {
+  background: white;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Dzisiejsza data */
+.calendar-day-today {
+  background: #dbeafe !important;
+  box-shadow: inset 0 0 0 2px #3b82f6;
+}
+
+.calendar-day-today .day-number {
+  color: #2563eb !important;
+  font-weight: bold;
+}
+
+/* Weekend styling */
+.calendar-day-weekend {
+  background: #fef2f2;
+}
+
+.calendar-day-weekend:hover {
+  background: #fecaca;
+}
+
+/* Numer dnia */
+.day-number {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Obszar checkmarki */
+.checkmark-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* EASY - Prosta animacja */
+@keyframes check-easy {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* STANDARD - Średnia animacja z bounce */
+@keyframes check-standard {
+  0% {
+    transform: scale(0) rotate(-5deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* PLUS - Poprawiona animacja z gładkim końcem */
+@keyframes check-plus {
+  0% {
+    transform: scale(0) rotate(-15deg);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.4) rotate(15deg);
+    opacity: 1;
+  }
+  65% {
+    transform: scale(0.9) rotate(-3deg);
+  }
+  85% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Poprawione animacje tła - gładsze zakończenie */
+@keyframes success-bg-easy {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  30% {
+    opacity: 0.4;
+    transform: scale(1.02);
+  }
+  70% {
+    opacity: 0.2;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes success-bg-standard {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  25% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+  65% {
+    opacity: 0.3;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes success-bg-plus {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  20% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+  80% {
+    opacity: 0.2;
+    transform: scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+/* Poprawione konfetti - gładsze trajektorie */
+@keyframes confetti-easy-1 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  70% { opacity: 0.8; }
+  100% { transform: translate(-15px, -25px) rotate(180deg); opacity: 0; }
+}
+@keyframes confetti-easy-2 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  70% { opacity: 0.8; }
+  100% { transform: translate(15px, -25px) rotate(-180deg); opacity: 0; }
+}
+@keyframes confetti-easy-3 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  70% { opacity: 0.8; }
+  100% { transform: translate(0px, -30px) rotate(360deg); opacity: 0; }
+}
+
+@keyframes confetti-standard-1 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  80% { opacity: 0.7; }
+  100% { transform: translate(-30px, -35px) rotate(270deg); opacity: 0; }
+}
+@keyframes confetti-standard-2 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  80% { opacity: 0.7; }
+  100% { transform: translate(30px, -35px) rotate(-270deg); opacity: 0; }
+}
+@keyframes confetti-standard-3 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  80% { opacity: 0.7; }
+  100% { transform: translate(-25px, -40px) rotate(450deg); opacity: 0; }
+}
+@keyframes confetti-standard-4 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  80% { opacity: 0.7; }
+  100% { transform: translate(25px, -40px) rotate(-450deg); opacity: 0; }
+}
+@keyframes confetti-standard-5 {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  80% { opacity: 0.7; }
+  100% { transform: translate(0px, -45px) rotate(720deg); opacity: 0; }
+}
+
+/* Plus konfetti z lepszymi trajektoriami */
+@keyframes confetti-plus-1 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(-20px, -25px) rotate(180deg) scale(1.2); opacity: 0.9; }
+  100% { transform: translate(-40px, -50px) rotate(360deg) scale(0.8); opacity: 0; }
+}
+@keyframes confetti-plus-2 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(20px, -25px) rotate(-180deg) scale(1.2); opacity: 0.9; }
+  100% { transform: translate(40px, -50px) rotate(-360deg) scale(0.8); opacity: 0; }
+}
+@keyframes confetti-plus-3 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(-30px, -15px) rotate(270deg) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(-45px, -35px) rotate(540deg) scale(0.7); opacity: 0; }
+}
+@keyframes confetti-plus-4 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(30px, -15px) rotate(-270deg) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(45px, -35px) rotate(-540deg) scale(0.7); opacity: 0; }
+}
+@keyframes confetti-plus-5 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(-10px, -30px) rotate(180deg) scale(1.3); opacity: 0.9; }
+  100% { transform: translate(-25px, -55px) rotate(450deg) scale(0.6); opacity: 0; }
+}
+@keyframes confetti-plus-6 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(10px, -30px) rotate(-180deg) scale(1.3); opacity: 0.9; }
+  100% { transform: translate(25px, -55px) rotate(-450deg) scale(0.6); opacity: 0; }
+}
+@keyframes confetti-plus-7 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(-35px, -20px) rotate(360deg) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(-50px, -45px) rotate(720deg) scale(0.8); opacity: 0; }
+}
+@keyframes confetti-plus-8 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(35px, -20px) rotate(-360deg) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(50px, -45px) rotate(-720deg) scale(0.8); opacity: 0; }
+}
+@keyframes confetti-plus-9 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(-15px, -35px) rotate(450deg) scale(1.2); opacity: 0.9; }
+  100% { transform: translate(-35px, -60px) rotate(900deg) scale(0.5); opacity: 0; }
+}
+@keyframes confetti-plus-10 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(15px, -35px) rotate(-450deg) scale(1.2); opacity: 0.9; }
+  100% { transform: translate(35px, -60px) rotate(-900deg) scale(0.5); opacity: 0; }
+}
+
+/* Klasy animacji z poprawionymi timingami */
+.animate-check-easy {
+  animation: check-easy 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-check-standard {
+  animation: check-standard 0.7s cubic-bezier(0.68, -0.3, 0.32, 1.3);
+}
+
+.animate-check-plus {
+  animation: check-plus 1.1s cubic-bezier(0.68, -0.4, 0.32, 1.4);
+}
+
+.animate-success-bg-easy {
+  animation: success-bg-easy 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-success-bg-standard {
+  animation: success-bg-standard 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-success-bg-plus {
+  animation: success-bg-plus 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Konfetti z lepszymi delay */
+.animate-confetti-easy-1 { animation: confetti-easy-1 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards; }
+.animate-confetti-easy-2 { animation: confetti-easy-2 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; }
+.animate-confetti-easy-3 { animation: confetti-easy-3 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards; }
+
+.animate-confetti-standard-1 { animation: confetti-standard-1 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards; }
+.animate-confetti-standard-2 { animation: confetti-standard-2 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; }
+.animate-confetti-standard-3 { animation: confetti-standard-3 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards; }
+.animate-confetti-standard-4 { animation: confetti-standard-4 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s forwards; }
+.animate-confetti-standard-5 { animation: confetti-standard-5 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards; }
+
+.animate-confetti-plus-1 { animation: confetti-plus-1 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards; }
+.animate-confetti-plus-2 { animation: confetti-plus-2 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; }
+.animate-confetti-plus-3 { animation: confetti-plus-3 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards; }
+.animate-confetti-plus-4 { animation: confetti-plus-4 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.25s forwards; }
+.animate-confetti-plus-5 { animation: confetti-plus-5 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards; }
+.animate-confetti-plus-6 { animation: confetti-plus-6 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards; }
+.animate-confetti-plus-7 { animation: confetti-plus-7 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; }
+.animate-confetti-plus-8 { animation: confetti-plus-8 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.35s forwards; }
+.animate-confetti-plus-9 { animation: confetti-plus-9 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.05s forwards; }
+.animate-confetti-plus-10 { animation: confetti-plus-10 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards; }
