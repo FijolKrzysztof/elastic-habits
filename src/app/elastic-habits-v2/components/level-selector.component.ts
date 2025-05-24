@@ -12,65 +12,56 @@ import {LevelEntry, LevelKey} from '../models/habit.model';
     <div class="level-selector-container">
       @if (habitService.currentHabit()) {
         <div class="habit-header">
-          <div class="habit-icon" [style.background-color]="habitService.currentHabit()?.color">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
+          <div class="habit-badge" [style.background]="getHabitGradient()">
+            <span class="habit-initial">{{ getHabitInitial() }}</span>
           </div>
           <div class="habit-info">
-            <h2 class="habit-name" [style.color]="habitService.currentHabit()?.color">
-              {{ habitService.currentHabit()?.name }}
-            </h2>
-            <p class="habit-subtitle">Wybierz poziom aktywności</p>
+            <h2 class="habit-name">{{ habitService.currentHabit()?.name }}</h2>
+            <p class="habit-subtitle">Wybierz intensywność treningu</p>
           </div>
         </div>
       }
 
-      <div class="levels-container">
+      <div class="levels-grid">
         @for (level of levels; track level.key) {
           <div class="level-card"
                [class.selected]="selectedLevel() === level.key"
-               [class.level-easy]="level.key === 'easy'"
-               [class.level-standard]="level.key === 'standard'"
-               [class.level-plus]="level.key === 'plus'">
+               [style.--level-color]="level.data.color"
+               (click)="selectedLevel.set(level.key)">
 
-            <button
-              (click)="selectedLevel.set(level.key)"
-              class="level-button"
-              [style.border-color]="level.data.color"
-              [style.color]="selectedLevel() === level.key ? '#fff' : level.data.color"
-              [style.background-color]="selectedLevel() === level.key ? level.data.color : 'transparent'"
-            >
-              <!-- Level Content -->
-              <div class="level-content">
-                <div class="level-header">
-                  <span class="level-name">{{ level.data.name }}</span>
-                  @if (selectedLevel() === level.key) {
-                    <div class="selected-indicator">
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                      </svg>
-                    </div>
-                  }
+            <div class="level-header">
+              <div class="level-indicator">
+                <div class="level-dot" [style.background-color]="level.data.color"></div>
+              </div>
+              <h3 class="level-title">{{ level.data.name }}</h3>
+              @if (selectedLevel() === level.key) {
+                <div class="selection-badge">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  </svg>
                 </div>
+              }
+            </div>
 
-                <!-- Progress Bar -->
-                <div class="progress-container">
-                  <div class="progress-track">
-                    <div class="progress-fill"
-                         [style.width]="getMonthlyProgress(level.key) + '%'"
-                         [style.background-color]="selectedLevel() === level.key ? '#fff' : level.data.color">
-                    </div>
-                  </div>
-                  <span class="progress-label">{{ getMonthlyProgress(level.key) }}%</span>
+            <div class="progress-section">
+              <div class="progress-info">
+                <span class="progress-text">Ten miesiąc</span>
+                <span class="progress-value">{{ getMonthlyProgress(level.key) }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill"
+                     [style.width]="getMonthlyProgress(level.key) + '%'"
+                     [style.background-color]="level.data.color">
                 </div>
               </div>
-            </button>
+              <div class="progress-details">
+                <span class="days-count">{{ getDaysCount(level.key) }} dni</span>
+              </div>
+            </div>
 
-            <!-- Description Section -->
-            <div class="description-section">
+            <div class="description-area">
               @if (editingDescription() === habitService.currentHabitId() + '-' + level.key) {
-                <div class="description-input-container">
+                <div class="description-edit">
                   <input
                     type="text"
                     [value]="habitService.getHabitDescription(level.key)"
@@ -78,88 +69,78 @@ import {LevelEntry, LevelKey} from '../models/habit.model';
                     (blur)="editingDescription.set(null)"
                     (keyup.enter)="editingDescription.set(null)"
                     class="description-input"
-                    placeholder="np. 10 minut joggingu"
+                    placeholder="np. 20 pompek, 10 min biegania"
                     #descInput
                   />
-                  <button
-                    (click)="editingDescription.set(null)"
-                    class="input-confirm-btn"
-                  >
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                    </svg>
-                  </button>
                 </div>
               } @else {
-                <button
-                  (click)="startEditing(level.key)"
-                  class="description-button"
-                  [style.border-color]="level.data.color + '40'"
-                >
-                  <div class="description-content">
-                    <svg class="description-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                    </svg>
-                    <span class="description-text">
-                      {{ habitService.getHabitDescription(level.key) || 'Dodaj opis aktywności...' }}
-                    </span>
-                  </div>
-                </button>
+                <div class="description-display" (click)="startEditing(level.key)">
+                  <svg class="edit-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                  </svg>
+                  <span class="description-text">
+                    {{ habitService.getHabitDescription(level.key) || 'Kliknij aby opisać...' }}
+                  </span>
+                </div>
               }
             </div>
           </div>
         }
       </div>
-
-      <!-- Summary Card -->
-      <div class="summary-card">
-        <div class="summary-header">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-          </svg>
-          <span>Aktualny wybór</span>
-        </div>
-        <div class="summary-content">
-          <div class="selected-level-display" [style.color]="getCurrentLevelData().color">
-            {{ getCurrentLevelData().name }}
-          </div>
-          @if (habitService.getHabitDescription(selectedLevel())) {
-            <div class="selected-description">
-              {{ habitService.getHabitDescription(selectedLevel()) }}
-            </div>
-          }
-        </div>
-      </div>
     </div>
 
     <style>
       .level-selector-container {
-        width: 320px;
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.05);
-        border: 1px solid #f1f5f9;
+        width: 100%;
+        max-width: 380px;
+        background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow:
+          0 25px 50px -12px rgba(0, 0, 0, 0.08),
+          0 8px 16px -4px rgba(0, 0, 0, 0.03),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
       }
 
       .habit-header {
         display: flex;
         align-items: center;
         gap: 16px;
-        margin-bottom: 24px;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #f1f5f9;
+        margin-bottom: 32px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
       }
 
-      .habit-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
+      .habit-badge {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        font-weight: 700;
+        font-size: 1.25rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        position: relative;
+      }
+
+      .habit-badge::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 16px;
+        background: linear-gradient(145deg, rgba(255,255,255,0.2), transparent);
+      }
+
+      .habit-initial {
+        position: relative;
+        z-index: 1;
       }
 
       .habit-info {
@@ -167,10 +148,13 @@ import {LevelEntry, LevelKey} from '../models/habit.model';
       }
 
       .habit-name {
-        font-size: 1.25rem;
-        font-weight: 700;
+        font-size: 1.375rem;
+        font-weight: 800;
         margin: 0 0 4px 0;
-        line-height: 1.2;
+        background: linear-gradient(135deg, #1e293b, #475569);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .habit-subtitle {
@@ -180,246 +164,265 @@ import {LevelEntry, LevelKey} from '../models/habit.model';
         font-weight: 500;
       }
 
-      .levels-container {
+      .levels-grid {
         display: flex;
         flex-direction: column;
         gap: 16px;
-        margin-bottom: 24px;
       }
 
       .level-card {
-        border-radius: 16px;
-        background: #fafbfc;
+        background: rgba(255, 255, 255, 0.9);
         border: 2px solid transparent;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 20px;
+        padding: 24px;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .level-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--level-color);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .level-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      .level-card:hover::before {
+        opacity: 1;
       }
 
       .level-card.selected {
+        border-color: var(--level-color);
         transform: translateY(-2px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
-        background: #ffffff;
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.15),
+          0 0 0 1px var(--level-color);
+        background: rgba(255, 255, 255, 1);
       }
 
-      .level-card.level-easy.selected {
-        border-color: #10b981;
-        box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2), 0 4px 8px rgba(16, 185, 129, 0.1);
-      }
-
-      .level-card.level-standard.selected {
-        border-color: #3b82f6;
-        box-shadow: 0 12px 24px rgba(59, 130, 246, 0.2), 0 4px 8px rgba(59, 130, 246, 0.1);
-      }
-
-      .level-card.level-plus.selected {
-        border-color: #ef4444;
-        box-shadow: 0 12px 24px rgba(239, 68, 68, 0.2), 0 4px 8px rgba(239, 68, 68, 0.1);
-      }
-
-      .level-button {
-        width: 100%;
-        border: 2px solid;
-        background: transparent;
-        border-radius: 14px;
-        padding: 16px;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        align-items: center;
-      }
-
-      .level-button:hover {
-        transform: translateY(-1px);
-      }
-
-      .level-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: 0 16px;
+      .level-card.selected::before {
+        opacity: 1;
+        height: 100%;
+        background: linear-gradient(135deg, var(--level-color), transparent);
+        opacity: 0.03;
       }
 
       .level-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 20px;
       }
 
-      .level-name {
+      .level-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .level-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .level-title {
+        flex: 1;
+        font-size: 1.125rem;
         font-weight: 700;
-        font-size: 1rem;
+        margin: 0;
+        color: #1e293b;
         letter-spacing: -0.025em;
       }
 
-      .selected-indicator {
-        width: 24px;
-        height: 24px;
+      .selection-badge {
+        width: 28px;
+        height: 28px;
+        background: var(--level-color);
         border-radius: 50%;
-        background: currentColor;
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
-      .progress-container {
+      .progress-section {
+        margin-bottom: 20px;
+      }
+
+      .progress-info {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 8px;
+        margin-bottom: 8px;
       }
 
-      .progress-track {
-        flex: 1;
-        height: 6px;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 3px;
+      .progress-text {
+        font-size: 0.875rem;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .progress-value {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #1e293b;
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: #e2e8f0;
+        border-radius: 6px;
         overflow: hidden;
+        margin-bottom: 8px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
       }
 
       .progress-fill {
         height: 100%;
-        border-radius: 3px;
-        transition: width 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
       }
 
-      .progress-label {
-        font-size: 0.75rem;
-        font-weight: 600;
-        opacity: 0.8;
+      .progress-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 2s infinite;
       }
 
-      .description-section {
-        padding: 12px 16px;
-        background: rgba(255, 255, 255, 0.7);
-        margin-top: 8px;
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
       }
 
-      .description-input-container {
+      .progress-details {
         display: flex;
-        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .days-count {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 600;
+      }
+
+      .description-area {
+        border-top: 1px solid #f1f5f9;
+        padding-top: 16px;
+      }
+
+      .description-edit {
+        display: flex;
         align-items: center;
       }
 
       .description-input {
         flex: 1;
-        padding: 8px 12px;
+        padding: 12px 16px;
         border: 2px solid #e2e8f0;
-        border-radius: 8px;
+        border-radius: 12px;
         font-size: 0.875rem;
-        transition: border-color 0.2s;
+        transition: all 0.3s ease;
         background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
       }
 
       .description-input:focus {
         outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: var(--level-color, #3b82f6);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        transform: scale(1.02);
       }
 
-      .input-confirm-btn {
-        width: 32px;
-        height: 32px;
-        border: none;
-        background: #10b981;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s;
-      }
-
-      .input-confirm-btn:hover {
-        background: #059669;
-      }
-
-      .description-button {
-        width: 100%;
-        border: 1px dashed;
-        background: transparent;
-        border-radius: 8px;
-        padding: 12px;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .description-button:hover {
-        background: rgba(255, 255, 255, 0.8);
-      }
-
-      .description-content {
+      .description-display {
         display: flex;
         align-items: center;
         gap: 8px;
+        padding: 12px 16px;
+        border: 2px dashed #d1d5db;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: rgba(249, 250, 251, 0.8);
       }
 
-      .description-icon {
-        width: 16px;
-        height: 16px;
-        color: #64748b;
+      .description-display:hover {
+        border-color: var(--level-color);
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-1px);
+      }
+
+      .edit-icon {
+        color: #9ca3af;
+        transition: color 0.2s ease;
+      }
+
+      .description-display:hover .edit-icon {
+        color: var(--level-color);
       }
 
       .description-text {
         font-size: 0.875rem;
-        color: #64748b;
-        text-align: left;
+        color: #6b7280;
         font-style: italic;
+        transition: color 0.2s ease;
       }
 
-      .summary-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 16px;
-        padding: 20px;
-        color: white;
+      .description-display:hover .description-text {
+        color: #374151;
       }
 
-      .summary-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 12px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        opacity: 0.9;
-      }
-
-      .summary-content {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .selected-level-display {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: white !important;
-      }
-
-      .selected-description {
-        font-size: 0.875rem;
-        opacity: 0.8;
-        font-style: italic;
-      }
-
-      /* Responsive improvements */
+      /* Responsive */
       @media (max-width: 768px) {
         .level-selector-container {
-          width: 100%;
-          max-width: 320px;
+          max-width: 100%;
+          padding: 20px;
+        }
+
+        .habit-header {
+          padding: 16px;
+        }
+
+        .level-card {
+          padding: 20px;
         }
       }
 
-      /* Animation for level transitions */
+      /* Animation for cards */
       .level-card {
-        animation: slideInUp 0.3s ease-out;
+        animation: slideInUp 0.5s ease-out backwards;
       }
+
+      .level-card:nth-child(1) { animation-delay: 0.1s; }
+      .level-card:nth-child(2) { animation-delay: 0.2s; }
+      .level-card:nth-child(3) { animation-delay: 0.3s; }
 
       @keyframes slideInUp {
         from {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(30px);
         }
         to {
           opacity: 1;
@@ -427,14 +430,15 @@ import {LevelEntry, LevelKey} from '../models/habit.model';
         }
       }
 
-      /* Accessibility improvements */
-      .level-button:focus {
-        outline: 2px solid #3b82f6;
+      /* Focus states for accessibility */
+      .level-card:focus {
+        outline: 2px solid var(--level-color);
         outline-offset: 2px;
       }
 
-      .description-button:focus {
-        outline: 2px solid #3b82f6;
+      .description-input:focus,
+      .description-display:focus {
+        outline: 2px solid var(--level-color);
         outline-offset: 2px;
       }
     </style>
@@ -465,15 +469,11 @@ export class LevelSelectorComponent {
   }
 
   getMonthlyProgress(levelKey: LevelKey): number {
-    // Pobierz wszystkie dni z bieżącego miesiąca
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    // Policz dni w miesiącu
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    // Policz dni oznaczone danym poziomem
     let daysWithLevel = 0;
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -487,8 +487,45 @@ export class LevelSelectorComponent {
     return Math.round((daysWithLevel / daysInMonth) * 100);
   }
 
-  getCurrentLevelData() {
-    const currentLevel = this.levels.find(level => level.key === this.selectedLevel());
-    return currentLevel?.data || this.levels[0].data;
+  getDaysCount(levelKey: LevelKey): number {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    let daysWithLevel = 0;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const dayStatus = this.habitService.getDayStatus(date);
+      if (dayStatus === levelKey) {
+        daysWithLevel++;
+      }
+    }
+
+    return daysWithLevel;
+  }
+
+  getHabitInitial(): string {
+    const habitName = this.habitService.currentHabit()?.name || '';
+    return habitName.charAt(0).toUpperCase();
+  }
+
+  getHabitGradient(): string {
+    const color = this.habitService.currentHabit()?.color || '#3b82f6';
+    return `linear-gradient(135deg, ${color}, ${this.adjustColor(color, -20)})`;
+  }
+
+  private adjustColor(color: string, amount: number): string {
+    const usePound = color[0] === '#';
+    const col = usePound ? color.slice(1) : color;
+    const num = parseInt(col, 16);
+    let r = (num >> 16) + amount;
+    let g = (num >> 8 & 0x00FF) + amount;
+    let b = (num & 0x0000FF) + amount;
+    r = r > 255 ? 255 : r < 0 ? 0 : r;
+    g = g > 255 ? 255 : g < 0 ? 0 : g;
+    b = b > 255 ? 255 : b < 0 ? 0 : b;
+    return (usePound ? '#' : '') + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
   }
 }
