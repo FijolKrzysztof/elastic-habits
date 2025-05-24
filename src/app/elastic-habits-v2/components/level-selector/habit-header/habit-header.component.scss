@@ -1,0 +1,129 @@
+/* Import fontów ręcznych */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&display=swap');
+
+/* Habit Header - Bardziej realistyczna karteczka */
+.habit-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 18px 20px;
+  background:
+    /* Subtelna tekstura papieru */
+    radial-gradient(circle at 20% 80%, rgba(0,0,0,0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0,0,0,0.02) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255,255,255,0.3) 0%, transparent 50%),
+    linear-gradient(145deg, #fef9c3 0%, #fbbf24 100%);
+  border-radius: 6px 4px 5px 6px;
+  position: relative;
+  transform: rotate(-1.2deg);
+
+  /* Bardziej realistyczny cień karteczki */
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18),
+    0 3px 8px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+
+  /* Większy efekt zagięcia rogu */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    background:
+      linear-gradient(315deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 50%, transparent 70%),
+      linear-gradient(315deg, rgba(255,180,0,0.3) 0%, transparent 60%);
+    border-top-right-radius: 6px;
+    transform: scale(0.95);
+  }
+
+  /* Więcej tekstury papieru */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      /* Włókna papieru */
+      linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.1) 49%, rgba(255,255,255,0.1) 50%, transparent 52%),
+      linear-gradient(135deg, transparent 48%, rgba(0,0,0,0.02) 49%, rgba(0,0,0,0.02) 50%, transparent 52%),
+        /* Drobne imperfekcje */
+      radial-gradient(circle at 25% 25%, rgba(0,0,0,0.03) 0%, transparent 30%),
+      radial-gradient(circle at 75% 75%, rgba(0,0,0,0.03) 0%, transparent 30%),
+      radial-gradient(circle at 60% 40%, rgba(255,255,255,0.15) 0%, transparent 25%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+}
+
+.habit-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transform: rotate(3deg);
+}
+
+.habit-info {
+  flex: 1;
+}
+
+/* Realistyczne pisma ręczne dla różnych elementów */
+.habit-name {
+  font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #654321;
+  margin: 0;
+  transform: rotate(-0.3deg);
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.habit-subtitle {
+  font-family: 'Caveat', 'Kalam', cursive;
+  font-size: 0.85rem;
+  color: #8b6914;
+  margin: 2px 0 0 0;
+  transform: rotate(0.2deg);
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+/* Responsywność z zachowaniem realizmu */
+@media (max-width: 768px) {
+  .habit-header {
+    padding: 16px 18px;
+    transform: rotate(-0.8deg); /* Mniejsza rotacja na mobile */
+  }
+
+  .habit-name {
+    font-size: 1rem;
+  }
+
+  .habit-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .habit-badge {
+    width: 36px;
+    height: 36px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
