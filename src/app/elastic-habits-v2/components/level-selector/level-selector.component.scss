@@ -1,13 +1,70 @@
-/* Main Container */
+/* Main Container - Cork Board */
 .level-selector-container {
   width: 100%;
   max-width: 380px;
-  background: linear-gradient(145deg, #f5f3f0 0%, #ede8e0 100%);
-  border-radius: 8px;
-  padding: 20px;
-  position: relative;
+  background:
+    /* Małe, świeże dziurki - mniej zniszczona */
+    radial-gradient(circle 2px at 22% 18%, rgba(160, 140, 115, 0.25) 30%, transparent 50%),
+    radial-gradient(circle 1px at 78% 25%, rgba(180, 155, 130, 0.3) 35%, transparent 55%),
+    radial-gradient(circle 3px at 45% 75%, rgba(160, 140, 115, 0.2) 25%, transparent 45%),
+    radial-gradient(circle 1px at 85% 85%, rgba(180, 155, 130, 0.35) 40%, transparent 60%),
+    radial-gradient(circle 2px at 15% 65%, rgba(160, 140, 115, 0.28) 30%, transparent 50%),
 
-  /* Paper texture effect */
+      /* Delikatne wgniecenia - subtelne */
+    radial-gradient(ellipse 20px 12px at 30% 40%, rgba(200, 180, 155, 0.12) 35%, transparent 75%),
+    radial-gradient(ellipse 15px 25px at 70% 65%, rgba(220, 200, 175, 0.1) 30%, transparent 70%),
+    radial-gradient(ellipse 25px 15px at 55% 20%, rgba(200, 180, 155, 0.08) 40%, transparent 80%),
+
+      /* Świeże ziarna korka - jasne */
+    radial-gradient(ellipse 2px 1px at 25% 35%, #e6d3b7 0%, transparent 65%),
+    radial-gradient(ellipse 1px 3px at 65% 55%, #dcc9a3 0%, transparent 60%),
+    radial-gradient(ellipse 3px 2px at 35% 80%, #e6d3b7 0%, transparent 65%),
+    radial-gradient(ellipse 2px 2px at 80% 45%, #dcc9a3 0%, transparent 60%),
+    radial-gradient(ellipse 1px 2px at 15% 25%, #e6d3b7 0%, transparent 65%),
+    radial-gradient(ellipse 2px 1px at 90% 75%, #dcc9a3 0%, transparent 60%),
+
+      /* Minimalne pęknięcia - świeża tablica */
+    linear-gradient(115deg, transparent 48%, rgba(180, 155, 130, 0.15) 49%, rgba(180, 155, 130, 0.15) 50%, transparent 52%),
+    linear-gradient(85deg, transparent 68%, rgba(200, 180, 155, 0.12) 69%, rgba(200, 180, 155, 0.12) 70%, transparent 72%),
+
+      /* Jasny, świeży gradient korka */
+    linear-gradient(135deg,
+      #f8f0e3 0%,
+      #f5deb3 20%,
+      #f0e6d2 40%,
+      #ede0c5 60%,
+      #f2e8d0 80%,
+      #f8f0e3 100%);
+
+  background-size:
+    60px 45px, 50px 40px, 70px 50px, 45px 35px, 65px 50px,
+    35px 20px, 25px 35px, 40px 25px,
+    12px 6px, 8px 18px, 15px 8px, 12px 10px, 6px 12px, 14px 6px,
+    150px 1px, 200px 1px,
+    100% 100%;
+
+  /* Lekko nieregularny ale świeży kształt */
+  border-radius:
+    12px 14px 13px 15px /
+    14px 12px 15px 13px;
+  padding: 24px;
+  position: relative;
+  border: none;
+
+  /* Świeże, delikatne cienie */
+  box-shadow:
+    /* Główny cień - mniej dramatyczny */
+    0 6px 20px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.05),
+      /* Subtelne wgniecenia */
+    inset -2px 0 5px rgba(160, 140, 115, 0.08),
+    inset 2px 0 5px rgba(160, 140, 115, 0.08),
+    inset 0 -2px 5px rgba(160, 140, 115, 0.06),
+    inset 0 2px 5px rgba(160, 140, 115, 0.06),
+      /* Delikatne wewnętrzne cienie */
+    inset 0 0 15px rgba(180, 155, 130, 0.05);
+
+  /* Świeża tekstura powierzchni */
   &::before {
     content: '';
     position: absolute;
@@ -16,10 +73,42 @@
     right: 0;
     bottom: 0;
     background:
-      radial-gradient(circle at 20% 80%, rgba(0,0,0,0.04) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(0,0,0,0.04) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(0,0,0,0.04) 0%, transparent 50%);
-    border-radius: 8px;
+      /* Niewielkie, świeże uszkodzenia */
+      radial-gradient(ellipse 5px 8px at 18% 45%, rgba(180, 155, 130, 0.15) 0%, transparent 65%),
+      radial-gradient(ellipse 6px 4px at 82% 60%, rgba(200, 180, 155, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 4px 6px at 38% 15%, rgba(180, 155, 130, 0.18) 0%, transparent 70%),
+
+        /* Delikatne plamy - minimalne */
+      radial-gradient(ellipse 25px 15px at 60% 35%, rgba(200, 180, 155, 0.04) 0%, transparent 75%),
+      radial-gradient(ellipse 20px 30px at 25% 70%, rgba(220, 200, 175, 0.03) 0%, transparent 80%),
+      radial-gradient(ellipse 30px 20px at 75% 25%, rgba(200, 180, 155, 0.035) 0%, transparent 85%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Świeże słoje i linie struktury */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      /* Delikatne słoje - nowa tablica */
+      linear-gradient(91deg, transparent 0%, rgba(180, 155, 130, 0.03) 1%, transparent 3%),
+      linear-gradient(89deg, transparent 0%, rgba(200, 180, 155, 0.025) 1.5%, transparent 4%),
+      linear-gradient(93deg, transparent 0%, rgba(180, 155, 130, 0.02) 0.8%, transparent 2.5%),
+      linear-gradient(87deg, transparent 0%, rgba(200, 180, 155, 0.015) 2%, transparent 5%),
+
+        /* Subtelne pionowe struktury */
+      linear-gradient(1deg, transparent 0%, rgba(180, 155, 130, 0.02) 1%, transparent 2%),
+      linear-gradient(179deg, transparent 0%, rgba(200, 180, 155, 0.015) 0.5%, transparent 1.5%);
+
+    background-size:
+      60px 100%, 75px 100%, 50px 100%, 90px 100%,
+      100% 95px, 100% 115px;
+    border-radius: inherit;
     pointer-events: none;
   }
 }
@@ -163,14 +252,14 @@
 
 /* Different colors and rotations for each level */
 .level-card:nth-child(1) {
-  --note-bg: linear-gradient(145deg, #fef3c7 0%, #fde68a 100%);
-  --note-border: #fbbf24;
+  --note-bg: linear-gradient(145deg, #dcfce7 0%, #bbf7d0 100%);
+  --note-border: #10b981;
   --note-rotation: rotate(-1.2deg);
 }
 
 .level-card:nth-child(2) {
-  --note-bg: linear-gradient(145deg, #ecfdf5 0%, #d1fae5 100%);
-  --note-border: #10b981;
+  --note-bg: linear-gradient(145deg, #dbeafe 0%, #93c5fd 100%);
+  --note-border: #3b82f6;
   --note-rotation: rotate(0.8deg);
 }
 
