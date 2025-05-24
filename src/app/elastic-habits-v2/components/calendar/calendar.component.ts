@@ -56,6 +56,7 @@ import { CalendarDayComponent } from './calendar-day.component';
                 <app-calendar-day
                   [date]="date"
                   [isAnimating]="isAnimating(date)"
+                  [animationLevel]="getAnimationLevel(date)"
                   (dayClicked)="onDayClicked($event)"
                 ></app-calendar-day>
               }
@@ -69,6 +70,7 @@ import { CalendarDayComponent } from './calendar-day.component';
 export class CalendarComponent {
   @ViewChild('levelSelector') levelSelector!: LevelSelectorComponent;
   private animatingDates = new Set<string>();
+  private animationLevels = new Map<string, string>();
 
   constructor(
     public habitService: HabitService,
@@ -83,11 +85,14 @@ export class CalendarComponent {
     const currentStatus = this.habitService.getDayStatus(date);
     if (!currentStatus && selectedLevel) {
       this.animatingDates.add(dateKey);
+      this.animationLevels.set(dateKey, selectedLevel);
 
-      // Usuń animację po zakończeniu
+      // Usuń animację po zakończeniu (różny czas dla różnych poziomów)
+      const duration = this.getAnimationDuration(selectedLevel);
       setTimeout(() => {
         this.animatingDates.delete(dateKey);
-      }, 800);
+        this.animationLevels.delete(dateKey);
+      }, duration);
     }
 
     this.habitService.toggleDayStatus(date, selectedLevel);
@@ -95,5 +100,18 @@ export class CalendarComponent {
 
   isAnimating(date: Date): boolean {
     return this.animatingDates.has(date.toDateString());
+  }
+
+  getAnimationLevel(date: Date): string | null {
+    return this.animationLevels.get(date.toDateString()) || null;
+  }
+
+  private getAnimationDuration(level: string): number {
+    switch (level) {
+      case 'easy': return 600;      // 0.6s
+      case 'standard': return 800;  // 0.8s
+      case 'plus': return 1200;     // 1.2s
+      default: return 800;
+    }
   }
 }

@@ -1,7 +1,8 @@
 import {Component, inject, signal} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HabitService } from '../services/habit.service';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HabitService} from '../services/habit.service';
+import {LevelEntry, LevelKey} from '../models/habit.model';
 
 @Component({
   selector: 'app-level-selector',
@@ -57,23 +58,26 @@ import { HabitService } from '../services/habit.service';
   `
 })
 export class LevelSelectorComponent {
-  selectedLevel = signal('blue');
+  selectedLevel = signal<LevelKey>('easy');
   editingDescription = signal<string | null>(null);
 
   readonly habitService = inject(HabitService);
 
-  levels = Object.entries(this.habitService.levels).map(([key, data]) => ({ key, data }));
+  levels: LevelEntry[] = Object.entries(this.habitService.levels).map(([key, data]) => ({
+    key: key as LevelKey,
+    data
+  }));
 
   startEditing(level: string): void {
     this.editingDescription.set(`${this.habitService.currentHabitId()}-${level}`);
   }
 
-  updateDescription(level: string, event: Event): void {
+  updateDescription(level: LevelKey, event: Event): void {
     const target = event.target as HTMLInputElement;
     this.habitService.updateHabitDescription(level, target.value);
   }
 
-  getSelectedLevel(): string {
+  getSelectedLevel(): LevelKey {
     return this.selectedLevel();
   }
 }

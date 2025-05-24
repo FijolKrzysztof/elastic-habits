@@ -1,5 +1,5 @@
 import {computed, Injectable, signal} from '@angular/core';
-import {Habit, Level} from '../models/habit.model';
+import {Habit, Level, LevelKey} from '../models/habit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class HabitService {
   ]);
 
   private currentHabitIdSignal = signal<number>(1);
-  private habitDataSignal = signal<Record<string, string>>({});
+  private habitDataSignal = signal<Record<string, LevelKey>>({});
   private habitDescriptionsSignal = signal<Record<string, string>>({});
 
   readonly habits = this.habitsSignal.asReadonly();
@@ -23,10 +23,10 @@ export class HabitService {
     this.habits().find(h => h.id === this.currentHabitId())
   );
 
-  readonly levels: Record<string, Level> = {
-    green: { name: 'Easy', color: '#10B981', bg: '#DCFCE7' },
-    blue: { name: 'Standard', color: '#3B82F6', bg: '#DBEAFE' },
-    red: { name: 'Plus', color: '#EF4444', bg: '#FEE2E2' }
+  readonly levels: Record<LevelKey, Level> = {
+    easy: { name: 'Easy', color: '#10B981', bg: '#DCFCE7' },
+    standard: { name: 'Standard', color: '#3B82F6', bg: '#DBEAFE' },
+    plus: { name: 'Plus', color: '#EF4444', bg: '#FEE2E2' }
   };
 
   addHabit(name: string): void {
@@ -50,7 +50,7 @@ export class HabitService {
 
     // Clean up habit data
     const habitData = this.habitData();
-    const newHabitData: Record<string, string> = {};
+    const newHabitData: Record<string, LevelKey> = {};
     Object.keys(habitData).forEach(key => {
       if (!key.startsWith(`${habitId}-`)) {
         newHabitData[key] = habitData[key];
@@ -81,7 +81,7 @@ export class HabitService {
     this.currentHabitIdSignal.set(habitId);
   }
 
-  toggleDayStatus(date: Date, selectedLevel: string): void {
+  toggleDayStatus(date: Date, selectedLevel: LevelKey): void {
     const key = `${this.currentHabitId()}-${this.formatDateKey(date)}`;
     const currentStatus = this.habitData()[key];
 
@@ -89,10 +89,13 @@ export class HabitService {
       const newData = { ...prev };
 
       if (!currentStatus) {
+        // Dodaj nowy status
         newData[key] = selectedLevel;
       } else if (currentStatus === selectedLevel) {
+        // Usuń jeśli ten sam poziom
         delete newData[key];
       } else {
+        // Zmień na nowy poziom
         newData[key] = selectedLevel;
       }
 
@@ -100,17 +103,17 @@ export class HabitService {
     });
   }
 
-  getDayStatus(date: Date): string | null {
+  getDayStatus(date: Date): LevelKey | null {
     const key = `${this.currentHabitId()}-${this.formatDateKey(date)}`;
     return this.habitData()[key] || null;
   }
 
-  getHabitDescription(level: string): string {
+  getHabitDescription(level: LevelKey): string {
     const key = `${this.currentHabitId()}-${level}`;
     return this.habitDescriptions()[key] || this.getDefaultDescription(level);
   }
 
-  updateHabitDescription(level: string, description: string): void {
+  updateHabitDescription(level: LevelKey, description: string): void {
     const key = `${this.currentHabitId()}-${level}`;
     this.habitDescriptionsSignal.update(prev => ({
       ...prev,
@@ -118,13 +121,13 @@ export class HabitService {
     }));
   }
 
-  private getDefaultDescription(level: string): string {
-    const defaults: Record<string, string> = {
-      green: '5 min',
-      blue: '15 min',
-      red: '30 min'
+  private getDefaultDescription(level: LevelKey): string {
+    const defaults: Record<LevelKey, string> = {
+      easy: '5 min',
+      standard: '15 min',
+      plus: '30 min'
     };
-    return defaults[level] || '';
+    return defaults[level];
   }
 
   private formatDateKey(date: Date): string {

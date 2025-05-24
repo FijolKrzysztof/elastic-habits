@@ -10,14 +10,9 @@ export interface Level {
   bg: string;
 }
 
-export interface HabitEntry {
-  habitId: number;
-  date: string;
-  level: string;
-}
+export type LevelKey = 'easy' | 'standard' | 'plus';
 
-export interface HabitDescription {
-  habitId: number;
-  level: string;
-  description: string;
-}
+export type LevelEntry = {
+  key: LevelKey;
+  data: Level;
+};
