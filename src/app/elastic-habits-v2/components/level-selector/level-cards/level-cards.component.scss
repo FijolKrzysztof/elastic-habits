@@ -224,18 +224,21 @@
   align-items: center;
   gap: 6px;
   padding: 6px 4px; // Zmniejszono z 8px 4px
-  cursor: text;
+  cursor: pointer; // Zawsze pointer - można kliknąć
   min-height: 24px; // Zmniejszono z 28px
   border-radius: 3px;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 
-  /* Zmień cursor dla niewybranych kartek */
+  /* Wizualne rozróżnienie dla niewybranych kartek */
   .level-card:not(.selected) & {
-    cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.7;
   }
 
-  .level-card.selected &:hover {
+  .level-card.selected & {
+    cursor: text; // Text cursor dla wybranej kartki
+  }
+
+  &:hover {
     background-color: rgba(0, 0, 0, 0.02);
   }
 }
@@ -259,16 +262,20 @@
 .edit-icon {
   color: #9ca3af;
   transform: rotate(-2deg);
-  opacity: 0.6;
+  opacity: 0.4;
   transition: opacity 0.2s ease;
 
-  /* Ukryj ikonę edycji dla niewybranych kartek */
+  /* Różne stany dla ikony */
   .level-card:not(.selected) & {
-    opacity: 0.3;
+    opacity: 0.2; // Bardzo słabo widoczna dla niewybranych
+  }
+
+  .level-card.selected & {
+    opacity: 0.6; // Bardziej widoczna dla wybranej
   }
 
   .level-card.selected .description-display:hover & {
-    opacity: 1;
+    opacity: 1; // Pełni widoczna przy hover na wybranej
   }
 }
 
