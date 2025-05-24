@@ -7,7 +7,7 @@ import { DateService } from '../../../services/date.service';
   selector: 'app-calendar-day',
   standalone: true,
   imports: [CommonModule],
-  styleUrls: ['./calendar-day.component.scss'], // Oddzielny plik CSS
+  styleUrls: ['./calendar-day.component.scss'],
   template: `
     @if (date) {
       <button
@@ -38,7 +38,6 @@ import { DateService } from '../../../services/date.service';
             </svg>
           }
 
-          <!-- Konfetti animacja -->
           @if (isAnimating && animationLevel) {
             <div class="absolute inset-0 pointer-events-none">
               @if (animationLevel === 'easy') {
@@ -76,7 +75,6 @@ import { DateService } from '../../../services/date.service';
           }
         </div>
 
-        <!-- Animacja tła sukcesu -->
         @if (isAnimating && animationLevel) {
           <div class="absolute inset-0 pointer-events-none opacity-0"
                [class.bg-gradient-to-br]="true"
@@ -99,7 +97,6 @@ export class CalendarDayComponent {
   @Input() date!: Date;
   @Output() dayClicked = new EventEmitter<{ date: Date; selectedLevel: string }>();
 
-  // Lokalna logika animacji
   isAnimating = false;
   animationLevel: string | null = null;
   private animationTimeout: any;
@@ -111,25 +108,20 @@ export class CalendarDayComponent {
 
   onDayClick(): void {
     if (!this.isFutureDate()) {
-      // Emituj event z datą, parent component określi level
       this.dayClicked.emit({ date: this.date, selectedLevel: '' });
     }
   }
 
-  // Publiczna metoda do uruchomienia animacji
   triggerAnimation(level: string): void {
-    // Sprawdź czy dodajemy nowy status (nie usuwamy)
     const currentStatus = this.habitService.getDayStatus(this.date);
     if (!currentStatus && level) {
       this.isAnimating = true;
       this.animationLevel = level;
 
-      // Wyczyść poprzedni timeout jeśli istnieje
       if (this.animationTimeout) {
         clearTimeout(this.animationTimeout);
       }
 
-      // Ustaw timeout na zakończenie animacji
       const duration = this.getAnimationDuration(level);
       this.animationTimeout = setTimeout(() => {
         this.isAnimating = false;
@@ -140,9 +132,9 @@ export class CalendarDayComponent {
 
   private getAnimationDuration(level: string): number {
     switch (level) {
-      case 'easy': return 700;      // 0.7s
-      case 'standard': return 900;  // 0.9s
-      case 'plus': return 1300;     // 1.3s
+      case 'easy': return 700;
+      case 'standard': return 900;
+      case 'plus': return 1300;
       default: return 900;
     }
   }
@@ -157,7 +149,7 @@ export class CalendarDayComponent {
 
   isWeekend(): boolean {
     const day = this.date.getDay();
-    return day === 0 || day === 6; // Niedziela lub sobota
+    return day === 0 || day === 6;
   }
 
   getEasyColor(particle: number): string {
@@ -177,6 +169,6 @@ export class CalendarDayComponent {
   }
 
   getConfettiStart(seed: number): number {
-    return 35 + (seed * 7) % 30; // Pozycje od 35% do 65%
+    return 35 + (seed * 7) % 30;
   }
 }

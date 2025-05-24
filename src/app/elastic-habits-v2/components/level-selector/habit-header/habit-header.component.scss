@@ -1,7 +1,5 @@
-/* Import fontów ręcznych */
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Caveat:wght@400;500;600;700&family=Patrick+Hand&display=swap');
 
-/* Habit Header - Bardziej realistyczna karteczka */
 .habit-header {
   display: flex;
   align-items: center;
@@ -9,7 +7,6 @@
   margin-bottom: 24px;
   padding: 18px 20px;
   background:
-    /* Subtelna tekstura papieru */
     radial-gradient(circle at 20% 80%, rgba(0,0,0,0.02) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(0,0,0,0.02) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(255,255,255,0.3) 0%, transparent 50%),
@@ -18,7 +15,6 @@
   position: relative;
   transform: rotate(-1.2deg);
 
-  /* Bardziej realistyczny cień karteczki */
   box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.18),
     0 3px 8px rgba(0, 0, 0, 0.12),
@@ -26,7 +22,6 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 
-  /* Większy efekt zagięcia rogu */
   &::after {
     content: '';
     position: absolute;
@@ -41,7 +36,6 @@
     transform: scale(0.95);
   }
 
-  /* Więcej tekstury papieru */
   &::before {
     content: '';
     position: absolute;
@@ -50,10 +44,8 @@
     right: 0;
     bottom: 0;
     background:
-      /* Włókna papieru */
       linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.1) 49%, rgba(255,255,255,0.1) 50%, transparent 52%),
       linear-gradient(135deg, transparent 48%, rgba(0,0,0,0.02) 49%, rgba(0,0,0,0.02) 50%, transparent 52%),
-        /* Drobne imperfekcje */
       radial-gradient(circle at 25% 25%, rgba(0,0,0,0.03) 0%, transparent 30%),
       radial-gradient(circle at 75% 75%, rgba(0,0,0,0.03) 0%, transparent 30%),
       radial-gradient(circle at 60% 40%, rgba(255,255,255,0.15) 0%, transparent 25%);
@@ -80,7 +72,6 @@
   flex: 1;
 }
 
-/* Realistyczne pisma ręczne dla różnych elementów */
 .habit-name {
   font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive;
   font-size: 1.1rem;
@@ -102,11 +93,10 @@
   letter-spacing: 0.3px;
 }
 
-/* Responsywność z zachowaniem realizmu */
 @media (max-width: 768px) {
   .habit-header {
     padding: 16px 18px;
-    transform: rotate(-0.8deg); /* Mniejsza rotacja na mobile */
+    transform: rotate(-0.8deg);
   }
 
   .habit-name {

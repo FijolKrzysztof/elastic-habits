@@ -43,7 +43,6 @@ import { LevelEntry, LevelKey } from '../../../models/habit.model';
             </div>
           </div>
 
-          <!-- Obszar opisu - zawsze widoczny -->
           <div class="description-area">
             @if (editingDescription() === habitService.currentHabitId() + '-' + level.key) {
               <div class="description-edit" (click)="$event.stopPropagation()">
@@ -79,7 +78,6 @@ export class LevelCardsComponent {
   selectedLevel = signal<LevelKey>('easy');
   editingDescription = signal<string | null>(null);
 
-  // Output event dla komunikacji z parent componentem
   levelSelected = output<LevelKey>();
 
   readonly habitService = inject(HabitService);
@@ -91,18 +89,11 @@ export class LevelCardsComponent {
   }));
 
   constructor() {
-    // Uruchom animację progress bar po załadowaniu komponentu
     afterNextRender(() => {
       setTimeout(() => {
         this.animateProgressBars();
       }, 100);
     });
-
-    // Reaguj na zmiany wybranego poziomu
-    effect(() => {
-      const selected = this.selectedLevel();
-      // Można dodać dodatkową logikę dla zmiany poziomu
-    }, { allowSignalWrites: true });
   }
 
   selectLevel(level: LevelKey): void {
@@ -111,13 +102,11 @@ export class LevelCardsComponent {
   }
 
   startEditing(level: string): void {
-    // Jeśli kartka nie jest wybrana, najpierw ją wybierz
     if (this.selectedLevel() !== level) {
       this.selectLevel(level as LevelKey);
       return;
     }
 
-    // Jeśli kartka jest już wybrana, rozpocznij edycję
     this.editingDescription.set(`${this.habitService.currentHabitId()}-${level}`);
   }
 
@@ -132,10 +121,9 @@ export class LevelCardsComponent {
       const progressElement = bar as HTMLElement;
       const targetWidth = progressElement.getAttribute('data-progress');
 
-      // Dodaj opóźnienie dla każdego paska
       setTimeout(() => {
         progressElement.style.width = targetWidth + '%';
-      }, index * 200); // 200ms opóźnienie między paskami
+      }, index * 200);
     });
   }
 

@@ -1,6 +1,3 @@
-/* calendar-day.component.css */
-
-/* Poprawiony styl buttona - bez obramowań */
 .calendar-day-btn {
   width: 100%;
   height: 100%;
@@ -36,7 +33,6 @@
   box-shadow: none;
 }
 
-/* Dzisiejsza data */
 .calendar-day-today {
   background: #dbeafe !important;
   box-shadow: inset 0 0 0 2px #3b82f6;
@@ -47,7 +43,6 @@
   font-weight: bold;
 }
 
-/* Weekend styling */
 .calendar-day-weekend {
   background: #fef2f2;
 }
@@ -56,13 +51,11 @@
   background: #fecaca;
 }
 
-/* Numer dnia */
 .day-number {
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-/* Obszar checkmarki */
 .checkmark-container {
   flex: 1;
   display: flex;
@@ -71,7 +64,6 @@
   position: relative;
 }
 
-/* EASY - Prosta animacja */
 @keyframes check-easy {
   0% {
     transform: scale(0.8);
@@ -83,7 +75,6 @@
   }
 }
 
-/* STANDARD - Średnia animacja z bounce */
 @keyframes check-standard {
   0% {
     transform: scale(0) rotate(-5deg);
@@ -99,7 +90,6 @@
   }
 }
 
-/* PLUS - Poprawiona animacja z gładkim końcem */
 @keyframes check-plus {
   0% {
     transform: scale(0) rotate(-15deg);
@@ -121,7 +111,6 @@
   }
 }
 
-/* Poprawione animacje tła - gładsze zakończenie */
 @keyframes success-bg-easy {
   0% {
     opacity: 0;
@@ -183,7 +172,6 @@
   }
 }
 
-/* Poprawione konfetti - gładsze trajektorie */
 @keyframes confetti-easy-1 {
   0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
   70% { opacity: 0.8; }
@@ -226,7 +214,6 @@
   100% { transform: translate(0px, -45px) rotate(720deg); opacity: 0; }
 }
 
-/* Plus konfetti z lepszymi trajektoriami */
 @keyframes confetti-plus-1 {
   0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
   50% { transform: translate(-20px, -25px) rotate(180deg) scale(1.2); opacity: 0.9; }
@@ -278,7 +265,6 @@
   100% { transform: translate(35px, -60px) rotate(-900deg) scale(0.5); opacity: 0; }
 }
 
-/* Klasy animacji z poprawionymi timingami */
 .animate-check-easy {
   animation: check-easy 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -303,7 +289,6 @@
   animation: success-bg-plus 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Konfetti z lepszymi delay */
 .animate-confetti-easy-1 { animation: confetti-easy-1 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards; }
 .animate-confetti-easy-2 { animation: confetti-easy-2 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; }
 .animate-confetti-easy-3 { animation: confetti-easy-3 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s forwards; }

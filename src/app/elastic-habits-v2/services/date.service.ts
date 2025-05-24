@@ -35,12 +35,10 @@ export class DateService {
 
     const days: (Date | null)[] = [];
 
-    // Empty days at the beginning
     for (let i = 0; i < firstDayOfWeek; i++) {
       days.push(null);
     }
 
-    // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day));
     }

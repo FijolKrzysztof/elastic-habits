@@ -1,4 +1,3 @@
-/* Import fontów ręcznych */
 @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family:Caveat:wght@400;500;600;700&family=Patrick+Hand&display=swap');
 
 .levels-grid {
@@ -7,7 +6,6 @@
   gap: 12px;
 }
 
-/* Level Cards - Realistyczne karteczki bez border */
 .level-card {
   background: var(--note-bg, linear-gradient(145deg, #dcfce7 0%, #bbf7d0 100%));
   border-radius: 5px 4px 6px 4px;
@@ -18,19 +16,15 @@
   overflow: visible;
   transform: var(--note-rotation, rotate(0.5deg));
 
-  /* Realistyczny cień karteczki - główny element wizualny */
   box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.15),
     0 4px 10px rgba(0, 0, 0, 0.1),
     0 2px 4px rgba(0, 0, 0, 0.05),
-      /* Wewnętrzne podświetlenie */
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
     inset 0 -2px 0 rgba(0, 0, 0, 0.02),
-      /* Delikatne boczne cienie */
     inset -1px 0 0 rgba(0, 0, 0, 0.01),
     inset 1px 0 0 rgba(255, 255, 255, 0.3);
 
-  /* Bardziej wyrazista tekstura papieru */
   &::before {
     content: '';
     position: absolute;
@@ -39,22 +33,18 @@
     right: 0;
     bottom: 0;
     background:
-      /* Włókna papieru - bardziej widoczne */
       linear-gradient(30deg, transparent 48%, rgba(255,255,255,0.12) 50%, transparent 52%),
       linear-gradient(150deg, transparent 48%, rgba(0,0,0,0.03) 50%, transparent 52%),
       linear-gradient(75deg, transparent 49%, rgba(255,255,255,0.08) 50%, transparent 51%),
-        /* Naturalne imperfekcje i plamy */
       radial-gradient(circle at 15% 85%, rgba(0,0,0,0.02) 0%, transparent 25%),
       radial-gradient(circle at 85% 15%, rgba(0,0,0,0.015) 0%, transparent 30%),
       radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15) 0%, transparent 20%),
       radial-gradient(circle at 25% 35%, rgba(0,0,0,0.01) 0%, transparent 40%),
-        /* Delikatne prążki jak na prawdziwym papierze */
       repeating-linear-gradient(0deg, transparent 0px, rgba(0,0,0,0.005) 1px, transparent 2px);
     border-radius: inherit;
     pointer-events: none;
   }
 
-  /* Efekt zagięcia narożnika - bardziej wyrazisty */
   &::after {
     content: '';
     position: absolute;
@@ -70,12 +60,10 @@
         transparent 80%);
     border-top-right-radius: 5px;
     transform: scale(0.9);
-    /* Dodatkowy cień zagięcia */
     box-shadow: -2px 2px 4px rgba(0,0,0,0.1);
   }
 }
 
-/* Realistyczne układy tekstów na kartkach */
 .level-header {
   display: flex;
   align-items: flex-start;
@@ -113,7 +101,6 @@
     0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
-/* Progress bar z większym realizmem */
 .progress-section {
   margin: 14px 0 0 0;
   position: relative;
@@ -150,11 +137,9 @@
     0 0 1px rgba(0, 0, 0, 0.1);
 }
 
-/* Progress bar jak wycięty kawałek papieru */
 .progress-bar {
   height: 12px;
   background:
-    /* Cień wewnętrzny jak wgłębienie */
     linear-gradient(180deg,
       rgba(0, 0, 0, 0.08) 0%,
       rgba(0, 0, 0, 0.02) 50%,
@@ -163,15 +148,11 @@
   position: relative;
   transform: rotate(-0.2deg);
   box-shadow:
-    /* Główny cień wewnętrzny */
     inset 0 2px 4px rgba(0, 0, 0, 0.12),
     inset 0 1px 2px rgba(0, 0, 0, 0.15),
-      /* Podświetlenie dolnej krawędzi */
     inset 0 -1px 0 rgba(255, 255, 255, 0.4),
-      /* Zewnętrzny delikatny cień */
     0 1px 2px rgba(0, 0, 0, 0.05);
 
-  /* Tekstura wewnętrzna */
   &::before {
     content: '';
     position: absolute;
@@ -182,7 +163,6 @@
     background:
       linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.08) 50%, transparent 52%),
       linear-gradient(135deg, transparent 48%, rgba(0, 0, 0, 0.02) 50%, transparent 52%),
-        /* Delikatne prążki */
       repeating-linear-gradient(90deg, transparent 0px, rgba(0,0,0,0.01) 1px, transparent 3px);
     border-radius: inherit;
   }
@@ -196,7 +176,6 @@
   transform: rotate(0.1deg);
   width: 0%;
 
-  /* Efekt ręcznego malowania */
   background: linear-gradient(90deg,
     var(--fill-color, #10b981) 0%,
     color-mix(in srgb, var(--fill-color, #10b981) 90%, white 10%) 20%,
@@ -206,13 +185,10 @@
     color-mix(in srgb, var(--fill-color, #10b981) 92%, white 8%) 100%) !important;
 
   box-shadow:
-    /* Wewnętrzne podświetlenie */
     inset 0 1px 2px rgba(255, 255, 255, 0.4),
     inset 0 -1px 1px rgba(0, 0, 0, 0.08),
-      /* Zewnętrzny cień */
     0 1px 3px rgba(0, 0, 0, 0.1);
 
-  /* Nieregularny wzór jak prawdziwy marker */
   &::after {
     content: '';
     position: absolute;
@@ -246,7 +222,6 @@
     0 0 2px rgba(0, 0, 0, 0.03);
 }
 
-/* Obszar opisu jak notatka */
 .description-area {
   margin-top: 12px;
   position: relative;
@@ -346,7 +321,6 @@
   }
 }
 
-/* Różne kolory i rotacje dla każdego poziomu */
 .level-card:nth-child(1) {
   --note-bg: linear-gradient(147deg, #dcfce7 0%, #bbf7d0 65%, #a7f3d0 100%);
   --note-rotation: rotate(-1.8deg);
@@ -416,7 +390,6 @@
     --fill-color: #3b82f6;
   }
 
-  /* Realistyczna taśma klejąca */
   &::before {
     content: '';
     position: absolute;
@@ -425,13 +398,11 @@
     width: 45px;
     height: 16px;
     background:
-      /* Główna tekstura taśmy */
       linear-gradient(92deg,
         rgba(245,245,245,0.95) 0%,
         rgba(235,235,235,0.9) 30%,
         rgba(225,225,225,0.85) 70%,
         rgba(240,240,240,0.9) 100%),
-        /* Delikatne refleksy */
       linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
     border-radius: 2px;
     box-shadow:
@@ -479,24 +450,19 @@
   }
 }
 
-/* Hover effect z większym realizmem */
 .level-card:hover {
   transform: var(--note-rotation, rotate(0.5deg)) translateY(-8px) scale(1.02);
   box-shadow:
-    /* Większy cień podczas hover */
     0 15px 35px rgba(0, 0, 0, 0.2),
     0 8px 15px rgba(0, 0, 0, 0.15),
     0 4px 8px rgba(0, 0, 0, 0.1),
-      /* Wewnętrzne podświetlenie */
     inset 0 2px 0 rgba(255, 255, 255, 0.7),
     inset 0 -2px 0 rgba(0, 0, 0, 0.02),
-      /* Boczne cienie */
     inset -2px 0 0 rgba(0, 0, 0, 0.02),
     inset 2px 0 0 rgba(255, 255, 255, 0.4);
   z-index: 10;
 }
 
-/* Pinezki dla wybranych kart */
 .level-card.selected .level-indicator::after {
   content: '';
   position: absolute;
@@ -519,7 +485,6 @@
     inset 0 -1px 1px rgba(0, 0, 0, 0.2);
 }
 
-/* Animacje */
 @keyframes floatIn {
   from {
     opacity: 0;
@@ -560,7 +525,6 @@
   75% { transform: translateX(0.2px) rotate(0.05deg); }
 }
 
-/* Dodatkowe mikro-animacje */
 .level-card:hover .level-title {
   transform: rotate(-0.1deg) translateY(-1px);
   transition: transform 0.3s ease;
@@ -573,7 +537,6 @@
   transition: transform 0.3s ease;
 }
 
-/* Responsywność */
 @media (max-width: 768px) {
   .level-card {
     padding: 14px;

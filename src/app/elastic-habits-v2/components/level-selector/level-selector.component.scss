@@ -1,9 +1,7 @@
-/* Main Container - Cork Board z większym realizmem */
 .level-selector-container {
   width: 100%;
   max-width: 380px;
   background:
-    /* Więcej nieregularnych pinów i dziurek */
     radial-gradient(circle 3px at 12% 8%, rgba(140, 115, 85, 0.4) 25%, transparent 45%),
     radial-gradient(circle 2px at 88% 15%, rgba(160, 135, 110, 0.35) 30%, transparent 50%),
     radial-gradient(circle 2px at 25% 25%, rgba(180, 150, 125, 0.3) 35%, transparent 55%),
@@ -15,14 +13,12 @@
     radial-gradient(circle 1px at 45% 15%, rgba(180, 150, 125, 0.35) 40%, transparent 60%),
     radial-gradient(circle 2px at 55% 25%, rgba(160, 135, 110, 0.25) 25%, transparent 45%),
 
-      /* Naturalne wgniecenia i nierówności */
     radial-gradient(ellipse 25px 15px at 20% 30%, rgba(200, 175, 150, 0.15) 30%, transparent 70%),
     radial-gradient(ellipse 18px 28px at 80% 60%, rgba(190, 165, 140, 0.12) 25%, transparent 65%),
     radial-gradient(ellipse 30px 20px at 60% 20%, rgba(210, 185, 160, 0.1) 35%, transparent 75%),
     radial-gradient(ellipse 22px 35px at 30% 80%, rgba(200, 175, 150, 0.08) 40%, transparent 80%),
     radial-gradient(ellipse 35px 25px at 70% 40%, rgba(190, 165, 140, 0.06) 30%, transparent 70%),
 
-      /* Bardziej wyraziste ziarna korka */
     radial-gradient(ellipse 3px 2px at 18% 28%, #e8d5b8 0%, transparent 60%),
     radial-gradient(ellipse 2px 4px at 82% 45%, #dcc9a3 0%, transparent 65%),
     radial-gradient(ellipse 4px 3px at 38% 72%, #e6d3b7 0%, transparent 55%),
@@ -32,13 +28,11 @@
     radial-gradient(ellipse 1px 3px at 5% 40%, #e6d3b7 0%, transparent 65%),
     radial-gradient(ellipse 3px 1px at 95% 30%, #d4c194 0%, transparent 55%),
 
-      /* Więcej naturalnych pęknięć */
     linear-gradient(125deg, transparent 47%, rgba(170, 145, 120, 0.2) 48%, rgba(170, 145, 120, 0.2) 49%, transparent 51%),
     linear-gradient(95deg, transparent 67%, rgba(190, 165, 140, 0.15) 68%, rgba(190, 165, 140, 0.15) 69%, transparent 71%),
     linear-gradient(75deg, transparent 32%, rgba(180, 155, 130, 0.1) 33%, rgba(180, 155, 130, 0.1) 34%, transparent 36%),
     linear-gradient(155deg, transparent 78%, rgba(160, 135, 110, 0.12) 79%, rgba(160, 135, 110, 0.12) 80%, transparent 82%),
 
-      /* Główny gradient korka z większą głębią */
     radial-gradient(ellipse 120% 80% at 30% 40%,
       #f5e8d1 0%,
       #f0ddb0 15%,
@@ -55,7 +49,6 @@
     180px 1px, 220px 1px, 160px 1px, 200px 1px,
     100% 100%;
 
-  /* Jeszcze bardziej nieregularny kształt */
   border-radius:
     15px 11px 13px 17px /
     12px 16px 14px 10px;
@@ -63,25 +56,20 @@
   position: relative;
   border: none;
 
-  /* Bardziej dramatyczne cienie i wgniecenia */
   box-shadow:
-    /* Główne cienie */
     0 8px 25px rgba(0, 0, 0, 0.12),
     0 3px 8px rgba(0, 0, 0, 0.08),
     0 1px 3px rgba(0, 0, 0, 0.05),
 
-      /* Wgniecenia brzegów */
     inset -3px 0 8px rgba(150, 125, 100, 0.12),
     inset 3px 0 8px rgba(150, 125, 100, 0.12),
     inset 0 -3px 8px rgba(150, 125, 100, 0.1),
     inset 0 3px 8px rgba(150, 125, 100, 0.1),
 
-      /* Głębsze wewnętrzne cienie */
     inset 0 0 20px rgba(170, 145, 120, 0.08),
     inset -1px -1px 3px rgba(140, 115, 90, 0.15),
     inset 1px 1px 3px rgba(240, 230, 220, 0.5);
 
-  /* Dodatkowa warstwa tekstury */
   &::before {
     content: '';
     position: absolute;
@@ -90,14 +78,12 @@
     right: 0;
     bottom: 0;
     background:
-      /* Większe naturalne uszkodzenia */
       radial-gradient(ellipse 8px 12px at 15% 35%, rgba(160, 135, 110, 0.25) 0%, transparent 60%),
       radial-gradient(ellipse 10px 6px at 85% 65%, rgba(180, 155, 130, 0.2) 0%, transparent 55%),
       radial-gradient(ellipse 6px 10px at 45% 10%, rgba(170, 145, 120, 0.3) 0%, transparent 65%),
       radial-gradient(ellipse 12px 8px at 25% 85%, rgba(160, 135, 110, 0.22) 0%, transparent 70%),
       radial-gradient(ellipse 9px 15px at 75% 25%, rgba(180, 155, 130, 0.18) 0%, transparent 60%),
 
-        /* Realistyczne plamy i przebarwienia */
       radial-gradient(ellipse 35px 20px at 50% 30%, rgba(190, 165, 140, 0.06) 0%, transparent 80%),
       radial-gradient(ellipse 25px 40px at 20% 70%, rgba(210, 185, 160, 0.04) 0%, transparent 85%),
       radial-gradient(ellipse 40px 25px at 80% 20%, rgba(200, 175, 150, 0.05) 0%, transparent 90%),
@@ -106,7 +92,6 @@
     pointer-events: none;
   }
 
-  /* Bardzo subtelne słoje drewna */
   &::after {
     content: '';
     position: absolute;
@@ -115,14 +100,12 @@
     right: 0;
     bottom: 0;
     background:
-      /* Naturalne słoje korka */
       linear-gradient(92deg, transparent 0%, rgba(170, 145, 120, 0.04) 0.5%, transparent 2%),
       linear-gradient(88deg, transparent 0%, rgba(190, 165, 140, 0.03) 1%, transparent 3%),
       linear-gradient(94deg, transparent 0%, rgba(180, 155, 130, 0.025) 0.3%, transparent 1.8%),
       linear-gradient(86deg, transparent 0%, rgba(200, 175, 150, 0.02) 1.2%, transparent 4%),
       linear-gradient(96deg, transparent 0%, rgba(160, 135, 110, 0.035) 0.8%, transparent 2.5%),
 
-        /* Pionowe struktury */
       linear-gradient(2deg, transparent 0%, rgba(170, 145, 120, 0.025) 0.5%, transparent 1.5%),
       linear-gradient(178deg, transparent 0%, rgba(190, 165, 140, 0.02) 0.3%, transparent 1%),
       linear-gradient(182deg, transparent 0%, rgba(180, 155, 130, 0.015) 0.8%, transparent 2%);
@@ -135,11 +118,9 @@
   }
 }
 
-/* Responsywność z zachowaniem realizmu */
 @media (max-width: 768px) {
   .level-selector-container {
     max-width: 100%;
     padding: 20px 16px;
-    /* Zachowaj tekstury i efekty na mobile */
   }
 }

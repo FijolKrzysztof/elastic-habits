@@ -63,7 +63,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
         background: white;
         border-radius: 0 0 16px 16px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
-        overflow: hidden; /* Kluczowe - wymusza respektowanie border-radius przez dzieci */
+        overflow: hidden;
       }
 
       .weekdays-grid {
@@ -94,7 +94,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
         height: 96px;
         border-right: 1px solid #f3f4f6;
         border-bottom: 1px solid #f3f4f6;
-        overflow: hidden; /* Wymusza zaokrąglenie dla przycisków wewnątrz */
+        overflow: hidden;
         position: relative;
       }
 
@@ -106,12 +106,10 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
         background: #fef2f2;
       }
 
-      /* Usunięcie dolnej ramki z ostatniego rzędu */
       .day-slot:nth-last-child(-n+7) {
         border-bottom: none;
       }
 
-      /* Zaokrąglenie TYLKO dla lewego dolnego rogu - element musi być zarówno w ostatnim rzędzie JAK I w pierwszej kolumnie */
       .day-slot:nth-last-child(-n+7):nth-child(7n+1) {
         border-bottom-left-radius: 16px;
       }
@@ -120,7 +118,6 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
         border-bottom-left-radius: 16px;
       }
 
-      /* Zaokrąglenie TYLKO dla prawego dolnego rogu - ostatni element w gridzie */
       .day-slot:last-child {
         border-bottom-right-radius: 16px;
       }
@@ -134,7 +131,6 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
       <app-level-selector #levelSelector></app-level-selector>
 
       <div class="flex-1">
-        <!-- Calendar Header -->
         <div class="calendar-header">
           <div class="header-controls">
             <h3 class="month-title">
@@ -162,9 +158,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
           </div>
         </div>
 
-        <!-- Calendar Body -->
         <div class="calendar-body">
-          <!-- Weekday Headers -->
           <div class="weekdays-grid">
             @for (day of dateService.weekDays; track day; let i = $index) {
               <div class="weekday-header" [class.weekday-weekend]="i >= 5">
@@ -173,7 +167,6 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
             }
           </div>
 
-          <!-- Calendar Days -->
           <div class="calendar-grid">
             @for (date of dateService.getCalendarDays(); track $index) {
               <div class="day-slot">
@@ -204,7 +197,6 @@ export class CalendarComponent {
     const selectedLevel = this.levelSelector.getSelectedLevel();
     const { date } = event;
 
-    // Znajdź odpowiedni CalendarDayComponent i uruchom animację
     const dayComponent = this.calendarDays.find(
       component => component.date.toDateString() === date.toDateString()
     );
@@ -213,7 +205,6 @@ export class CalendarComponent {
       dayComponent.triggerAnimation(selectedLevel);
     }
 
-    // Aktualizuj status w serwisie
     this.habitService.toggleDayStatus(date, selectedLevel);
   }
 }

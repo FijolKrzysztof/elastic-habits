@@ -48,7 +48,6 @@ export class HabitService {
 
     this.habitsSignal.update(habits => habits.filter(h => h.id !== habitId));
 
-    // Clean up habit data
     const habitData = this.habitData();
     const newHabitData: Record<string, LevelKey> = {};
     Object.keys(habitData).forEach(key => {
@@ -58,7 +57,6 @@ export class HabitService {
     });
     this.habitDataSignal.set(newHabitData);
 
-    // Clean up descriptions
     const descriptions = this.habitDescriptions();
     const newDescriptions: Record<string, string> = {};
     Object.keys(descriptions).forEach(key => {
@@ -68,7 +66,6 @@ export class HabitService {
     });
     this.habitDescriptionsSignal.set(newDescriptions);
 
-    // Switch to another habit if deleted was current
     if (this.currentHabitId() === habitId) {
       const remainingHabit = this.habits().find(h => h.id !== habitId);
       if (remainingHabit) {
@@ -89,13 +86,10 @@ export class HabitService {
       const newData = { ...prev };
 
       if (!currentStatus) {
-        // Dodaj nowy status
         newData[key] = selectedLevel;
       } else if (currentStatus === selectedLevel) {
-        // Usuń jeśli ten sam poziom
         delete newData[key];
       } else {
-        // Zmień na nowy poziom
         newData[key] = selectedLevel;
       }
 
