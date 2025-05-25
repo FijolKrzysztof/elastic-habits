@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../services/habit.service';
 import { DateService } from '../../services/date.service';
-import { LevelSelectorComponent } from '../level-selector/level-selector.component';
 import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, LevelSelectorComponent, CalendarDayComponent],
+  imports: [CommonModule, CalendarDayComponent],
   template: `
     <style>
       .calendar-header {
@@ -127,58 +126,55 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
       }
     </style>
 
-    <div class="flex gap-6">
-      <app-level-selector></app-level-selector>
-
-      <div class="flex-1">
-        <div class="calendar-header">
-          <div class="header-controls">
-            <h3 class="month-title">
-              {{ dateService.months[dateService.currentDate().getMonth()] }}
-              {{ dateService.currentDate().getFullYear() }}
-            </h3>
-            <div class="nav-controls">
-              <button
-                (click)="dateService.navigateMonth(-1)"
-                class="nav-btn"
-              >
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-              </button>
-              <button
-                (click)="dateService.navigateMonth(1)"
-                class="nav-btn"
-              >
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-              </button>
-            </div>
+    <!-- Usunięty flex z level-selector, teraz tylko kalendarz -->
+    <div>
+      <div class="calendar-header">
+        <div class="header-controls">
+          <h3 class="month-title">
+            {{ dateService.months[dateService.currentDate().getMonth()] }}
+            {{ dateService.currentDate().getFullYear() }}
+          </h3>
+          <div class="nav-controls">
+            <button
+              (click)="dateService.navigateMonth(-1)"
+              class="nav-btn"
+            >
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <button
+              (click)="dateService.navigateMonth(1)"
+              class="nav-btn"
+            >
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
           </div>
         </div>
+      </div>
 
-        <div class="calendar-body">
-          <div class="weekdays-grid">
-            @for (day of dateService.weekDays; track day; let i = $index) {
-              <div class="weekday-header" [class.weekday-weekend]="i >= 5">
-                {{ day }}
-              </div>
-            }
-          </div>
+      <div class="calendar-body">
+        <div class="weekdays-grid">
+          @for (day of dateService.weekDays; track day; let i = $index) {
+            <div class="weekday-header" [class.weekday-weekend]="i >= 5">
+              {{ day }}
+            </div>
+          }
+        </div>
 
-          <div class="calendar-grid">
-            @for (date of dateService.getCalendarDays(); track $index) {
-              <div class="day-slot">
-                @if (date) {
-                  <app-calendar-day
-                    [date]="date"
-                    (dayClicked)="onDayClicked($event)"
-                  ></app-calendar-day>
-                }
-              </div>
-            }
-          </div>
+        <div class="calendar-grid">
+          @for (date of dateService.getCalendarDays(); track $index) {
+            <div class="day-slot">
+              @if (date) {
+                <app-calendar-day
+                  [date]="date"
+                  (dayClicked)="onDayClicked($event)"
+                ></app-calendar-day>
+              }
+            </div>
+          }
         </div>
       </div>
     </div>
