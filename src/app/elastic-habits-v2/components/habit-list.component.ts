@@ -96,6 +96,20 @@ import {HabitService} from '../services/habit.service';
                   <div class="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-thread-light/30 to-transparent rounded-full"></div>
                 </div>
 
+                <!-- Przycisk do przecięcia nitki - tylko jeśli więcej niż 1 nawyk -->
+                @if (habitService.habits().length > 1) {
+                  <button
+                    (click)="habitService.deleteHabit(habit.id)"
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-700 rounded-full hover:from-red-600 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-red-400"
+                    title="Przetnij nitkę"
+                  >
+                    <!-- Ikona nożyczek -->
+                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M5.5 2a3.5 3.5 0 101.665 6.58L8.585 10l-1.42 1.42A3.5 3.5 0 105.5 18a3.5 3.5 0 001.665-6.58L8.585 10l1.42-1.42A3.5 3.5 0 1014.5 2a3.5 3.5 0 00-1.665 6.58L11.415 10l1.42 1.42A3.5 3.5 0 1014.5 18a3.5 3.5 0 00-1.665-6.58L11.415 10l-1.42-1.42A3.5 3.5 0 1014.5 2zM5.5 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM5.5 13a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" clip-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                }
+
                 <!-- Koniec sznurka przechodzi przez dziurkę -->
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-thread-dark rounded-full"></div>
               </div>
@@ -168,20 +182,7 @@ import {HabitService} from '../services/habit.service';
                   </div>
                 </button>
 
-                <!-- Przycisk usuwania - wygląda jak mały gwóźdź -->
-                @if (habitService.habits().length > 1) {
-                  <button
-                    (click)="habitService.deleteHabit(habit.id)"
-                    class="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-red-400 to-red-600 rounded-full hover:from-red-500 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-110 flex items-center justify-center group z-20 border-2 border-red-300"
-                    title="Usuń nawyk"
-                  >
-                    <div class="w-3 h-3 bg-gradient-to-br from-red-600 to-red-800 rounded-full flex items-center justify-center">
-                      <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                      </svg>
-                    </div>
-                  </button>
-                }
+                <!-- Przycisk usuwania - usunięty, teraz usuwamy przez przecięcie nitki -->
 
                 <!-- Cień metki na powierzchni -->
                 <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm transform rotate-1 -z-10"
