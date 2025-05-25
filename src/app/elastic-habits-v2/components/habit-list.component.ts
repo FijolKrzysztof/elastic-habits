@@ -72,7 +72,6 @@ import {HabitService} from '../services/habit.service';
         <div class="flex flex-wrap gap-8 pt-20 justify-start">
           @for (habit of habitService.habits(); track habit.id; let i = $index) {
             <div class="relative group"
-                 [style.animation-delay]="i * 0.2 + 's'"
                  [style.margin-left]="getHorizontalOffset(i) + 'px'">
 
               <!-- Sznurek od głównego sznura do metki -->
@@ -102,10 +101,9 @@ import {HabitService} from '../services/habit.service';
               </div>
 
               <!-- Metka papierowa - mocno przekręcona w dół -->
-              <div class="relative transition-all duration-700 ease-out"
+              <div class="relative transition-all duration-300 ease-out"
                    [style.transform]="'translateY(' + getRandomHang(i) + 'px) rotate(' + (getHeavyTilt(i)) + 'deg)'"
-                   style="transform-origin: 8px 8px;"
-                   [class.hover-effect]="true">
+                   style="transform-origin: 8px 8px;">
                 <button
                   (click)="habitService.setCurrentHabit(habit.id)"
                   class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 group"
@@ -272,64 +270,6 @@ import {HabitService} from '../services/habit.service';
       .focus\\:ring-leather:focus { --tw-ring-color: var(--leather); }
       .focus\\:border-leather:focus { border-color: var(--leather); }
       .border-metal-dark { border-color: var(--metal-dark); }
-
-      @keyframes heavy-sway {
-        0% { transform: rotate(0deg) translateY(0px); }
-        25% { transform: rotate(2deg) translateY(-0.5px); }
-        50% { transform: rotate(0deg) translateY(1px); }
-        75% { transform: rotate(-1.5deg) translateY(0px); }
-        100% { transform: rotate(0deg) translateY(0px); }
-      }
-
-      @keyframes tag-heavy-swing {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(1.5deg); }
-        50% { transform: rotate(0deg); }
-        75% { transform: rotate(-1deg); }
-        100% { transform: rotate(0deg); }
-      }
-
-      @keyframes thread-realistic-swing {
-        0%, 100% { transform: translateX(-50%) rotate(0deg); }
-        25% { transform: translateX(-50%) rotate(2deg); }
-        75% { transform: translateX(-50%) rotate(-1.5deg); }
-      }
-
-      /* Każda metka ma unikalną animację - bardziej chaotyczną */
-      .group:nth-child(1) {
-        animation: heavy-sway 5.2s ease-in-out infinite;
-        animation-delay: 0s;
-      }
-      .group:nth-child(2) {
-        animation: heavy-sway 4.1s ease-in-out infinite;
-        animation-delay: -1.5s;
-      }
-      .group:nth-child(3) {
-        animation: heavy-sway 4.8s ease-in-out infinite;
-        animation-delay: -0.7s;
-      }
-      .group:nth-child(4) {
-        animation: heavy-sway 3.7s ease-in-out infinite;
-        animation-delay: -2.3s;
-      }
-      .group:nth-child(5) {
-        animation: heavy-sway 5.0s ease-in-out infinite;
-        animation-delay: -1.1s;
-      }
-      .group:nth-child(6) {
-        animation: heavy-sway 4.6s ease-in-out infinite;
-        animation-delay: -0.4s;
-      }
-
-      /* Hover efekty - bardziej dramatyczne */
-      .hover-effect:hover {
-        animation: tag-heavy-swing 1.5s ease-in-out infinite;
-        transform-origin: 8px 8px !important;
-      }
-
-      .group:hover .origin-top {
-        animation: thread-realistic-swing 1.5s ease-in-out infinite;
-      }
 
       /* Efekt zmięcia papieru */
       button:active .absolute[style*="clip-path"] {
