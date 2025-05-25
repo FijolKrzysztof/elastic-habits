@@ -14,10 +14,14 @@ export class HabitService {
   private habitDataSignal = signal<Record<string, LevelKey>>({});
   private habitDescriptionsSignal = signal<Record<string, string>>({});
 
+  // Nowy signal dla aktualnie wybranego poziomu
+  private selectedLevelSignal = signal<LevelKey>('easy');
+
   readonly habits = this.habitsSignal.asReadonly();
   readonly currentHabitId = this.currentHabitIdSignal.asReadonly();
   readonly habitData = this.habitDataSignal.asReadonly();
   readonly habitDescriptions = this.habitDescriptionsSignal.asReadonly();
+  readonly selectedLevel = this.selectedLevelSignal.asReadonly();
 
   readonly currentHabit = computed(() =>
     this.habits().find(h => h.id === this.currentHabitId())
@@ -78,7 +82,19 @@ export class HabitService {
     this.currentHabitIdSignal.set(habitId);
   }
 
-  toggleDayStatus(date: Date, selectedLevel: LevelKey): void {
+  // Nowa metoda do ustawiania wybranego poziomu
+  setSelectedLevel(level: LevelKey): void {
+    this.selectedLevelSignal.set(level);
+  }
+
+  // Metoda do pobierania aktualnie wybranego poziomu
+  getSelectedLevel(): LevelKey {
+    return this.selectedLevel();
+  }
+
+  toggleDayStatus(date: Date, selectedLevel?: LevelKey): void {
+    // Jeśli nie podano poziomu, użyj aktualnie wybranego
+    const levelToUse = selectedLevel || this.getSelectedLevel();
     const key = `${this.currentHabitId()}-${this.formatDateKey(date)}`;
     const currentStatus = this.habitData()[key];
 
@@ -86,11 +102,11 @@ export class HabitService {
       const newData = { ...prev };
 
       if (!currentStatus) {
-        newData[key] = selectedLevel;
-      } else if (currentStatus === selectedLevel) {
+        newData[key] = levelToUse;
+      } else if (currentStatus === levelToUse) {
         delete newData[key];
       } else {
-        newData[key] = selectedLevel;
+        newData[key] = levelToUse;
       }
 
       return newData;

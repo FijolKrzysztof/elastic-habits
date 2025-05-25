@@ -1,13 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitHeaderComponent } from './habit-header/habit-header.component';
 import { LevelCardsComponent } from './level-cards/level-cards.component';
 import { LevelKey } from '../../models/habit.model';
+import { HabitService } from '../../services/habit.service';
 
 @Component({
   selector: 'app-level-selector',
   standalone: true,
-  imports: [CommonModule, HabitHeaderComponent, LevelCardsComponent, LevelCardsComponent],
+  imports: [CommonModule, HabitHeaderComponent, LevelCardsComponent],
   styleUrl: './level-selector.component.scss',
   template: `
     <div class="level-selector-container">
@@ -17,15 +18,12 @@ import { LevelKey } from '../../models/habit.model';
   `
 })
 export class LevelSelectorComponent {
-  selectedLevel = signal<LevelKey>('easy');
+
+  constructor(private habitService: HabitService) {}
 
   onLevelSelected(level: LevelKey): void {
-    this.selectedLevel.set(level);
-    // Tutaj możesz dodać dodatkową logikę, np. powiadomienie innych komponentów
+    // Aktualizuj wybrany poziom w serwisie
+    this.habitService.setSelectedLevel(level);
     console.log('Selected level:', level);
-  }
-
-  getSelectedLevel(): LevelKey {
-    return this.selectedLevel();
   }
 }

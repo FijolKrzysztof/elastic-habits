@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../services/habit.service';
 import { DateService } from '../../services/date.service';
@@ -128,7 +128,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
     </style>
 
     <div class="flex gap-6">
-      <app-level-selector #levelSelector></app-level-selector>
+      <app-level-selector></app-level-selector>
 
       <div class="flex-1">
         <div class="calendar-header">
@@ -185,26 +185,15 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
   `
 })
 export class CalendarComponent {
-  @ViewChild('levelSelector') levelSelector!: LevelSelectorComponent;
-  @ViewChildren(CalendarDayComponent) calendarDays!: QueryList<CalendarDayComponent>;
-
   constructor(
     public habitService: HabitService,
     public dateService: DateService
   ) {}
 
-  onDayClicked(event: { date: Date; selectedLevel: string }): void {
-    const selectedLevel = this.levelSelector.getSelectedLevel();
+  onDayClicked(event: { date: Date }): void {
     const { date } = event;
 
-    const dayComponent = this.calendarDays.find(
-      component => component.date.toDateString() === date.toDateString()
-    );
-
-    if (dayComponent && selectedLevel) {
-      dayComponent.triggerAnimation(selectedLevel);
-    }
-
-    this.habitService.toggleDayStatus(date, selectedLevel);
+    // Serwis automatycznie użyje aktualnie wybranego poziomu i uruchomi animację
+    this.habitService.toggleDayStatus(date);
   }
 }

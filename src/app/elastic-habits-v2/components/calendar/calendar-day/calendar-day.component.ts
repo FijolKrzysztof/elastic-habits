@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../../services/habit.service';
 import { DateService } from '../../../services/date.service';
@@ -95,39 +95,51 @@ import { DateService } from '../../../services/date.service';
 })
 export class CalendarDayComponent {
   @Input() date!: Date;
-  @Output() dayClicked = new EventEmitter<{ date: Date; selectedLevel: string }>();
+  @Output() dayClicked = new EventEmitter<{ date: Date }>();
 
   isAnimating = false;
   animationLevel: string | null = null;
   private animationTimeout: any;
+  private previousStatus: string | null = null;
 
   constructor(
     public habitService: HabitService,
     public dateService: DateService
-  ) {}
+  ) {
+    // Effect który reaguje na zmiany statusu tego konkretnego dnia
+    effect(() => {
+      const currentStatus = this.habitService.getDayStatus(this.date);
+      const selectedLevel = this.habitService.getSelectedLevel();
+
+      // Sprawdź czy status się zmienił z null na jakiś poziom
+      if (this.previousStatus === null && currentStatus) {
+        this.triggerAnimation(currentStatus);
+      }
+
+      this.previousStatus = currentStatus;
+    });
+  }
 
   onDayClick(): void {
     if (!this.isFutureDate()) {
-      this.dayClicked.emit({ date: this.date, selectedLevel: '' });
+      // Emituj tylko datę - poziom jest już zarządzany przez serwis
+      this.dayClicked.emit({ date: this.date });
     }
   }
 
-  triggerAnimation(level: string): void {
-    const currentStatus = this.habitService.getDayStatus(this.date);
-    if (!currentStatus && level) {
-      this.isAnimating = true;
-      this.animationLevel = level;
+  private triggerAnimation(level: string): void {
+    this.isAnimating = true;
+    this.animationLevel = level;
 
-      if (this.animationTimeout) {
-        clearTimeout(this.animationTimeout);
-      }
-
-      const duration = this.getAnimationDuration(level);
-      this.animationTimeout = setTimeout(() => {
-        this.isAnimating = false;
-        this.animationLevel = null;
-      }, duration);
+    if (this.animationTimeout) {
+      clearTimeout(this.animationTimeout);
     }
+
+    const duration = this.getAnimationDuration(level);
+    this.animationTimeout = setTimeout(() => {
+      this.isAnimating = false;
+      this.animationLevel = null;
+    }, duration);
   }
 
   private getAnimationDuration(level: string): number {
