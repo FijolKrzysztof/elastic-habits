@@ -76,10 +76,10 @@ import {HabitService} from '../services/habit.service';
 
               <!-- Sznurek od głównego sznura do metki -->
               <div class="absolute origin-top z-10"
-                   [style.top]="'-' + (50 + getRandomHang(i)) + 'px'"
+                   [style.top]="'-50px'"
                    [style.left]="'50%'"
                    [style.transform]="'translateX(-50%)'"
-                   [style.height]="(getStringLength(i) + getRandomHang(i)) + 'px'"
+                   [style.height]="(50 + getRandomHang(i) + 8) + 'px'"
                    style="width: 2px; transform-origin: top center;">
 
                 <div class="w-full h-full bg-gradient-to-b from-thread via-thread-dark to-thread-dark rounded-full shadow-sm">
