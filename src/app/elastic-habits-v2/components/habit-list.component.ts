@@ -77,8 +77,8 @@ import {HabitService} from '../services/habit.service';
               <!-- Sznurek od głównego sznura do metki -->
               <div class="absolute origin-top z-10"
                    [style.top]="'-' + (50 + getRandomHang(i)) + 'px'"
-                   [style.left]="'8px'"
-                   [style.transform]="'rotate(' + getStringAngle(i) + 'deg)'"
+                   [style.left]="'50%'"
+                   [style.transform]="'translateX(-50%)'"
                    [style.height]="(getStringLength(i) + getRandomHang(i)) + 'px'"
                    style="width: 2px; transform-origin: top center;">
 
@@ -100,10 +100,10 @@ import {HabitService} from '../services/habit.service';
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-thread-dark rounded-full"></div>
               </div>
 
-              <!-- Metka papierowa - mocno przekręcona w dół -->
+              <!-- Metka papierowa - pozioma -->
               <div class="relative transition-all duration-300 ease-out"
-                   [style.transform]="'translateY(' + getRandomHang(i) + 'px) rotate(' + (getHeavyTilt(i)) + 'deg)'"
-                   style="transform-origin: 8px 8px;">
+                   [style.transform]="'translateY(' + getRandomHang(i) + 'px)'"
+                   style="transform-origin: 50% 8px;">
                 <button
                   (click)="habitService.setCurrentHabit(habit.id)"
                   class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 group"
@@ -141,15 +141,15 @@ import {HabitService} from '../services/habit.service';
                     </div>
                   </div>
 
-                  <!-- Dziurka w metce - w lewym górnym rogu -->
-                  <div class="absolute left-2 top-2 w-3 h-3 bg-white rounded-full border-2 border-gray-400 shadow-inner z-10">
+                  <!-- Dziurka w metce - na środku górnej krawędzi -->
+                  <div class="absolute left-1/2 top-2 w-3 h-3 bg-white rounded-full border-2 border-gray-400 shadow-inner z-10 transform -translate-x-1/2">
                     <div class="absolute inset-0.5 bg-gradient-to-br from-gray-50 to-gray-200 rounded-full"></div>
                     <!-- Metalowy pierścień wzmacniający -->
                     <div class="absolute inset-0 border border-gray-500 rounded-full"></div>
                   </div>
 
                   <!-- Tekst na metce -->
-                  <div class="absolute inset-0 flex items-center justify-center pl-2 pr-1">
+                  <div class="absolute inset-0 flex items-center justify-center px-2">
                     <span class="text-xs font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2 font-serif"
                           [style.color]="getTextColor(habit.color)">
                       {{ habit.name }}
@@ -369,16 +369,5 @@ export class HabitListComponent {
     // Długość sznurka do metki - dokładnie dopasowana
     const baseLength = 50; // Podstawowa długość
     return baseLength; // Konsystentna długość, wysokość jest dodawana przez hang
-  }
-
-  getStringAngle(index: number): number {
-    // Kąt pod jakim wisi sznurek - bardziej skośny gdy metka jest przekręcona
-    const pseudo = Math.sin(index * 67.890) * 43758.5453;
-    const normalized = pseudo - Math.floor(pseudo);
-    const baseAngle = (normalized * 20) - 10; // Od -10 do 10 stopni
-
-    // Dodatkowy kąt zależny od przekręcenia metki
-    const tiltInfluence = this.getHeavyTilt(index) * 0.3;
-    return baseAngle + (tiltInfluence * 0.5); // Sznurek nachyla się gdy metka jest mocno przekręcona
   }
 }
