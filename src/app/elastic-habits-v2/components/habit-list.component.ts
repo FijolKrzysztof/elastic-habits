@@ -100,9 +100,9 @@ import {HabitService} from '../services/habit.service';
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-thread-dark rounded-full"></div>
               </div>
 
-              <!-- Metka papierowa - pozioma -->
+              <!-- Metka papierowa - subtelnie przekręcona -->
               <div class="relative transition-all duration-300 ease-out"
-                   [style.transform]="'translateY(' + getRandomHang(i) + 'px)'"
+                   [style.transform]="'translateY(' + getRandomHang(i) + 'px) rotate(' + getSubtleRotation(i) + 'deg)'"
                    style="transform-origin: 50% 8px;">
                 <button
                   (click)="habitService.setCurrentHabit(habit.id)"
@@ -369,5 +369,12 @@ export class HabitListComponent {
     // Długość sznurka do metki - dokładnie dopasowana
     const baseLength = 50; // Podstawowa długość
     return baseLength; // Konsystentna długość, wysokość jest dodawana przez hang
+  }
+
+  getSubtleRotation(index: number): number {
+    // Subtelny obrót metki - małe przekręcenie
+    const pseudo = Math.sin(index * 34.567) * 43758.5453;
+    const normalized = pseudo - Math.floor(pseudo);
+    return (normalized * 12) - 6; // Od -6 do +6 stopni - subtelne przekręcenie
   }
 }
