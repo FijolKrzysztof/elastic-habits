@@ -76,11 +76,11 @@ import {HabitService} from '../services/habit.service';
                  [style.margin-left]="getHorizontalOffset(i) + 'px'">
 
               <!-- Sznurek od głównego sznura do metki -->
-              <div class="absolute origin-top"
-                   [style.top]="'-' + (52 + getRandomHang(i)) + 'px'"
+              <div class="absolute origin-top z-10"
+                   [style.top]="'-' + (50 + getRandomHang(i)) + 'px'"
                    [style.left]="'8px'"
                    [style.transform]="'rotate(' + getStringAngle(i) + 'deg)'"
-                   [style.height]="getStringLength(i) + 'px'"
+                   [style.height]="(getStringLength(i) + getRandomHang(i)) + 'px'"
                    style="width: 2px; transform-origin: top center;">
 
                 <div class="w-full h-full bg-gradient-to-b from-thread via-thread-dark to-thread-dark rounded-full shadow-sm">
@@ -96,11 +96,14 @@ import {HabitService} from '../services/habit.service';
                   <!-- Błysk nitki -->
                   <div class="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-thread-light/30 to-transparent rounded-full"></div>
                 </div>
+
+                <!-- Koniec sznurka przechodzi przez dziurkę -->
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-thread-dark rounded-full"></div>
               </div>
 
-              <!-- Metka papierowa - zaczepiona w lewym górnym rogu -->
+              <!-- Metka papierowa - mocno przekręcona w dół -->
               <div class="relative transition-all duration-700 ease-out"
-                   [style.transform]="'translateY(' + getRandomHang(i) + 'px) rotate(' + (getRandomTilt(i)) + 'deg)'"
+                   [style.transform]="'translateY(' + getRandomHang(i) + 'px) rotate(' + (getHeavyTilt(i)) + 'deg)'"
                    style="transform-origin: 8px 8px;"
                    [class.hover-effect]="true">
                 <button
@@ -270,66 +273,62 @@ import {HabitService} from '../services/habit.service';
       .focus\\:border-leather:focus { border-color: var(--leather); }
       .border-metal-dark { border-color: var(--metal-dark); }
 
-      @keyframes natural-swing {
+      @keyframes heavy-sway {
         0% { transform: rotate(0deg) translateY(0px); }
-        25% { transform: rotate(1.5deg) translateY(-0.5px); }
-        50% { transform: rotate(0deg) translateY(0px); }
-        75% { transform: rotate(-1deg) translateY(0.5px); }
+        25% { transform: rotate(2deg) translateY(-0.5px); }
+        50% { transform: rotate(0deg) translateY(1px); }
+        75% { transform: rotate(-1.5deg) translateY(0px); }
         100% { transform: rotate(0deg) translateY(0px); }
       }
 
-      @keyframes tag-sway {
+      @keyframes tag-heavy-swing {
         0% { transform: rotate(0deg); }
-        25% { transform: rotate(0.8deg); }
+        25% { transform: rotate(1.5deg); }
         50% { transform: rotate(0deg); }
-        75% { transform: rotate(-0.5deg); }
+        75% { transform: rotate(-1deg); }
         100% { transform: rotate(0deg); }
       }
 
-      @keyframes thread-swing {
+      @keyframes thread-realistic-swing {
         0%, 100% { transform: translateX(-50%) rotate(0deg); }
-        25% { transform: translateX(-50%) rotate(1deg); }
-        75% { transform: translateX(-50%) rotate(-1deg); }
+        25% { transform: translateX(-50%) rotate(2deg); }
+        75% { transform: translateX(-50%) rotate(-1.5deg); }
       }
 
-      /* Każda metka ma unikalną animację */
+      /* Każda metka ma unikalną animację - bardziej chaotyczną */
       .group:nth-child(1) {
-        animation: natural-swing 4.2s ease-in-out infinite;
+        animation: heavy-sway 5.2s ease-in-out infinite;
         animation-delay: 0s;
       }
       .group:nth-child(2) {
-        animation: natural-swing 3.8s ease-in-out infinite;
-        animation-delay: -1.2s;
-      }
-      .group:nth-child(3) {
-        animation: natural-swing 4.5s ease-in-out infinite;
-        animation-delay: -0.8s;
-      }
-      .group:nth-child(4) {
-        animation: natural-swing 3.9s ease-in-out infinite;
-        animation-delay: -2.1s;
-      }
-      .group:nth-child(5) {
-        animation: natural-swing 4.1s ease-in-out infinite;
+        animation: heavy-sway 4.1s ease-in-out infinite;
         animation-delay: -1.5s;
       }
+      .group:nth-child(3) {
+        animation: heavy-sway 4.8s ease-in-out infinite;
+        animation-delay: -0.7s;
+      }
+      .group:nth-child(4) {
+        animation: heavy-sway 3.7s ease-in-out infinite;
+        animation-delay: -2.3s;
+      }
+      .group:nth-child(5) {
+        animation: heavy-sway 5.0s ease-in-out infinite;
+        animation-delay: -1.1s;
+      }
       .group:nth-child(6) {
-        animation: natural-swing 4.3s ease-in-out infinite;
-        animation-delay: -0.3s;
+        animation: heavy-sway 4.6s ease-in-out infinite;
+        animation-delay: -0.4s;
       }
 
-      /* Hover efekty */
+      /* Hover efekty - bardziej dramatyczne */
       .hover-effect:hover {
-        animation: tag-sway 2s ease-in-out infinite;
-        transform-origin: top center !important;
+        animation: tag-heavy-swing 1.5s ease-in-out infinite;
+        transform-origin: 8px 8px !important;
       }
 
-      .group:hover .animate-swing {
-        animation: thread-swing 2s ease-in-out infinite;
-      }
-
-      .animate-swing {
-        animation: thread-swing 4s ease-in-out infinite;
+      .group:hover .origin-top {
+        animation: thread-realistic-swing 1.5s ease-in-out infinite;
       }
 
       /* Efekt zmięcia papieru */
@@ -397,7 +396,7 @@ export class HabitListComponent {
     // Używamy indeksu jako seed dla konsystentnych wyników
     const pseudo = Math.sin(index * 12.9898) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return Math.floor(normalized * 25) + 5; // Od 5 do 30px w dół
+    return Math.floor(normalized * 30) + 10; // Od 10 do 40px w dół
   }
 
   getRandomRotation(index: number): number {
@@ -407,31 +406,39 @@ export class HabitListComponent {
     return (normalized * 8) - 4; // Od -4 do 4 stopni
   }
 
-  getRandomTilt(index: number): number {
-    // Przechył samej metki przez grawitację - bardziej w dół
+  getHeavyTilt(index: number): number {
+    // Mocny przechył metki przez grawitację - znacznie bardziej w dół
     const pseudo = Math.sin(index * 23.456) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return (normalized * 20) + 5; // Od 5 do 25 stopni w dół
+    return (normalized * 35) + 15; // Od 15 do 50 stopni w dół - bardzo przekręcone!
+  }
+
+  getRandomTilt(index: number): number {
+    // Stara funkcja - zostawiam dla kompatybilności
+    return this.getHeavyTilt(index);
   }
 
   getHorizontalOffset(index: number): number {
     // Losowe przesunięcie w poziomie
     const pseudo = Math.sin(index * 45.678) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return Math.floor(normalized * 40) - 20; // Od -20 do 20px
+    return Math.floor(normalized * 50) - 25; // Od -25 do 25px - więcej rozrzutu
   }
 
   getStringLength(index: number): number {
-    // Długość sznurka do metki
-    const baseLength = 45;
-    const hang = this.getRandomHang(index);
-    return baseLength + hang;
+    // Długość sznurka do metki - dokładnie dopasowana
+    const baseLength = 50; // Podstawowa długość
+    return baseLength; // Konsystentna długość, wysokość jest dodawana przez hang
   }
 
   getStringAngle(index: number): number {
-    // Kąt pod jakim wisi sznurek
+    // Kąt pod jakim wisi sznurek - bardziej skośny gdy metka jest przekręcona
     const pseudo = Math.sin(index * 67.890) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return (normalized * 15) - 7.5; // Od -7.5 do 7.5 stopni
+    const baseAngle = (normalized * 20) - 10; // Od -10 do 10 stopni
+
+    // Dodatkowy kąt zależny od przekręcenia metki
+    const tiltInfluence = this.getHeavyTilt(index) * 0.3;
+    return baseAngle + (tiltInfluence * 0.5); // Sznurek nachyla się gdy metka jest mocno przekręcona
   }
 }
