@@ -36,7 +36,7 @@ import {LevelSelectorComponent} from './components/level-selector/level-selector
             </div>
 
             <!-- Calendar na dole -->
-            <div class="bg-gray-50 rounded-xl p-6">
+            <div class="rounded-xl p-6">
               <app-calendar></app-calendar>
             </div>
           </div>

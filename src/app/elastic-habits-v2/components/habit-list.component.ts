@@ -24,48 +24,113 @@ import {HabitService} from '../services/habit.service';
 
       <!-- Sznurek z metkami -->
       <div class="relative min-h-40 p-4">
-        <!-- Sznurek główny - skośny i realistyczny -->
-        <div class="absolute top-8 left-4 right-4 h-3 transform -rotate-1">
-          <!-- Główny sznurek -->
-          <div class="relative w-full h-full bg-gradient-to-r from-rope-dark via-rope to-rope-dark rounded-full shadow-xl">
-            <!-- Spleciona tekstura -->
-            <div class="absolute inset-0 bg-repeat-x h-full rounded-full opacity-70"
-                 style="background-image: repeating-linear-gradient(90deg,
-                   transparent 0px,
-                   rgba(139,69,19,0.4) 2px,
-                   rgba(101,67,33,0.3) 4px,
-                   transparent 6px,
-                   rgba(160,82,45,0.2) 8px,
-                   transparent 10px);
-                   background-size: 10px 100%;">
+        <!-- Sznurek główny - bardziej realistyczny -->
+        <div class="absolute top-8 left-4 right-4 h-4 transform -rotate-1">
+          <!-- Główny sznurek z wielowarstwową strukturą -->
+          <div class="relative w-full h-full">
+            <!-- Bazowa warstwa sznurka -->
+            <div class="absolute inset-0 bg-gradient-to-b from-rope-shadow via-rope-base to-rope-dark rounded-full">
+              <!-- Pierwsza warstwa - główny kolor -->
+              <div class="absolute inset-0 bg-gradient-to-b from-rope-light via-rope to-rope-dark rounded-full"></div>
+
+              <!-- Druga warstwa - struktura splotu -->
+              <div class="absolute inset-0 opacity-80 rounded-full"
+                   style="background: repeating-conic-gradient(
+                     from 0deg at 50% 50%,
+                     var(--rope-fiber-1) 0deg,
+                     var(--rope-fiber-2) 60deg,
+                     var(--rope-fiber-3) 120deg,
+                     var(--rope-fiber-1) 180deg,
+                     var(--rope-fiber-2) 240deg,
+                     var(--rope-fiber-3) 300deg,
+                     var(--rope-fiber-1) 360deg
+                   );">
+              </div>
+
+              <!-- Trzecia warstwa - spiralne włókna -->
+              <div class="absolute inset-0 opacity-60 rounded-full"
+                   style="background-image:
+                     repeating-linear-gradient(45deg,
+                       transparent 0px,
+                       rgba(139,69,19,0.3) 1px,
+                       transparent 2px,
+                       rgba(101,67,33,0.2) 3px,
+                       transparent 4px,
+                       rgba(160,82,45,0.3) 5px,
+                       transparent 6px
+                     ),
+                     repeating-linear-gradient(-45deg,
+                       transparent 0px,
+                       rgba(139,69,19,0.2) 1px,
+                       transparent 2px,
+                       rgba(101,67,33,0.3) 3px,
+                       transparent 4px
+                     );">
+              </div>
+
+              <!-- Górny highlight dla 3D efektu -->
+              <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-rope-highlight to-transparent rounded-full opacity-70"></div>
+
+              <!-- Dolny cień dla głębi -->
+              <div class="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-rope-shadow to-transparent rounded-full opacity-80"></div>
+
+              <!-- Boczne cienie -->
+              <div class="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-r from-rope-shadow to-transparent rounded-l-full opacity-60"></div>
+              <div class="absolute top-0 bottom-0 right-0 w-1 bg-gradient-to-l from-rope-shadow to-transparent rounded-r-full opacity-60"></div>
+
+              <!-- Wystające włókna -->
+              <div class="absolute inset-0 opacity-40 rounded-full"
+                   style="background-image:
+                     radial-gradient(ellipse 1px 8px at 20% 30%, rgba(139,69,19,0.8) 0%, transparent 70%),
+                     radial-gradient(ellipse 1px 6px at 60% 80%, rgba(101,67,33,0.6) 0%, transparent 70%),
+                     radial-gradient(ellipse 1px 7px at 40% 15%, rgba(160,82,45,0.7) 0%, transparent 70%),
+                     radial-gradient(ellipse 1px 5px at 80% 60%, rgba(139,69,19,0.5) 0%, transparent 70%),
+                     radial-gradient(ellipse 1px 9px at 10% 90%, rgba(101,67,33,0.8) 0%, transparent 70%);
+                   background-size: 15px 15px, 20px 20px, 18px 18px, 12px 12px, 25px 25px;">
+              </div>
+
+              <!-- Miejscowe strzępienia i nierówności -->
+              <div class="absolute inset-0 opacity-30 rounded-full"
+                   style="background-image:
+                     radial-gradient(circle 2px at 25% 40%, rgba(101,67,33,0.8) 0%, transparent 50%),
+                     radial-gradient(circle 1px at 70% 20%, rgba(139,69,19,0.9) 0%, transparent 40%),
+                     radial-gradient(circle 3px at 45% 75%, rgba(160,82,45,0.6) 0%, transparent 60%),
+                     radial-gradient(circle 1px at 85% 85%, rgba(101,67,33,0.7) 0%, transparent 45%);
+                   background-size: 30px 30px, 25px 25px, 35px 35px, 20px 20px;">
+              </div>
             </div>
-            <!-- Górny highlight -->
-            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-rope-light to-transparent rounded-full opacity-80"></div>
-            <!-- Dolny cień -->
-            <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-rope-dark/60 to-transparent rounded-full"></div>
-            <!-- Włókna wystające -->
-            <div class="absolute inset-0 bg-repeat-x h-full rounded-full opacity-30"
-                 style="background-image: repeating-linear-gradient(85deg,
-                   transparent 0px,
-                   rgba(139,69,19,0.6) 1px,
-                   transparent 2px);
-                   background-size: 15px 100%;">
-            </div>
+
+            <!-- Zewnętrzny cień sznurka na ścianie -->
+            <div class="absolute top-2 left-1 right-0 h-4 bg-gradient-to-b from-black/20 via-black/15 to-black/10 rounded-full blur-sm transform rotate-0.5"></div>
           </div>
 
-          <!-- Węzły i sploty -->
-          <div class="absolute top-0 left-1/4 w-2 h-4 bg-rope-dark rounded-full transform rotate-12 shadow-md"></div>
-          <div class="absolute top-0 right-1/3 w-1.5 h-3 bg-rope rounded-full transform -rotate-8 shadow-md"></div>
+          <!-- Węzły i nieregularności na sznurku -->
+          <div class="absolute top-0.5 left-1/4 w-3 h-5 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full transform rotate-12 shadow-lg opacity-90">
+            <div class="absolute inset-0.5 bg-gradient-to-br from-rope-knot-highlight to-transparent rounded-full opacity-60"></div>
+          </div>
+          <div class="absolute top-0.5 right-1/3 w-2.5 h-4 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full transform -rotate-8 shadow-md opacity-85">
+            <div class="absolute inset-0.5 bg-gradient-to-br from-rope-knot-highlight to-transparent rounded-full opacity-50"></div>
+          </div>
+          <div class="absolute top-1 left-2/3 w-2 h-3 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full transform rotate-15 shadow-md opacity-75"></div>
         </div>
 
-        <!-- Punkty zaczepienia -->
-        <div class="absolute top-6 left-2 w-5 h-5 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-lg border-2 border-metal-dark">
-          <div class="absolute inset-1 bg-gradient-to-br from-metal-light via-metal to-metal-dark rounded-full"></div>
-          <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full"></div>
+        <!-- Punkty zaczepienia - bardziej realistyczne -->
+        <div class="absolute top-6 left-2 w-6 h-6 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-xl border-2 border-metal-darker">
+          <div class="absolute inset-1 bg-gradient-to-br from-metal-light via-metal to-metal-dark rounded-full">
+            <div class="absolute inset-0.5 bg-gradient-to-br from-metal-bright to-metal-mid rounded-full"></div>
+          </div>
+          <div class="absolute top-1 left-1 w-2 h-2 bg-white/60 rounded-full blur-sm"></div>
+          <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white/80 rounded-full"></div>
+          <!-- Śruby/gwoździe w punkcie zaczepienia -->
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-metal-darker rounded-full"></div>
         </div>
-        <div class="absolute top-6 right-2 w-5 h-5 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-lg border-2 border-metal-dark">
-          <div class="absolute inset-1 bg-gradient-to-br from-metal-light via-metal to-metal-dark rounded-full"></div>
-          <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white/40 rounded-full"></div>
+        <div class="absolute top-6 right-2 w-6 h-6 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-xl border-2 border-metal-darker">
+          <div class="absolute inset-1 bg-gradient-to-br from-metal-light via-metal to-metal-dark rounded-full">
+            <div class="absolute inset-0.5 bg-gradient-to-br from-metal-bright to-metal-mid rounded-full"></div>
+          </div>
+          <div class="absolute top-1 left-1 w-2 h-2 bg-white/60 rounded-full blur-sm"></div>
+          <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white/80 rounded-full"></div>
+          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-metal-darker rounded-full"></div>
         </div>
 
         <!-- Metki -->
@@ -74,26 +139,53 @@ import {HabitService} from '../services/habit.service';
             <div class="relative group"
                  [style.margin-left]="getHorizontalOffset(i) + 'px'">
 
-              <!-- Sznurek od głównego sznura do metki -->
+              <!-- Sznurek od głównego sznura do metki - bardziej realistyczny -->
               <div class="absolute origin-top z-10"
-                   [style.top]="'-50px'"
+                   [style.top]="'-52px'"
                    [style.left]="'50%'"
                    [style.transform]="'translateX(-50%)'"
-                   [style.height]="(50 + getRandomHang(i) + 8) + 'px'"
-                   style="width: 2px; transform-origin: top center;">
+                   [style.height]="(52 + getRandomHang(i) + 8) + 'px'"
+                   style="width: 3px; transform-origin: top center;">
 
-                <div class="w-full h-full bg-gradient-to-b from-thread via-thread-dark to-thread-dark rounded-full shadow-sm">
-                  <!-- Tekstura nitki -->
-                  <div class="absolute inset-0 bg-repeat-y w-full opacity-50 rounded-full"
-                       style="background-image: repeating-linear-gradient(180deg,
-                         transparent 0px,
-                         rgba(101,67,33,0.6) 1px,
-                         rgba(74,44,23,0.4) 2px,
-                         transparent 3px);
-                         background-size: 100% 3px;">
+                <div class="relative w-full h-full">
+                  <!-- Główna nitka -->
+                  <div class="absolute inset-0 bg-gradient-to-b from-thread-light via-thread to-thread-dark rounded-full shadow-sm">
+                    <!-- Struktura skręconych włókien -->
+                    <div class="absolute inset-0 opacity-70 rounded-full"
+                         style="background-image:
+                           repeating-linear-gradient(30deg,
+                             transparent 0px,
+                             rgba(101,67,33,0.4) 0.5px,
+                             transparent 1px,
+                             rgba(74,44,23,0.3) 1.5px,
+                             transparent 2px
+                           ),
+                           repeating-linear-gradient(-30deg,
+                             transparent 0px,
+                             rgba(139,69,19,0.3) 0.5px,
+                             transparent 1px
+                           );
+                           background-size: 4px 4px, 3px 3px;">
+                    </div>
+
+                    <!-- Highlight dla 3D efektu -->
+                    <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-thread-highlight/60 to-transparent rounded-full"></div>
+
+                    <!-- Cień po prawej stronie -->
+                    <div class="absolute top-0 right-0 w-0.5 h-full bg-gradient-to-b from-thread-shadow to-thread-shadow/80 rounded-full"></div>
+
+                    <!-- Drobne włókna wystające -->
+                    <div class="absolute inset-0 opacity-50 rounded-full"
+                         style="background-image:
+                           radial-gradient(ellipse 0.5px 3px at 30% 20%, rgba(139,69,19,0.8) 0%, transparent 70%),
+                           radial-gradient(ellipse 0.5px 2px at 70% 60%, rgba(101,67,33,0.6) 0%, transparent 70%),
+                           radial-gradient(ellipse 0.5px 4px at 20% 80%, rgba(160,82,45,0.7) 0%, transparent 70%);
+                         background-size: 8px 8px, 12px 12px, 6px 6px;">
+                    </div>
                   </div>
-                  <!-- Błysk nitki -->
-                  <div class="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-thread-light/30 to-transparent rounded-full"></div>
+
+                  <!-- Cień nitki -->
+                  <div class="absolute top-0 left-1 w-3 h-full bg-gradient-to-b from-black/15 via-black/10 to-black/5 rounded-full blur-sm"></div>
                 </div>
 
                 <!-- Przycisk do przecięcia nitki - tylko jeśli więcej niż 1 nawyk -->
@@ -111,7 +203,7 @@ import {HabitService} from '../services/habit.service';
                 }
 
                 <!-- Koniec sznurka przechodzi przez dziurkę -->
-                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-thread-dark rounded-full"></div>
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-4 bg-gradient-to-b from-thread to-thread-dark rounded-full shadow-sm"></div>
               </div>
 
               <!-- Metka papierowa - subtelnie przekręcona -->
@@ -182,8 +274,6 @@ import {HabitService} from '../services/habit.service';
                   </div>
                 </button>
 
-                <!-- Przycisk usuwania - usunięty, teraz usuwamy przez przecięcie nitki -->
-
                 <!-- Cień metki na powierzchni -->
                 <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm transform rotate-1 -z-10"
                      style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
@@ -238,13 +328,32 @@ import {HabitService} from '../services/habit.service';
         --rope: #8B4513;
         --rope-dark: #654321;
         --rope-light: #A0522D;
+        --rope-base: #7D4017;
+        --rope-shadow: #4A2C14;
+        --rope-highlight: #D2B48C;
+        --rope-fiber-1: #8B4513;
+        --rope-fiber-2: #654321;
+        --rope-fiber-3: #A0522D;
+        --rope-knot-light: #A67C52;
+        --rope-knot-dark: #5C3317;
+        --rope-knot-highlight: #D4A574;
+
         --thread: #654321;
+        --thread-dark: #4A2C14;
         --thread-light: #8B6914;
+        --thread-highlight: #B8860B;
+        --thread-shadow: #3E2723;
+
         --leather: #8B4513;
         --leather-dark: #654321;
+
         --metal: #C0C0C0;
         --metal-dark: #A0A0A0;
         --metal-light: #E8E8E8;
+        --metal-bright: #F5F5F5;
+        --metal-mid: #D3D3D3;
+        --metal-darker: #808080;
+
         --cream: #FFF8DC;
         --parchment: #F5E6D3;
         --parchment-dark: #E8D2B8;
@@ -254,11 +363,18 @@ import {HabitService} from '../services/habit.service';
       .bg-rope { background-color: var(--rope); }
       .bg-rope-dark { background-color: var(--rope-dark); }
       .bg-rope-light { background-color: var(--rope-light); }
+      .bg-rope-base { background-color: var(--rope-base); }
+      .bg-rope-shadow { background-color: var(--rope-shadow); }
+      .bg-rope-highlight { background-color: var(--rope-highlight); }
+
       .bg-thread { background-color: var(--thread); }
       .bg-thread-dark { background-color: var(--thread-dark); }
+      .bg-thread-light { background-color: var(--thread-light); }
+
       .bg-leather { background-color: var(--leather); }
       .bg-leather-dark { background-color: var(--leather-dark); }
       .hover\\:bg-leather-dark:hover { background-color: var(--leather-dark); }
+
       .bg-metal { background-color: var(--metal); }
       .bg-cream { background-color: var(--cream); }
       .text-cream { color: var(--cream); }
