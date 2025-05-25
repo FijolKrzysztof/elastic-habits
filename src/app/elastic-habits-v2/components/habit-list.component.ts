@@ -188,16 +188,16 @@ import {HabitService} from '../services/habit.service';
                   <div class="absolute top-0 left-1 w-3 h-full bg-gradient-to-b from-black/15 via-black/10 to-black/5 rounded-full blur-sm"></div>
                 </div>
 
-                <!-- Przycisk do przecięcia nitki - tylko jeśli więcej niż 1 nawyk -->
+                <!-- Przycisk do przecięcia nitki - NA SAMEJ GÓRZE przy głównym sznurku -->
                 @if (habitService.habits().length > 1) {
                   <button
                     (click)="habitService.deleteHabit(habit.id)"
-                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-700 rounded-full hover:from-red-600 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-red-400"
-                    title="Przetnij nitkę"
+                    class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-700 rounded-full hover:from-red-600 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-red-400"
+                    title="Usuń nawyk"
                   >
-                    <!-- Ikona nożyczek -->
-                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M5.5 2a3.5 3.5 0 101.665 6.58L8.585 10l-1.42 1.42A3.5 3.5 0 105.5 18a3.5 3.5 0 001.665-6.58L8.585 10l1.42-1.42A3.5 3.5 0 1014.5 2a3.5 3.5 0 00-1.665 6.58L11.415 10l1.42 1.42A3.5 3.5 0 1014.5 18a3.5 3.5 0 00-1.665-6.58L11.415 10l-1.42-1.42A3.5 3.5 0 1014.5 2zM5.5 4a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM5.5 13a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" clip-rule="evenodd"></path>
+                    <!-- Ikona X do usuwania -->
+                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                   </button>
                 }
