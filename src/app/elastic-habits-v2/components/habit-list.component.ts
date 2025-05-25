@@ -106,7 +106,7 @@ import {HabitService} from '../services/habit.service';
                    style="transform-origin: 50% 8px;">
                 <button
                   (click)="habitService.setCurrentHabit(habit.id)"
-                  class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 group"
+                  class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group"
                   [class]="habit.id === habitService.currentHabitId()
                     ? 'text-gray-800 shadow-2xl scale-110 z-10'
                     : 'text-gray-700 hover:text-gray-900 shadow-xl hover:shadow-2xl'"
@@ -270,6 +270,12 @@ import {HabitService} from '../services/habit.service';
       .focus\\:ring-leather:focus { --tw-ring-color: var(--leather); }
       .focus\\:border-leather:focus { border-color: var(--leather); }
       .border-metal-dark { border-color: var(--metal-dark); }
+
+      /* Usunięcie wszystkich obramowań focus */
+      button:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
 
       /* Efekt zmięcia papieru */
       button:active .absolute[style*="clip-path"] {
