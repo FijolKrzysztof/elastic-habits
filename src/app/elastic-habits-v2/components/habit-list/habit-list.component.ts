@@ -14,7 +14,7 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
       </div>
 
       <div class="relative min-h-40 p-4">
-        <div class="absolute top-8 left-4 right-4 h-4 transform -rotate-1">
+        <div class="absolute top-8 left-4 right-4 h-4">
           <div class="relative w-full h-full">
             <div class="absolute inset-0 bg-gradient-to-b from-rope-shadow via-rope-base to-rope-dark rounded-full">
               <div class="absolute inset-0 bg-gradient-to-b from-rope-light via-rope to-rope-dark rounded-full"></div>
@@ -79,16 +79,16 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
               </div>
             </div>
 
-            <div class="absolute top-2 left-1 right-0 h-4 bg-gradient-to-b from-black/20 via-black/15 to-black/10 rounded-full blur-sm transform rotate-0.5"></div>
+            <div class="absolute top-2 left-1 right-0 h-4 bg-gradient-to-b from-black/20 via-black/15 to-black/10 rounded-full blur-sm"></div>
           </div>
 
-          <div class="absolute top-0.5 left-1/4 w-3 h-5 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full transform rotate-12 shadow-lg opacity-90">
+          <div class="absolute top-0.5 left-1/4 w-3 h-5 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full shadow-lg opacity-90">
             <div class="absolute inset-0.5 bg-gradient-to-br from-rope-knot-highlight to-transparent rounded-full opacity-60"></div>
           </div>
-          <div class="absolute top-0.5 right-1/3 w-2.5 h-4 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full transform -rotate-8 shadow-md opacity-85">
+          <div class="absolute top-0.5 right-1/3 w-2.5 h-4 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full shadow-md opacity-85">
             <div class="absolute inset-0.5 bg-gradient-to-br from-rope-knot-highlight to-transparent rounded-full opacity-50"></div>
           </div>
-          <div class="absolute top-1 left-2/3 w-2 h-3 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full transform rotate-15 shadow-md opacity-75"></div>
+          <div class="absolute top-1 left-2/3 w-2 h-3 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full shadow-md opacity-75"></div>
         </div>
 
         <div class="absolute top-6 left-2 w-6 h-6 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-xl border-2 border-metal-darker">
@@ -108,7 +108,7 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-metal-darker rounded-full"></div>
         </div>
 
-        <div class="flex flex-wrap gap-8 pt-20 justify-start">
+        <div class="flex flex-wrap gap-8 pt-[4.8rem] justify-start">
           @for (habit of habitService.habits(); track habit.id; let i = $index) {
             <app-habit-tag
               [habit]="habit"
