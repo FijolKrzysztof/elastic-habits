@@ -53,9 +53,7 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
               </div>
 
               <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-b from-rope-highlight to-transparent rounded-full opacity-70"></div>
-
               <div class="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-rope-shadow to-transparent rounded-full opacity-80"></div>
-
               <div class="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-r from-rope-shadow to-transparent rounded-l-full opacity-60"></div>
               <div class="absolute top-0 bottom-0 right-0 w-1 bg-gradient-to-l from-rope-shadow to-transparent rounded-r-full opacity-60"></div>
 
@@ -91,21 +89,34 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
           <div class="absolute top-1 left-2/3 w-2 h-3 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full shadow-md opacity-75"></div>
         </div>
 
-        <div class="absolute top-6 left-2 w-6 h-6 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-xl border-2 border-metal-darker">
-          <div class="absolute inset-1 bg-gradient-to-br from-metal-light via-metal to-metal-dark rounded-full">
-            <div class="absolute inset-0.5 bg-gradient-to-br from-metal-bright to-metal-mid rounded-full"></div>
+        <!-- Lewy gwóźdź - na środku sznurka -->
+        <div class="absolute top-8 left-2 z-20">
+          <!-- Główka gwoździa -->
+          <div class="relative w-4 h-4 transform -rotate-12">
+            <!-- Podstawa główki metalowa -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
+
+            <!-- Subtelny odbłysk -->
+            <div class="absolute top-1 left-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
+
+            <!-- Wgłębienie od młotka -->
+            <div class="absolute top-1.5 left-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
           </div>
-          <div class="absolute top-1 left-1 w-2 h-2 bg-white/60 rounded-full blur-sm"></div>
-          <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white/80 rounded-full"></div>
-          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-metal-darker rounded-full"></div>
         </div>
-        <div class="absolute top-6 right-2 w-6 h-6 bg-gradient-to-br from-metal-light to-metal-dark rounded-full shadow-xl border-2 border-metal-darker">
-          <div class="absolute inset-1 bg-gradient-to-br from-metal-light via-metal to-metal-dark rounded-full">
-            <div class="absolute inset-0.5 bg-gradient-to-br from-metal-bright to-metal-mid rounded-full"></div>
+
+        <!-- Prawy gwóźdź - na środku sznurka -->
+        <div class="absolute top-8 right-2 z-20">
+          <!-- Główka gwoździa -->
+          <div class="relative w-4 h-4 transform rotate-12">
+            <!-- Podstawa główki metalowa -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
+
+            <!-- Subtelny odbłysk -->
+            <div class="absolute top-1 right-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
+
+            <!-- Wgłębienie od młotka -->
+            <div class="absolute top-1.5 right-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
           </div>
-          <div class="absolute top-1 left-1 w-2 h-2 bg-white/60 rounded-full blur-sm"></div>
-          <div class="absolute top-0.5 left-0.5 w-1 h-1 bg-white/80 rounded-full"></div>
-          <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-metal-darker rounded-full"></div>
         </div>
 
         <div class="flex flex-wrap gap-8 pt-[4.8rem] justify-start">
@@ -139,13 +150,6 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
         --rope-knot-light: #A67C52;
         --rope-knot-dark: #5C3317;
         --rope-knot-highlight: #D4A574;
-
-        --metal: #C0C0C0;
-        --metal-dark: #A0A0A0;
-        --metal-light: #E8E8E8;
-        --metal-bright: #F5F5F5;
-        --metal-mid: #D3D3D3;
-        --metal-darker: #808080;
       }
 
       .bg-rope { background-color: var(--rope); }
