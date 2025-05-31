@@ -61,6 +61,20 @@ import { Habit } from '../../../models/habit.model';
           <div class="absolute top-0 left-1 w-3 h-full bg-gradient-to-b from-black/15 via-black/10 to-black/5 rounded-full blur-sm"></div>
         </div>
 
+        <!-- Przycisk do dodania nawyku - tylko dla przycisku dodawania -->
+        @if (isAddButton) {
+          <button
+            (click)="addHabit()"
+            class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full hover:from-emerald-600 hover:to-emerald-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-emerald-400"
+            title="Dodaj nawyk"
+          >
+            <!-- Ikona + do dodawania -->
+            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
+            </svg>
+          </button>
+        }
+
         <!-- Przycisk do przecięcia nitki - tylko dla zwykłych nawyków -->
         @if (!isAddButton && showDeleteButton) {
           <button
@@ -85,32 +99,22 @@ import { Habit } from '../../../models/habit.model';
            style="transform-origin: 50% 8px;">
 
         @if (isAddButton) {
-          <!-- Przycisk dodawania jako metka -->
-          <button
-            (click)="addHabit()"
-            class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group text-emerald-700 hover:text-emerald-900 shadow-xl hover:shadow-2xl hover:scale-105"
-          >
-            <!-- Metka - kształt i tło (jasnozielone tło) -->
+          <!-- Pusta metka dla przycisku dodawania - nieaktywna wizualnie -->
+          <div class="relative w-24 h-16 opacity-30">
+            <!-- Metka - kształt i tło (szare, nieaktywne) -->
             <div class="absolute inset-0 rounded-sm transform rotate-1"
                  style="
                    background: linear-gradient(135deg,
-                     #d1fae5f0 0%,
-                     #a7f3d0e0 25%,
-                     #6ee7b7f5 50%,
-                     #34d399d8 75%,
-                     #10b981e8 100%
-                   ), linear-gradient(45deg,
-                     rgba(245,245,220,0.3) 0%,
-                     rgba(255,248,220,0.2) 50%,
-                     rgba(240,230,210,0.3) 100%
+                     #f3f4f6f0 0%,
+                     #e5e7ebe0 25%,
+                     #d1d5dbf5 50%,
+                     #9ca3afd8 75%,
+                     #6b7280e8 100%
                    );
                    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
                    box-shadow:
-                     0 8px 16px rgba(0,0,0,0.25),
                      0 4px 8px rgba(0,0,0,0.15),
-                     inset 0 1px 0 rgba(255,255,255,0.4),
-                     inset 0 -1px 0 rgba(0,0,0,0.1),
-                     inset 2px 0 4px rgba(0,0,0,0.05);
+                     0 2px 4px rgba(0,0,0,0.1);
                  ">
               <!-- Tekstura papieru -->
               <div class="absolute inset-0 opacity-30 bg-paper-texture rounded-sm"
@@ -123,38 +127,21 @@ import { Habit } from '../../../models/habit.model';
                      background-size: 15px 15px, 20px 20px, 12px 12px;
                    ">
               </div>
-
-              <!-- Highlight papieru -->
-              <div class="absolute top-0 left-2 right-4 h-4 bg-gradient-to-b from-white/20 to-transparent rounded-sm"
-                   style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
-              </div>
             </div>
 
-            <!-- Dziurka w metce - na środku górnej krawędzi -->
+            <!-- Dziurka w metce -->
             <div class="absolute left-1/2 top-2 w-3 h-3 bg-white rounded-full border-2 border-gray-400 shadow-inner z-10 transform -translate-x-1/2">
               <div class="absolute inset-0.5 bg-gradient-to-br from-gray-50 to-gray-200 rounded-full"></div>
-              <!-- Metalowy pierścień wzmacniający -->
               <div class="absolute inset-0 border border-gray-500 rounded-full"></div>
             </div>
 
-            <!-- Ikona plus na metce -->
-            <div class="absolute inset-0 flex items-center justify-center">
-              <svg class="w-6 h-6 text-emerald-700 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
-              </svg>
+            <!-- Placeholder tekst -->
+            <div class="absolute inset-0 flex items-center justify-center px-2">
+              <span class="text-xs font-bold text-gray-400 text-center leading-tight font-serif">
+                Dodaj nawyk
+              </span>
             </div>
-
-            <!-- Wytarcia i zniszczenia -->
-            <div class="absolute inset-0 opacity-20 pointer-events-none"
-                 style="
-                   background-image:
-                     radial-gradient(ellipse at 80% 20%, rgba(139,69,19,0.1) 2px, transparent 3px),
-                     radial-gradient(ellipse at 30% 70%, rgba(101,67,33,0.1) 1px, transparent 2px);
-                   background-size: 25px 25px, 15px 15px;
-                   clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
-                 ">
-            </div>
-          </button>
+          </div>
         } @else {
           <!-- Zwykła metka z nawykiem -->
           <button
@@ -323,11 +310,23 @@ export class HabitTagComponent {
     // Dodaj nowy nawyk z domyślną nazwą
     const newHabitId = this.habitService.addHabit('Nowy nawyk');
 
-    // Przejdź od razu w tryb edycji nowo dodanego nawyku
+    // Ustaw jako aktualny nawyk
+    this.habitService.setCurrentHabit(newHabitId);
+
+    // Przejdź od razu w tryb edycji
     setTimeout(() => {
       this.isEditing.set(true);
       this.editingName = 'Nowy nawyk';
-    }, 0);
+
+      // Focus input po krótkim opóźnieniu
+      setTimeout(() => {
+        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }, 0);
+    }, 100);
   }
 
   selectHabit(): void {
@@ -342,14 +341,28 @@ export class HabitTagComponent {
       event.stopPropagation();
       this.isEditing.set(true);
       this.editingName = this.habit.name;
+
+      // Focus input po krótkim opóźnieniu
+      setTimeout(() => {
+        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }, 0);
     }
   }
+
+
 
   saveEdit(): void {
     if (this.editingName.trim() && this.habit) {
       this.habitService.updateHabitName(this.habit.id, this.editingName.trim());
       this.isEditing.set(false);
       this.editingName = '';
+    } else if (!this.editingName.trim() && this.habit) {
+      // Jeśli nazwa jest pusta, usuń nawyk
+      this.habitService.deleteHabit(this.habit.id);
     }
   }
 
@@ -386,7 +399,6 @@ export class HabitTagComponent {
 
   getTextColor(backgroundColor: string): string {
     // Prosta funkcja do określenia czy tekst powinien być jasny czy ciemny
-    // W prawdziwej aplikacji można użyć bardziej zaawansowanego algorytmu
     const darkColors = ['#000', '#333', '#555', '#800', '#008', '#080'];
     const isDark = darkColors.some(dark => backgroundColor.toLowerCase().includes(dark.slice(1)));
     return isDark ? '#f5f5f5' : '#2d1810';
