@@ -9,7 +9,7 @@ import { Habit } from '../../../models/habit.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="relative group"
+    <div class="relative group w-24"
          [class.add-button-container]="isAddButton"
          [style.margin-left]="getHorizontalOffset(index) + 'px'">
 
@@ -74,6 +74,14 @@ import { Habit } from '../../../models/habit.model';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
             </svg>
           </button>
+        }
+
+        <!-- Niewidoczny obszar hover dla przycisku dodawania - tak szeroki jak metka -->
+        @if (isAddButton) {
+          <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-16 pointer-events-none"
+               [style.transform]="'translateX(-50%) translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
+               style="transform-origin: 50% 8px;">
+          </div>
         }
 
         <!-- Przycisk do przecięcia nitki - tylko dla zwykłych nawyków -->
