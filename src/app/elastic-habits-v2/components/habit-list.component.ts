@@ -202,7 +202,7 @@ import {HabitService} from '../services/habit.service';
                    [style.transform]="'translateY(' + getRandomHang(i) + 'px) rotate(' + getSubtleRotation(i) + 'deg)'"
                    style="transform-origin: 50% 8px;">
                 <button
-                  (click)="habitService.setCurrentHabit(habit.id)"
+                  (click)="editingHabitId() !== habit.id ? habitService.setCurrentHabit(habit.id) : null"
                   class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group"
                   [class]="habit.id === habitService.currentHabitId()
                     ? 'text-gray-800 shadow-2xl scale-110 z-10'
@@ -245,12 +245,30 @@ import {HabitService} from '../services/habit.service';
                     <div class="absolute inset-0 border border-gray-500 rounded-full"></div>
                   </div>
 
-                  <!-- Tekst na metce -->
+                  <!-- Tekst na metce lub pole edycji -->
                   <div class="absolute inset-0 flex items-center justify-center px-2">
-                    <span class="text-xs font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2 font-serif"
-                          [style.color]="getTextColor(habit.color)">
-                      {{ habit.name }}
-                    </span>
+                    @if (editingHabitId() === habit.id) {
+                      <!-- Pole edycji -->
+                      <input
+                        type="text"
+                        [(ngModel)]="editingHabitName"
+                        (keyup.enter)="saveEdit()"
+                        (keyup.escape)="cancelEdit()"
+                        (blur)="saveEdit()"
+                        class="w-full text-xs font-bold text-center leading-tight font-serif bg-transparent border-none outline-none px-1"
+                        [style.color]="getTextColor(habit.color)"
+                        #editInput
+                      />
+                    } @else {
+                      <!-- Normalny tekst -->
+                      <span
+                        class="text-xs font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2 font-serif cursor-pointer"
+                        [style.color]="getTextColor(habit.color)"
+                        (click)="startEditing(habit); $event.stopPropagation()"
+                      >
+                        {{ habit.name }}
+                      </span>
+                    }
                   </div>
 
                   <!-- Wytarcia i zniszczenia -->
@@ -544,6 +562,8 @@ import {HabitService} from '../services/habit.service';
 export class HabitListComponent {
   showAddHabit = signal(false);
   newHabitName = '';
+  editingHabitId = signal<number | null>(null);
+  editingHabitName = '';
 
   constructor(public habitService: HabitService) {}
 
@@ -558,6 +578,24 @@ export class HabitListComponent {
   cancelAdd(): void {
     this.newHabitName = '';
     this.showAddHabit.set(false);
+  }
+
+  startEditing(habit: any): void {
+    this.editingHabitId.set(habit.id);
+    this.editingHabitName = habit.name;
+  }
+
+  saveEdit(): void {
+    if (this.editingHabitName.trim() && this.editingHabitId()) {
+      this.habitService.updateHabitName(this.editingHabitId()!, this.editingHabitName.trim());
+      this.editingHabitId.set(null);
+      this.editingHabitName = '';
+    }
+  }
+
+  cancelEdit(): void {
+    this.editingHabitId.set(null);
+    this.editingHabitName = '';
   }
 
   getTagBackground(color: string): string {

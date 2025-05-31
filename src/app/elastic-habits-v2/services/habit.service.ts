@@ -46,6 +46,16 @@ export class HabitService {
     this.setCurrentHabit(newId);
   }
 
+  updateHabitName(habitId: number, newName: string): void {
+    this.habitsSignal.update(habits =>
+      habits.map(habit =>
+        habit.id === habitId
+          ? { ...habit, name: newName.trim() }
+          : habit
+      )
+    );
+  }
+
   deleteHabit(habitId: number): void {
     const habits = this.habits();
     if (habits.length <= 1) return;
