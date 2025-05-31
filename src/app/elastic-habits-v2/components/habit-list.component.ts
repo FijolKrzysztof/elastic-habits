@@ -262,9 +262,10 @@ import {HabitService} from '../services/habit.service';
                     } @else {
                       <!-- Normalny tekst -->
                       <span
-                        class="text-xs font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2 font-serif cursor-pointer"
+                        class="text-xs font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2 font-serif"
+                        [class.cursor-pointer]="habit.id === habitService.currentHabitId()"
                         [style.color]="getTextColor(habit.color)"
-                        (click)="startEditing(habit); $event.stopPropagation()"
+                        (click)="habit.id === habitService.currentHabitId() && startEditing(habit) && $event.stopPropagation()"
                       >
                         {{ habit.name }}
                       </span>
@@ -580,9 +581,14 @@ export class HabitListComponent {
     this.showAddHabit.set(false);
   }
 
-  startEditing(habit: any): void {
-    this.editingHabitId.set(habit.id);
-    this.editingHabitName = habit.name;
+  startEditing(habit: any): boolean {
+    // Można edytować tylko aktualnie wybrany nawyk
+    if (habit.id === this.habitService.currentHabitId()) {
+      this.editingHabitId.set(habit.id);
+      this.editingHabitName = habit.name;
+      return true;
+    }
+    return false;
   }
 
   saveEdit(): void {
