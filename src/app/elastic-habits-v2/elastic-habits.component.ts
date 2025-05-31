@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HabitListComponent} from './components/habit-list.component';
+import {HabitListComponent} from './components/habit-list/habit-list.component';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {LevelSelectorComponent} from './components/level-selector/level-selector.component';
 
