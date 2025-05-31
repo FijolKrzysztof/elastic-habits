@@ -10,6 +10,7 @@ import { Habit } from '../../../models/habit.model';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="relative group"
+         [class.add-button-container]="isAddButton"
          [style.margin-left]="getHorizontalOffset(index) + 'px'">
 
       <!-- Sznurek od głównego sznura do metki - bardziej realistyczny -->
@@ -20,7 +21,7 @@ import { Habit } from '../../../models/habit.model';
            [style.height]="(52 + getRandomHang(index) + 8) + 'px'"
            style="width: 3px; transform-origin: top center;">
 
-        <div class="relative w-full h-full">
+        <div class="relative w-full h-full thread-content">
           <!-- Główna nitka -->
           <div class="absolute inset-0 bg-gradient-to-b from-thread-light via-thread to-thread-dark rounded-full shadow-sm">
             <!-- Struktura skręconych włókien -->
@@ -65,7 +66,7 @@ import { Habit } from '../../../models/habit.model';
         @if (isAddButton) {
           <button
             (click)="addHabit()"
-            class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full hover:from-emerald-600 hover:to-emerald-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-emerald-400"
+            class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full hover:from-emerald-600 hover:to-emerald-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-emerald-400 add-button"
             title="Dodaj nawyk"
           >
             <!-- Ikona + do dodawania -->
@@ -90,7 +91,7 @@ import { Habit } from '../../../models/habit.model';
         }
 
         <!-- Koniec sznurka przechodzi przez dziurkę -->
-        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-4 bg-gradient-to-b from-thread to-thread-dark rounded-full shadow-sm"></div>
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-4 bg-gradient-to-b from-thread to-thread-dark rounded-full shadow-sm thread-end"></div>
       </div>
 
       <!-- Metka papierowa - subtelnie przekręcona -->
@@ -227,6 +228,24 @@ import { Habit } from '../../../models/habit.model';
       .border-leather { border-color: var(--leather); }
       .focus\\:ring-leather:focus { --tw-ring-color: var(--leather); }
       .focus\\:border-leather:focus { border-color: var(--leather); }
+
+      /* Ukrywanie sznurka TYLKO dla przycisku dodawania */
+      .group.add-button-container .thread-content {
+        display: none;
+      }
+
+      .group.add-button-container .thread-end {
+        display: none;
+      }
+
+      /* Pokazywanie sznurka po najechaniu TYLKO dla przycisku dodawania */
+      .group.add-button-container:hover .thread-content {
+        display: block;
+      }
+
+      .group.add-button-container:hover .thread-end {
+        display: block;
+      }
 
       /* Usunięcie wszystkich obramowań focus */
       button:focus {
