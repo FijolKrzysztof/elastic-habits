@@ -94,55 +94,12 @@ import { Habit } from '../../../models/habit.model';
       </div>
 
       <!-- Metka papierowa - subtelnie przekręcona -->
-      <div class="relative transition-all duration-300 ease-out"
-           [style.transform]="'translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
-           style="transform-origin: 50% 8px;">
+      <!-- Tylko dla zwykłych nawyków, nie dla przycisku dodawania -->
+      @if (!isAddButton) {
+        <div class="relative transition-all duration-300 ease-out"
+             [style.transform]="'translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
+             style="transform-origin: 50% 8px;">
 
-        @if (isAddButton) {
-          <!-- Pusta metka dla przycisku dodawania - nieaktywna wizualnie -->
-          <div class="relative w-24 h-16 opacity-30">
-            <!-- Metka - kształt i tło (szare, nieaktywne) -->
-            <div class="absolute inset-0 rounded-sm transform rotate-1"
-                 style="
-                   background: linear-gradient(135deg,
-                     #f3f4f6f0 0%,
-                     #e5e7ebe0 25%,
-                     #d1d5dbf5 50%,
-                     #9ca3afd8 75%,
-                     #6b7280e8 100%
-                   );
-                   clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
-                   box-shadow:
-                     0 4px 8px rgba(0,0,0,0.15),
-                     0 2px 4px rgba(0,0,0,0.1);
-                 ">
-              <!-- Tekstura papieru -->
-              <div class="absolute inset-0 opacity-30 bg-paper-texture rounded-sm"
-                   style="
-                     clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
-                     background-image:
-                       radial-gradient(circle at 20% 30%, rgba(0,0,0,0.03) 1px, transparent 1px),
-                       radial-gradient(circle at 70% 60%, rgba(0,0,0,0.02) 1px, transparent 1px),
-                       radial-gradient(circle at 40% 80%, rgba(0,0,0,0.02) 1px, transparent 1px);
-                     background-size: 15px 15px, 20px 20px, 12px 12px;
-                   ">
-              </div>
-            </div>
-
-            <!-- Dziurka w metce -->
-            <div class="absolute left-1/2 top-2 w-3 h-3 bg-white rounded-full border-2 border-gray-400 shadow-inner z-10 transform -translate-x-1/2">
-              <div class="absolute inset-0.5 bg-gradient-to-br from-gray-50 to-gray-200 rounded-full"></div>
-              <div class="absolute inset-0 border border-gray-500 rounded-full"></div>
-            </div>
-
-            <!-- Placeholder tekst -->
-            <div class="absolute inset-0 flex items-center justify-center px-2">
-              <span class="text-xs font-bold text-gray-400 text-center leading-tight font-serif">
-                Dodaj nawyk
-              </span>
-            </div>
-          </div>
-        } @else {
           <!-- Zwykła metka z nawykiem -->
           <button
             (click)="selectHabit()"
@@ -226,13 +183,13 @@ import { Habit } from '../../../models/habit.model';
                  ">
             </div>
           </button>
-        }
 
-        <!-- Cień metki na powierzchni -->
-        <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm transform rotate-1 -z-10"
-             style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
+          <!-- Cień metki na powierzchni -->
+          <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm transform rotate-1 -z-10"
+               style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
+          </div>
         </div>
-      </div>
+      }
     </div>
 
     <style>
