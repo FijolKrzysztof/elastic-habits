@@ -13,7 +13,6 @@ import { Habit } from '../../../models/habit.model';
          [class.add-button-container]="isAddButton"
          [style.margin-left]="getHorizontalOffset(index) + 'px'">
 
-      <!-- Sznurek od głównego sznura do metki - bardziej realistyczny -->
       <div class="absolute origin-top z-10"
            [style.top]="'-52px'"
            [style.left]="'50%'"
@@ -22,9 +21,7 @@ import { Habit } from '../../../models/habit.model';
            style="width: 3px; transform-origin: top center;">
 
         <div class="relative w-full h-full thread-content">
-          <!-- Główna nitka -->
           <div class="absolute inset-0 bg-gradient-to-b from-thread-light via-thread to-thread-dark rounded-full shadow-sm">
-            <!-- Struktura skręconych włókien -->
             <div class="absolute inset-0 opacity-70 rounded-full"
                  style="background-image:
                    repeating-linear-gradient(30deg,
@@ -42,13 +39,10 @@ import { Habit } from '../../../models/habit.model';
                    background-size: 4px 4px, 3px 3px;">
             </div>
 
-            <!-- Highlight dla 3D efektu -->
             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-thread-highlight/60 to-transparent rounded-full"></div>
 
-            <!-- Cień po prawej stronie -->
             <div class="absolute top-0 right-0 w-0.5 h-full bg-gradient-to-b from-thread-shadow to-thread-shadow/80 rounded-full"></div>
 
-            <!-- Drobne włókna wystające -->
             <div class="absolute inset-0 opacity-50 rounded-full"
                  style="background-image:
                    radial-gradient(ellipse 0.5px 3px at 30% 20%, rgba(139,69,19,0.8) 0%, transparent 70%),
@@ -58,25 +52,21 @@ import { Habit } from '../../../models/habit.model';
             </div>
           </div>
 
-          <!-- Cień nitki -->
           <div class="absolute top-0 left-1 w-3 h-full bg-gradient-to-b from-black/15 via-black/10 to-black/5 rounded-full blur-sm"></div>
         </div>
 
-        <!-- Przycisk do dodania nawyku - tylko dla przycisku dodawania -->
         @if (isAddButton) {
           <button
             (click)="addHabit()"
             class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full hover:from-emerald-600 hover:to-emerald-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-emerald-400 add-button"
             title="Dodaj nawyk"
           >
-            <!-- Ikona + do dodawania -->
             <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
             </svg>
           </button>
         }
 
-        <!-- Niewidoczny obszar hover dla przycisku dodawania - tak szeroki jak metka -->
         @if (isAddButton) {
           <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-16 pointer-events-none"
                [style.transform]="'translateX(-50%) translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
@@ -84,32 +74,26 @@ import { Habit } from '../../../models/habit.model';
           </div>
         }
 
-        <!-- Przycisk do przecięcia nitki - tylko dla zwykłych nawyków -->
         @if (!isAddButton && showDeleteButton) {
           <button
             (click)="deleteHabit()"
             class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-700 rounded-full hover:from-red-600 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-red-400"
             title="Usuń nawyk"
           >
-            <!-- Ikona X do usuwania -->
             <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         }
 
-        <!-- Koniec sznurka przechodzi przez dziurkę -->
         <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-4 bg-gradient-to-b from-thread to-thread-dark rounded-full shadow-sm thread-end"></div>
       </div>
 
-      <!-- Metka papierowa - subtelnie przekręcona -->
-      <!-- Tylko dla zwykłych nawyków, nie dla przycisku dodawania -->
       @if (!isAddButton) {
         <div class="relative transition-all duration-300 ease-out"
              [style.transform]="'translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
              style="transform-origin: 50% 8px;">
 
-          <!-- Zwykła metka z nawykiem -->
           <button
             (click)="selectHabit()"
             class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group"
@@ -117,7 +101,6 @@ import { Habit } from '../../../models/habit.model';
               ? 'text-gray-800 shadow-2xl scale-110 z-10'
               : 'text-gray-700 hover:text-gray-900 shadow-xl hover:shadow-2xl'"
           >
-            <!-- Metka - kształt i tło -->
             <div class="absolute inset-0 rounded-sm transform rotate-1"
                  [style.background]="getTagBackground(habit?.color || '#10B981')"
                  style="
@@ -129,7 +112,6 @@ import { Habit } from '../../../models/habit.model';
                      inset 0 -1px 0 rgba(0,0,0,0.1),
                      inset 2px 0 4px rgba(0,0,0,0.05);
                  ">
-              <!-- Tekstura papieru -->
               <div class="absolute inset-0 opacity-30 bg-paper-texture rounded-sm"
                    style="
                      clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
@@ -141,23 +123,18 @@ import { Habit } from '../../../models/habit.model';
                    ">
               </div>
 
-              <!-- Highlight papieru -->
               <div class="absolute top-0 left-2 right-4 h-4 bg-gradient-to-b from-white/20 to-transparent rounded-sm"
                    style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
               </div>
             </div>
 
-            <!-- Dziurka w metce - na środku górnej krawędzi -->
             <div class="absolute left-1/2 top-2 w-3 h-3 bg-white rounded-full border-2 border-gray-400 shadow-inner z-10 transform -translate-x-1/2">
               <div class="absolute inset-0.5 bg-gradient-to-br from-gray-50 to-gray-200 rounded-full"></div>
-              <!-- Metalowy pierścień wzmacniający -->
               <div class="absolute inset-0 border border-gray-500 rounded-full"></div>
             </div>
 
-            <!-- Tekst na metce lub pole edycji -->
             <div class="absolute inset-0 flex items-center justify-center px-2">
               @if (isEditing()) {
-                <!-- Pole edycji -->
                 <input
                   type="text"
                   [(ngModel)]="editingName"
@@ -169,7 +146,6 @@ import { Habit } from '../../../models/habit.model';
                   #editInput
                 />
               } @else {
-                <!-- Normalny tekst -->
                 <span
                   class="text-xs font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2 font-serif"
                   [class.cursor-pointer]="habit && habit.id === habitService.currentHabitId()"
@@ -181,7 +157,6 @@ import { Habit } from '../../../models/habit.model';
               }
             </div>
 
-            <!-- Wytarcia i zniszczenia -->
             <div class="absolute inset-0 opacity-20 pointer-events-none"
                  style="
                    background-image:
@@ -193,7 +168,6 @@ import { Habit } from '../../../models/habit.model';
             </div>
           </button>
 
-          <!-- Cień metki na powierzchni -->
           <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm transform rotate-1 -z-10"
                style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
           </div>
@@ -237,7 +211,6 @@ import { Habit } from '../../../models/habit.model';
       .focus\\:ring-leather:focus { --tw-ring-color: var(--leather); }
       .focus\\:border-leather:focus { border-color: var(--leather); }
 
-      /* Ukrywanie sznurka TYLKO dla przycisku dodawania */
       .group.add-button-container .thread-content {
         display: none;
       }
@@ -246,7 +219,6 @@ import { Habit } from '../../../models/habit.model';
         display: none;
       }
 
-      /* Pokazywanie sznurka po najechaniu TYLKO dla przycisku dodawania */
       .group.add-button-container:hover .thread-content {
         display: block;
       }
@@ -255,13 +227,11 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      /* Usunięcie wszystkich obramowań focus */
       button:focus {
         outline: none !important;
         box-shadow: none !important;
       }
 
-      /* Efekt zmięcia papieru */
       button:active .absolute[style*="clip-path"] {
         transform: scale(0.98) rotate(2deg);
         box-shadow:
@@ -269,7 +239,6 @@ import { Habit } from '../../../models/habit.model';
           inset 0 2px 4px rgba(0,0,0,0.1);
       }
 
-      /* Linie pomocnicze dla czytania */
       .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -291,18 +260,14 @@ export class HabitTagComponent {
   constructor(public habitService: HabitService) {}
 
   addHabit(): void {
-    // Dodaj nowy nawyk z domyślną nazwą
     const newHabitId = this.habitService.addHabit('Nowy nawyk');
 
-    // Ustaw jako aktualny nawyk
     this.habitService.setCurrentHabit(newHabitId);
 
-    // Przejdź od razu w tryb edycji
     setTimeout(() => {
       this.isEditing.set(true);
       this.editingName = 'Nowy nawyk';
 
-      // Focus input po krótkim opóźnieniu
       setTimeout(() => {
         const input = document.querySelector('input[type="text"]') as HTMLInputElement;
         if (input) {
@@ -320,13 +285,11 @@ export class HabitTagComponent {
   }
 
   startEditingIfCurrent(event: Event): void {
-    // Można edytować tylko aktualnie wybrany nawyk
     if (this.habit && this.habit.id === this.habitService.currentHabitId()) {
       event.stopPropagation();
       this.isEditing.set(true);
       this.editingName = this.habit.name;
 
-      // Focus input po krótkim opóźnieniu
       setTimeout(() => {
         const input = document.querySelector('input[type="text"]') as HTMLInputElement;
         if (input) {
@@ -337,21 +300,17 @@ export class HabitTagComponent {
     }
   }
 
-
-
   saveEdit(): void {
     if (this.editingName.trim() && this.habit) {
       this.habitService.updateHabitName(this.habit.id, this.editingName.trim());
       this.isEditing.set(false);
       this.editingName = '';
     } else if (!this.editingName.trim() && this.habit) {
-      // Jeśli nazwa jest pusta, usuń nawyk
       this.habitService.deleteHabit(this.habit.id);
     }
   }
 
   cancelEdit(): void {
-    // Jeśli anulujemy edycję nowo dodanego nawyku z domyślną nazwą, usuń go
     if (this.habit && this.editingName === 'Nowy nawyk' && this.habit.name === 'Nowy nawyk') {
       this.habitService.deleteHabit(this.habit.id);
     }
@@ -367,7 +326,6 @@ export class HabitTagComponent {
   }
 
   getTagBackground(color: string): string {
-    // Tworzy gradient przypominający stary papier z podanym kolorem
     return `linear-gradient(135deg,
       ${color}f0 0%,
       ${color}e0 25%,
@@ -382,56 +340,26 @@ export class HabitTagComponent {
   }
 
   getTextColor(backgroundColor: string): string {
-    // Prosta funkcja do określenia czy tekst powinien być jasny czy ciemny
     const darkColors = ['#000', '#333', '#555', '#800', '#008', '#080'];
     const isDark = darkColors.some(dark => backgroundColor.toLowerCase().includes(dark.slice(1)));
     return isDark ? '#f5f5f5' : '#2d1810';
   }
 
-  // Funkcje do tworzenia nieregularnego wiszenia
   getRandomHang(index: number): number {
-    // Używamy indeksu jako seed dla konsystentnych wyników
     const pseudo = Math.sin(index * 12.9898) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
     return Math.floor(normalized * 30) + 10; // Od 10 do 40px w dół
   }
 
-  getRandomRotation(index: number): number {
-    // Obrót całej metki z nitką
-    const pseudo = Math.sin(index * 78.233) * 43758.5453;
-    const normalized = pseudo - Math.floor(pseudo);
-    return (normalized * 8) - 4; // Od -4 do 4 stopni
-  }
-
-  getHeavyTilt(index: number): number {
-    // Mocny przechył metki przez grawitację - znacznie bardziej w dół
-    const pseudo = Math.sin(index * 23.456) * 43758.5453;
-    const normalized = pseudo - Math.floor(pseudo);
-    return (normalized * 35) + 15; // Od 15 do 50 stopni w dół - bardzo przekręcone!
-  }
-
-  getRandomTilt(index: number): number {
-    // Stara funkcja - zostawiam dla kompatybilności
-    return this.getHeavyTilt(index);
-  }
-
   getHorizontalOffset(index: number): number {
-    // Losowe przesunięcie w poziomie
     const pseudo = Math.sin(index * 45.678) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return Math.floor(normalized * 50) - 25; // Od -25 do 25px - więcej rozrzutu
-  }
-
-  getStringLength(index: number): number {
-    // Długość sznurka do metki - dokładnie dopasowana
-    const baseLength = 50; // Podstawowa długość
-    return baseLength; // Konsystentna długość, wysokość jest dodawana przez hang
+    return Math.floor(normalized * 50) - 25;
   }
 
   getSubtleRotation(index: number): number {
-    // Subtelny obrót metki - małe przekręcenie
     const pseudo = Math.sin(index * 34.567) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return (normalized * 12) - 6; // Od -6 do +6 stopni - subtelne przekręcenie
+    return (normalized * 12) - 6;
   }
 }
