@@ -354,7 +354,7 @@ import {HabitService} from '../services/habit.service';
                  [style.transform]="'translateY(' + getRandomHang(habitService.habits().length) + 'px) rotate(' + getSubtleRotation(habitService.habits().length) + 'deg)'"
                  style="transform-origin: 50% 8px;">
               <button
-                (click)="showAddHabit.set(true)"
+                (click)="addHabit()"
                 class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group text-emerald-700 hover:text-emerald-900 shadow-xl hover:shadow-2xl hover:scale-105"
               >
                 <!-- Metka - kształt i tło (jasnozielone tło) -->
@@ -432,44 +432,6 @@ import {HabitService} from '../services/habit.service';
         </div>
       </div>
     </div>
-
-    @if (showAddHabit()) {
-      <div class="mb-6 p-6 bg-gradient-to-br from-parchment to-parchment-dark rounded-lg shadow-2xl border-2 border-parchment-border relative overflow-hidden">
-        <!-- Tekstura pergaminu -->
-        <div class="absolute inset-0 opacity-10 bg-repeat"
-             style="background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22><g fill=%22%238B4513%22 opacity=%220.3%22><circle cx=%2215%22 cy=%2215%22 r=%220.5%22/><circle cx=%2245%22 cy=%2235%22 r=%220.5%22/><circle cx=%2225%22 cy=%2245%22 r=%220.5%22/></g></svg>');">
-        </div>
-
-        <h3 class="font-bold mb-4 text-leather-dark flex items-center gap-2 text-lg font-serif relative z-10">
-          <svg class="w-6 h-6 text-leather" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-          </svg>
-          Dodaj nową metkę
-        </h3>
-
-        <div class="flex gap-4 relative z-10">
-          <input
-            type="text"
-            [(ngModel)]="newHabitName"
-            placeholder="Nazwa nawyku..."
-            class="flex-1 px-4 py-3 border-2 border-parchment-border rounded-md focus:outline-none focus:ring-2 focus:ring-leather focus:border-leather bg-cream/90 backdrop-blur-sm shadow-inner font-serif placeholder-gray-500"
-            (keyup.enter)="addHabit()"
-          />
-          <button
-            (click)="addHabit()"
-            class="px-6 py-3 bg-gradient-to-br from-emerald-500 to-emerald-700 text-cream rounded-md hover:from-emerald-600 hover:to-emerald-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-bold text-sm border border-emerald-600"
-          >
-            Dodaj
-          </button>
-          <button
-            (click)="cancelAdd()"
-            class="px-6 py-3 bg-gradient-to-br from-stone-400 to-stone-600 text-cream rounded-md hover:from-stone-500 hover:to-stone-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-bold text-sm border border-stone-500"
-          >
-            Anuluj
-          </button>
-        </div>
-      </div>
-    }
 
     <style>
       :root {
@@ -561,24 +523,20 @@ import {HabitService} from '../services/habit.service';
   `
 })
 export class HabitListComponent {
-  showAddHabit = signal(false);
-  newHabitName = '';
   editingHabitId = signal<number | null>(null);
   editingHabitName = '';
 
   constructor(public habitService: HabitService) {}
 
   addHabit(): void {
-    if (this.newHabitName.trim()) {
-      this.habitService.addHabit(this.newHabitName);
-      this.newHabitName = '';
-      this.showAddHabit.set(false);
-    }
-  }
+    // Dodaj nowy nawyk z domyślną nazwą
+    const newHabitId = this.habitService.addHabit('Nowy nawyk');
 
-  cancelAdd(): void {
-    this.newHabitName = '';
-    this.showAddHabit.set(false);
+    // Przejdź od razu w tryb edycji nowo dodanego nawyku
+    setTimeout(() => {
+      this.editingHabitId.set(newHabitId);
+      this.editingHabitName = 'Nowy nawyk';
+    }, 0);
   }
 
   startEditing(habit: any): boolean {
@@ -600,6 +558,15 @@ export class HabitListComponent {
   }
 
   cancelEdit(): void {
+    // Jeśli anulujemy edycję nowo dodanego nawyku z domyślną nazwą, usuń go
+    const editingId = this.editingHabitId();
+    if (editingId && this.editingHabitName === 'Nowy nawyk') {
+      const habit = this.habitService.habits().find(h => h.id === editingId);
+      if (habit && habit.name === 'Nowy nawyk') {
+        this.habitService.deleteHabit(editingId);
+      }
+    }
+
     this.editingHabitId.set(null);
     this.editingHabitName = '';
   }

@@ -33,7 +33,7 @@ export class HabitService {
     plus: { name: 'Plus', color: '#EF4444', bg: '#FEE2E2' }
   };
 
-  addHabit(name: string): void {
+  addHabit(name: string): number {
     const newId = Math.max(...this.habits().map(h => h.id)) + 1;
     const colors = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444', '#6B7280'];
     const color = colors[this.habits().length % colors.length];
@@ -44,6 +44,7 @@ export class HabitService {
     ]);
 
     this.setCurrentHabit(newId);
+    return newId;
   }
 
   updateHabitName(habitId: number, newName: string): void {
