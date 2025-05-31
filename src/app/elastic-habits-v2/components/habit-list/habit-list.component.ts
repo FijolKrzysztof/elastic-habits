@@ -92,46 +92,71 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
                 <!-- Gwoździe równo rozłożone po sznurku -->
                 <!-- Gwóźdź 1 - lewy -->
                 <div class="absolute top-8 left-2 z-10">
-                    <div class="relative w-4 h-4 transform -rotate-12">
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
-                        <div class="absolute top-1 left-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
-                        <div class="absolute top-1.5 left-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
+                    <div class="relative w-3 h-3 transform -rotate-12">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-300 to-zinc-500"></div>
+                        <!-- Krawędzie nadające płaskość -->
+                        <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-400"></div>
+                        <!-- Odbłysk w górnym rogu -->
+                        <div class="absolute top-0.5 left-0.5 w-1 h-0.5 bg-white/50 rounded-full blur-[0.5px]"></div>
+                        <!-- Mały intensywny punkt -->
+                        <div class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white/70 rounded-full"></div>
+                        <!-- Wgłębienie w centrum z gradientem -->
+                        <div class="absolute top-1 left-1 w-1 h-1 rounded-full"
+                             style="background: radial-gradient(circle at center, #52525b 0%, #71717a 60%, transparent 100%);"></div>
+                        <!-- Subtelna krawędź wewnętrzna -->
+                        <div class="absolute inset-0 rounded-full border border-zinc-400/30"></div>
                     </div>
                 </div>
 
                 <!-- Gwóźdź 2 -->
                 <div class="absolute top-8 left-1/4 z-10">
-                    <div class="relative w-4 h-4 transform rotate-8">
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
-                        <div class="absolute top-1 left-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
-                        <div class="absolute top-1.5 left-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
+                    <div class="relative w-3 h-3 transform rotate-8">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-300 to-zinc-500"></div>
+                        <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-400"></div>
+                        <div class="absolute top-0.5 left-0.5 w-1 h-0.5 bg-white/50 rounded-full blur-[0.5px]"></div>
+                        <div class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white/70 rounded-full"></div>
+                        <div class="absolute top-1 left-1 w-1 h-1 rounded-full"
+                             style="background: radial-gradient(circle at center, #52525b 0%, #71717a 60%, transparent 100%);"></div>
+                        <div class="absolute inset-0 rounded-full border border-zinc-400/30"></div>
                     </div>
                 </div>
 
                 <!-- Gwóźdź 3 - środek -->
                 <div class="absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
-                    <div class="relative w-4 h-4 transform -rotate-5">
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
-                        <div class="absolute top-1 left-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
-                        <div class="absolute top-1.5 left-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
+                    <div class="relative w-3 h-3 transform -rotate-5">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-300 to-zinc-500"></div>
+                        <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-400"></div>
+                        <div class="absolute top-0.5 left-0.5 w-1 h-0.5 bg-white/50 rounded-full blur-[0.5px]"></div>
+                        <div class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white/70 rounded-full"></div>
+                        <div class="absolute top-1 left-1 w-1 h-1 rounded-full"
+                             style="background: radial-gradient(circle at center, #52525b 0%, #71717a 60%, transparent 100%);"></div>
+                        <div class="absolute inset-0 rounded-full border border-zinc-400/30"></div>
                     </div>
                 </div>
 
                 <!-- Gwóźdź 4 -->
                 <div class="absolute top-8 right-1/4 z-10">
-                    <div class="relative w-4 h-4 transform rotate-15">
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
-                        <div class="absolute top-1 right-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
-                        <div class="absolute top-1.5 right-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
+                    <div class="relative w-3 h-3 transform rotate-15">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-300 to-zinc-500"></div>
+                        <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-400"></div>
+                        <div class="absolute top-0.5 right-0.5 w-1 h-0.5 bg-white/50 rounded-full blur-[0.5px]"></div>
+                        <div class="absolute top-0.5 right-0.5 w-0.5 h-0.5 bg-white/70 rounded-full"></div>
+                        <div class="absolute top-1 right-1 w-1 h-1 rounded-full"
+                             style="background: radial-gradient(circle at center, #52525b 0%, #71717a 60%, transparent 100%);"></div>
+                        <div class="absolute inset-0 rounded-full border border-zinc-400/30"></div>
                     </div>
                 </div>
 
                 <!-- Gwóźdź 5 - prawy -->
                 <div class="absolute top-8 right-2 z-10">
-                    <div class="relative w-4 h-4 transform rotate-12">
-                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gray-400 to-gray-600"></div>
-                        <div class="absolute top-1 right-1 w-1 h-0.5 bg-white/40 rounded-full"></div>
-                        <div class="absolute top-1.5 right-1.5 w-1 h-1 bg-gray-800 rounded-full"></div>
+                    <div class="relative w-3 h-3 transform rotate-12">
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-300 to-zinc-500"></div>
+                        <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-400"></div>
+                        <div class="absolute top-0.5 right-0.5 w-1 h-0.5 bg-white/50 rounded-full blur-[0.5px]"></div>
+                        <div class="absolute top-0.5 right-0.5 w-0.5 h-0.5 bg-white/70 rounded-full"></div>
+                        <div class="absolute top-1 right-1 w-1 h-1 rounded-full"
+                             style="background: radial-gradient(circle at center, #52525b 0%, #71717a 60%, transparent 100%);"></div>
+                        <div class="absolute inset-0 rounded-full border border-zinc-400/30"></div>
                     </div>
                 </div>
 
