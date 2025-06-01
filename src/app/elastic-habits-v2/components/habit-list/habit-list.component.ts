@@ -89,23 +89,6 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
                     <div class="absolute top-1 left-2/3 w-2 h-3 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full shadow-md opacity-75"></div>
                 </div>
 
-                <!-- Gwoździe generowane w pętli -->
-                @for (nail of nailPositions; track $index) {
-                    <div class="absolute z-10"
-                         [style.top.rem]="2.1"
-                         [style.left]="nail.position">
-                        <div class="relative w-3 h-3" [style.transform]="'rotate(' + nail.rotation + 'deg)'">
-                            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-zinc-300 to-zinc-500"></div>
-                            <div class="absolute inset-0.5 rounded-full bg-gradient-to-br from-zinc-200 to-zinc-400"></div>
-                            <div class="absolute top-0.5 left-0.5 w-1 h-0.5 bg-white/50 rounded-full blur-[0.5px]"></div>
-                            <div class="absolute top-0.5 left-0.5 w-0.5 h-0.5 bg-white/70 rounded-full"></div>
-                            <div class="absolute top-1 left-1 w-1 h-1 rounded-full"
-                                 style="background: radial-gradient(circle at center, #52525b 0%, #71717a 60%, transparent 100%);"></div>
-                            <div class="absolute inset-0 rounded-full border border-zinc-400/30"></div>
-                        </div>
-                    </div>
-                }
-
                 <div class="flex flex-wrap gap-8 pt-[4.8rem] justify-start">
                     @for (habit of habitService.habits(); track habit.id; let i = $index) {
                         <app-habit-tag

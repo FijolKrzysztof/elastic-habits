@@ -90,18 +90,19 @@ import { Habit } from '../../../models/habit.model';
       </div>
 
       @if (!isAddButton) {
-        <div class="relative transition-all duration-300 ease-out"
-             [style.transform]="'translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
+        <div class="relative transition-all duration-300 ease-out habit-tag-container"
+             [class.selected]="isSelected()"
+             [style.transform]="getTagTransform()"
              style="transform-origin: 50% 8px;">
 
           <button
             (click)="selectHabit()"
-            class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group"
+            class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group habit-button"
             [class]="habit && habit.id === habitService.currentHabitId()
               ? 'text-gray-800 shadow-2xl scale-110 z-10'
               : 'text-gray-700 hover:text-gray-900 shadow-xl hover:shadow-2xl'"
           >
-            <div class="absolute inset-0 rounded-sm transform rotate-1"
+            <div class="absolute inset-0 rounded-sm tag-background transition-all duration-300"
                  [style.background]="getTagBackground(habit?.color || '#10B981')"
                  style="
                    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
@@ -168,7 +169,7 @@ import { Habit } from '../../../models/habit.model';
             </div>
           </button>
 
-          <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm transform rotate-1 -z-10"
+          <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm tag-shadow transition-all duration-300 -z-10"
                style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
           </div>
         </div>
@@ -227,12 +228,36 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
+      /* Efekty hover dla tagów - tylko skalowanie, bez zmiany wysokości */
+      .habit-tag-container:hover {
+        transform-origin: 50% 50%;
+        z-index: 20;
+      }
+
+      .habit-tag-container:hover {
+        scale: 1.15;
+      }
+
+      .habit-tag-container:hover .tag-background {
+        box-shadow:
+          0 12px 24px rgba(0,0,0,0.35),
+          0 8px 16px rgba(0,0,0,0.25),
+          inset 0 1px 0 rgba(255,255,255,0.5),
+          inset 0 -1px 0 rgba(0,0,0,0.15),
+          inset 2px 0 6px rgba(0,0,0,0.08);
+      }
+
+      .habit-tag-container:hover .tag-shadow {
+        transform: scale(1.2) rotate(2deg);
+        opacity: 0.4;
+      }
+
       button:focus {
         outline: none !important;
         box-shadow: none !important;
       }
 
-      button:active .absolute[style*="clip-path"] {
+      button:active .tag-background {
         transform: scale(0.98) rotate(2deg);
         box-shadow:
           0 4px 8px rgba(0,0,0,0.3),
@@ -323,6 +348,21 @@ export class HabitTagComponent {
     if (this.habit) {
       this.habitService.deleteHabit(this.habit.id);
     }
+  }
+
+  // Sprawdzanie czy tag jest wybrany
+  isSelected(): boolean {
+    return this.habit ? this.habit.id === this.habitService.currentHabitId() : false;
+  }
+
+  // Obliczanie transformacji tagu
+  getTagTransform(): string {
+    const baseTransform = `translateY(${this.getRandomHang(this.index)}px)`;
+    const rotation = this.isSelected()
+      ? Math.abs(this.getSubtleRotation(this.index)) // Wybrany = w prawo (dodatni kąt)
+      : -Math.abs(this.getSubtleRotation(this.index)); // Niewybrany = w lewo (ujemny kąt)
+
+    return `${baseTransform} rotate(${rotation}deg)`;
   }
 
   getTagBackground(color: string): string {
