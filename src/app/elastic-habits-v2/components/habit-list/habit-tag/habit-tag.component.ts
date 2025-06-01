@@ -17,7 +17,7 @@ import { Habit } from '../../../models/habit.model';
            [style.top]="'-52px'"
            [style.left]="'50%'"
            [style.transform]="'translateX(-50%)'"
-           [style.height]="(52 + getRandomHang(index) + 8) + 'px'"
+           [style.height]="(52 + getHangLength(index) + 8) + 'px'"
            style="width: 3px; transform-origin: top center;">
 
         <div class="relative w-full h-full thread-content">
@@ -69,7 +69,7 @@ import { Habit } from '../../../models/habit.model';
 
         @if (isAddButton) {
           <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-16 pointer-events-none"
-               [style.transform]="'translateX(-50%) translateY(' + getRandomHang(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
+               [style.transform]="'translateX(-50%) translateY(' + getHangLength(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
                style="transform-origin: 50% 8px;">
           </div>
         }
@@ -355,9 +355,16 @@ export class HabitTagComponent {
     return this.habit ? this.habit.id === this.habitService.currentHabitId() : false;
   }
 
+  // Obliczanie długości zwisania - wybrany zwisa niżej
+  getHangLength(index: number): number {
+    const baseHang = 6; // Jeszcze krótsze nitki domyślnie
+    return this.isSelected() ? baseHang + 30 : baseHang; // Wybrany +30px (większe wydłużenie)
+  }
+
   // Obliczanie transformacji tagu
   getTagTransform(): string {
-    const baseTransform = `translateY(${this.getRandomHang(this.index)}px)`;
+    const hangLength = this.getHangLength(this.index);
+    const baseTransform = `translateY(${hangLength}px)`;
     const rotation = this.isSelected()
       ? Math.abs(this.getSubtleRotation(this.index)) // Wybrany = w prawo (dodatni kąt)
       : -Math.abs(this.getSubtleRotation(this.index)); // Niewybrany = w lewo (ujemny kąt)
