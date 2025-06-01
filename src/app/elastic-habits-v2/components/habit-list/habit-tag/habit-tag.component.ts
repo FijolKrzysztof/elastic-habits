@@ -355,10 +355,10 @@ export class HabitTagComponent {
     return this.habit ? this.habit.id === this.habitService.currentHabitId() : false;
   }
 
-  // Obliczanie długości zwisania - wybrany zwisa niżej
+  // Bardzo krótkie nitki - wybrany element znacznie wydłuża nitkę
   getHangLength(index: number): number {
-    const baseHang = 6; // Jeszcze krótsze nitki domyślnie
-    return this.isSelected() ? baseHang + 30 : baseHang; // Wybrany +30px (większe wydłużenie)
+    const baseHang = -5; // Ujemna wartość - tagi będą "podciągnięte" do góry
+    return this.isSelected() ? baseHang + 35 : baseHang; // Wybrany znacznie wydłuża nitkę o 35px
   }
 
   // Obliczanie transformacji tagu
