@@ -22,8 +22,6 @@ export class LevelSelectorComponent {
   constructor(private habitService: HabitService) {}
 
   onLevelSelected(level: LevelKey): void {
-    // Aktualizuj wybrany poziom w serwisie
     this.habitService.setSelectedLevel(level);
-    console.log('Selected level:', level);
   }
 }

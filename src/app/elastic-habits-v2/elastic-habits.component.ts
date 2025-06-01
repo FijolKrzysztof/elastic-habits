@@ -21,22 +21,17 @@ import {LevelSelectorComponent} from './components/level-selector/level-selector
           <p class="text-gray-600">Elastyczne podejście do budowania nawyków</p>
         </div>
 
-        <!-- Nowy layout: Level Selector po lewej, HabitList i Calendar po prawej -->
         <div class="flex gap-6">
-          <!-- Lewa strona: Level Selector -->
-          <div class="flex-shrink-0">
+          <div class="flex-shrink-0 flex items-end">
             <app-level-selector></app-level-selector>
           </div>
 
-          <!-- Prawa strona: Habit List i Calendar -->
           <div class="flex-1 space-y-6">
-            <!-- Habit List na górze -->
             <div>
               <app-habit-list></app-habit-list>
             </div>
 
-            <!-- Calendar na dole -->
-            <div class="rounded-xl p-6">
+            <div class="rounded-xl px-6">
               <app-calendar></app-calendar>
             </div>
           </div>

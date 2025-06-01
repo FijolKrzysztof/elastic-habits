@@ -126,7 +126,6 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
       }
     </style>
 
-    <!-- Usunięty flex z level-selector, teraz tylko kalendarz -->
     <div>
       <div class="calendar-header">
         <div class="header-controls">
@@ -189,7 +188,6 @@ export class CalendarComponent {
   onDayClicked(event: { date: Date }): void {
     const { date } = event;
 
-    // Serwis automatycznie użyje aktualnie wybranego poziomu i uruchomi animację
     this.habitService.toggleDayStatus(date);
   }
 }
