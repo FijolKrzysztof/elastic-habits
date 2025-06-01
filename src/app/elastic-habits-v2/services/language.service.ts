@@ -1,25 +1,15 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
 
 export type LanguageCode = 'en' | 'pl';
 
 export interface Translations {
-  // Navigation & General
-  habits: string;
-  calendar: string;
-  level: string;
-
   // Habit related
   addHabit: string;
   editHabit: string;
   deleteHabit: string;
   habitName: string;
   habitDescription: string;
-
-  // Calendar
-  today: string;
-  thisWeek: string;
-  thisMonth: string;
+  newHabit: string;
 
   // Days of week
   monday: string;
@@ -43,45 +33,58 @@ export interface Translations {
   october: string;
   november: string;
   december: string;
-
-  // Actions
-  save: string;
-  cancel: string;
-  delete: string;
-  edit: string;
-  add: string;
-
-  // Status
-  completed: string;
-  pending: string;
-  streak: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class LanguageService {
-  private currentLanguageSubject = new BehaviorSubject<LanguageCode>('en');
-  public currentLanguage$ = this.currentLanguageSubject.asObservable();
+  private currentLanguageSignal = signal<LanguageCode>('en');
 
-  private translations: Record<LanguageCode, Translations> = {
+  // Readonly signal for external access
+  readonly currentLanguage = this.currentLanguageSignal.asReadonly();
+
+  // Computed translations that automatically update when language changes
+  readonly translations = computed(() => this.getTranslationsFor(this.currentLanguage()));
+
+  // Computed arrays for calendar - automatically translated
+  readonly months = computed(() => [
+    this.translations().january,
+    this.translations().february,
+    this.translations().march,
+    this.translations().april,
+    this.translations().may,
+    this.translations().june,
+    this.translations().july,
+    this.translations().august,
+    this.translations().september,
+    this.translations().october,
+    this.translations().november,
+    this.translations().december
+  ]);
+
+  readonly weekDays = computed(() => {
+    const t = this.translations();
+    return [
+      t.monday.slice(0, 3),    // Pon / Mon
+      t.tuesday.slice(0, 3),   // Wt / Tue
+      t.wednesday.slice(0, 3), // Śr / Wed
+      t.thursday.slice(0, 3),  // Czw / Thu
+      t.friday.slice(0, 3),    // Pt / Fri
+      t.saturday.slice(0, 3),  // Sob / Sat
+      t.sunday.slice(0, 3)     // Ndz / Sun
+    ];
+  });
+
+  private translationsData: Record<LanguageCode, Translations> = {
     en: {
-      // Navigation & General
-      habits: 'Habits',
-      calendar: 'Calendar',
-      level: 'Level',
-
       // Habit related
       addHabit: 'Add Habit',
       editHabit: 'Edit Habit',
       deleteHabit: 'Delete Habit',
       habitName: 'Habit Name',
       habitDescription: 'Description',
-
-      // Calendar
-      today: 'Today',
-      thisWeek: 'This Week',
-      thisMonth: 'This Month',
+      newHabit: 'New Habit',
 
       // Days of week
       monday: 'Monday',
@@ -105,36 +108,15 @@ export class LanguageService {
       october: 'October',
       november: 'November',
       december: 'December',
-
-      // Actions
-      save: 'Save',
-      cancel: 'Cancel',
-      delete: 'Delete',
-      edit: 'Edit',
-      add: 'Add',
-
-      // Status
-      completed: 'Completed',
-      pending: 'Pending',
-      streak: 'Streak'
     },
     pl: {
-      // Navigation & General
-      habits: 'Nawyki',
-      calendar: 'Kalendarz',
-      level: 'Poziom',
-
       // Habit related
       addHabit: 'Dodaj Nawyk',
       editHabit: 'Edytuj Nawyk',
       deleteHabit: 'Usuń Nawyk',
       habitName: 'Nazwa Nawyku',
       habitDescription: 'Opis',
-
-      // Calendar
-      today: 'Dzisiaj',
-      thisWeek: 'Ten Tydzień',
-      thisMonth: 'Ten Miesiąc',
+      newHabit: 'Nowy Nawyk',
 
       // Days of week
       monday: 'Poniedziałek',
@@ -158,48 +140,22 @@ export class LanguageService {
       october: 'Październik',
       november: 'Listopad',
       december: 'Grudzień',
-
-      // Actions
-      save: 'Zapisz',
-      cancel: 'Anuluj',
-      delete: 'Usuń',
-      edit: 'Edytuj',
-      add: 'Dodaj',
-
-      // Status
-      completed: 'Ukończone',
-      pending: 'Oczekujące',
-      streak: 'Seria'
     }
   };
 
   constructor() {
-    // Load saved language from localStorage
     const savedLanguage = localStorage.getItem('selectedLanguage') as LanguageCode;
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'pl')) {
-      this.currentLanguageSubject.next(savedLanguage);
+      this.currentLanguageSignal.set(savedLanguage);
     }
   }
 
-  get currentLanguage(): LanguageCode {
-    return this.currentLanguageSubject.value;
-  }
-
   setLanguage(language: LanguageCode): void {
-    this.currentLanguageSubject.next(language);
+    this.currentLanguageSignal.set(language);
     localStorage.setItem('selectedLanguage', language);
   }
 
-  getTranslations(): Translations {
-    return this.translations[this.currentLanguage];
-  }
-
-  getTranslation(key: keyof Translations): string {
-    return this.translations[this.currentLanguage][key];
-  }
-
-  // Utility method to get translations for a specific language
   getTranslationsFor(language: LanguageCode): Translations {
-    return this.translations[language];
+    return this.translationsData[language];
   }
 }

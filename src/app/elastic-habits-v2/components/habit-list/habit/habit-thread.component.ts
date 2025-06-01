@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitTagComponent } from './habit-tag.component';
 import { HabitService } from '../../../services/habit.service';
+import { LanguageService } from '../../../services/language.service';
 import { Habit } from '../../../models/habit.model';
 
 @Component({
@@ -59,7 +60,7 @@ import { Habit } from '../../../models/habit.model';
           <button
             (click)="onAddHabit()"
             class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full hover:from-emerald-600 hover:to-emerald-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-emerald-400 add-button"
-            title="Dodaj nawyk"
+            [title]="translations().addHabit"
           >
             <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path>
@@ -78,7 +79,7 @@ import { Habit } from '../../../models/habit.model';
           <button
             (click)="onDeleteHabit()"
             class="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-700 rounded-full hover:from-red-600 hover:to-red-800 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 flex items-center justify-center group z-30 border-2 border-red-400"
-            title="Usuń nawyk"
+            [title]="translations().deleteHabit"
           >
             <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
@@ -159,14 +160,20 @@ export class HabitThreadComponent {
   @Input() isAddButton: boolean = false;
   @Input() showDeleteButton: boolean = true;
 
-  constructor(public habitService: HabitService) {}
+  private languageService = inject(LanguageService);
+  public habitService = inject(HabitService);
+
+  // Computed translations - automatycznie aktualizują się gdy język się zmieni
+  translations = computed(() => this.languageService.translations());
 
   get isSelected(): boolean {
     return this.habit ? this.habit.id === this.habitService.currentHabitId() : false;
   }
 
   onAddHabit(): void {
-    const newHabitId = this.habitService.addHabit('Nowy nawyk');
+    // Używamy tłumaczenia dla nowego nawyku
+    const newHabitName = this.translations().habitName || 'New Habit';
+    const newHabitId = this.habitService.addHabit(newHabitName);
     this.habitService.setCurrentHabit(newHabitId);
 
     setTimeout(() => {

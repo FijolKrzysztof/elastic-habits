@@ -1,9 +1,9 @@
-import { Component, inject, signal, output, effect, afterNextRender } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HabitService } from '../../../services/habit.service';
-import { DateService } from '../../../services/date.service';
-import { LevelEntry, LevelKey } from '../../../models/habit.model';
+import {afterNextRender, Component, inject, output, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HabitService} from '../../../services/habit.service';
+import {DateService} from '../../../services/date.service';
+import {LevelEntry, LevelKey} from '../../../models/habit.model';
 
 @Component({
   selector: 'app-level-cards',
@@ -28,7 +28,7 @@ import { LevelEntry, LevelKey } from '../../../models/habit.model';
 
           <div class="progress-section">
             <div class="progress-info">
-              <span class="progress-text">{{ getCurrentMonthName() }}</span>
+              <span class="progress-text">{{ dateService.getCurrentMonthName() }}</span>
               <span class="progress-value">{{ getMonthlyProgress(level.key) }}%</span>
             </div>
             <div class="progress-bar">
@@ -163,10 +163,5 @@ export class LevelCardsComponent {
     }
 
     return daysWithLevel;
-  }
-
-  getCurrentMonthName(): string {
-    const currentDate = this.dateService.currentDate();
-    return this.dateService.months[currentDate.getMonth()];
   }
 }

@@ -1,19 +1,17 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { LanguageService } from './language.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DateService {
+  private languageService = inject(LanguageService);
   private currentDateSignal = signal<Date>(new Date());
 
   readonly currentDate = this.currentDateSignal.asReadonly();
 
-  readonly months = [
-    'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
-    'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'
-  ];
-
-  readonly weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'];
+  readonly months = computed(() => this.languageService.months());
+  readonly weekDays = computed(() => this.languageService.weekDays());
 
   navigateMonth(direction: number): void {
     this.currentDateSignal.update(prev => {
@@ -51,5 +49,14 @@ export class DateService {
     return date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear();
+  }
+
+  getCurrentMonthName(): string {
+    const currentDate = this.currentDate();
+    return this.months()[currentDate.getMonth()];
+  }
+
+  getCurrentYear(): number {
+    return this.currentDate().getFullYear();
   }
 }

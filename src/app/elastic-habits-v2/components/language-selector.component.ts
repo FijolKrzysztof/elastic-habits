@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService, LanguageCode } from '../services/language.service';
-import { Subscription } from 'rxjs';
 
 export interface Language {
   code: LanguageCode;
@@ -28,9 +27,11 @@ export interface Language {
     </div>
   `
 })
-export class LanguageSelectorComponent implements OnInit, OnDestroy {
-  selectedLanguage: LanguageCode = 'en';
-  private subscription?: Subscription;
+export class LanguageSelectorComponent {
+  private languageService = inject(LanguageService);
+
+  // Computed property for current language - automatycznie reaguje na zmiany
+  selectedLanguage = computed(() => this.languageService.currentLanguage());
 
   languages: Language[] = [
     {
@@ -45,25 +46,13 @@ export class LanguageSelectorComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private languageService: LanguageService) {}
-
-  ngOnInit(): void {
-    this.subscription = this.languageService.currentLanguage$.subscribe(
-      language => this.selectedLanguage = language
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
-  }
-
   selectLanguage(langCode: LanguageCode): void {
     this.languageService.setLanguage(langCode);
   }
 
   getButtonClass(langCode: LanguageCode): string {
     const baseClass = 'transition-all duration-200 hover:bg-gray-50';
-    return this.selectedLanguage === langCode
+    return this.selectedLanguage() === langCode
       ? `${baseClass} ring-2 ring-blue-500 bg-blue-50`
       : baseClass;
   }

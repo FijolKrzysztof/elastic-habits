@@ -130,8 +130,8 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
       <div class="calendar-header">
         <div class="header-controls">
           <h3 class="month-title">
-            {{ dateService.months[dateService.currentDate().getMonth()] }}
-            {{ dateService.currentDate().getFullYear() }}
+            {{ dateService.getCurrentMonthName() }}
+            {{ dateService.getCurrentYear() }}
           </h3>
           <div class="nav-controls">
             <button
@@ -156,7 +156,7 @@ import { CalendarDayComponent } from './calendar-day/calendar-day.component';
 
       <div class="calendar-body">
         <div class="weekdays-grid">
-          @for (day of dateService.weekDays; track day; let i = $index) {
+          @for (day of dateService.weekDays(); track day; let i = $index) {
             <div class="weekday-header" [class.weekday-weekend]="i >= 5">
               {{ day }}
             </div>
