@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {HabitListComponent} from './components/habit-list/habit-list.component';
 import {CalendarComponent} from './components/calendar/calendar.component';
 import {LevelSelectorComponent} from './components/level-selector/level-selector.component';
+import {LanguageSelectorComponent} from './components/language-selector.component';
 
 @Component({
   selector: 'app-elastic-habits',
@@ -12,13 +13,16 @@ import {LevelSelectorComponent} from './components/level-selector/level-selector
     CalendarComponent,
     HabitListComponent,
     LevelSelectorComponent,
+    LanguageSelectorComponent,
+    LanguageSelectorComponent,
   ],
   template: `
     <div class="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
       <div class="bg-white rounded-xl shadow-lg p-6">
 
         <div class="flex gap-6">
-          <div class="flex-shrink-0 flex items-end">
+          <div class="flex-shrink-0 flex flex-col items-start gap-4">
+            <app-language-selector></app-language-selector>
             <app-level-selector></app-level-selector>
           </div>
 
