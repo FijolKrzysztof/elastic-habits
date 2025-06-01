@@ -93,7 +93,10 @@ import { Habit } from '../../../models/habit.model';
       @if (!isAddButton) {
         <div class="relative transition-all duration-300 ease-out habit-tag-container z-10"
              [class.selected]="isSelected"
+             [class.non-selected]="!isSelected"
              [style.transform]="getTagTransform()"
+             [style.--hang-length]="getHangLength(index) + 'px'"
+             [style.--rotation]="getSubtleRotation(index) + 'deg'"
              style="transform-origin: 50% 8px;">
 
           <app-habit-tag
@@ -137,19 +140,24 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      .habit-tag-container:hover {
+      /* Hover tylko dla NIE-wybranych metkek */
+      .habit-tag-container.non-selected:hover {
         z-index: 20;
-        transform: scale(1.15) !important;
+        transform: scale(1.15) translateY(var(--hang-length)) rotate(var(--rotation)) !important;
       }
 
-      .habit-tag-container:hover .tag-shadow {
+      .habit-tag-container.non-selected:hover .tag-shadow {
         transform: scale(1.05) rotate(1deg);
         opacity: 0.3;
       }
 
-      .habit-tag-container.selected:hover .tag-shadow {
-        transform: scale(1.2) rotate(2deg);
-        opacity: 0.4;
+      /* Wybrane metki - brak hover efektów */
+      .habit-tag-container.selected {
+        /* Bez hover efektów */
+      }
+
+      .habit-tag-container.selected .tag-shadow {
+        /* Standardowy cień bez zmian przy hover */
       }
     </style>
   `
