@@ -142,7 +142,7 @@ import { Habit } from '../../../models/habit.model';
                   (keyup.enter)="saveEdit()"
                   (keyup.escape)="cancelEdit()"
                   (blur)="saveEdit()"
-                  class="w-full text-xs font-bold text-center leading-tight font-serif bg-white border border-gray-300 rounded px-1 py-0.5 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                  class="w-full text-xs font-bold text-center leading-tight font-serif bg-white border border-black border-dashed rounded px-1 py-0.5 focus:outline-none focus:border-black"
                   style="color: #2d1810;"
                   #editInput
                 />
