@@ -8,13 +8,9 @@ import { HabitThreadComponent } from './habit/habit-thread.component';
     standalone: true,
     imports: [CommonModule, HabitThreadComponent],
     template: `
-        <div class="mb-8 px-4">
-            <div class="flex items-center gap-3 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 font-serif">Twoje nawyki</h2>
-            </div>
-
-            <div class="relative min-h-40 p-4">
-                <div class="absolute top-8 left-4 right-4 h-4">
+        <div class="px-4">
+            <div class="relative min-h-40 px-4">
+                <div class="absolute left-4 right-4 h-4">
                     <div class="relative w-full h-full">
                         <div class="absolute inset-0 bg-gradient-to-b from-rope-shadow via-rope-base to-rope-dark rounded-full">
                             <div class="absolute inset-0 bg-gradient-to-b from-rope-light via-rope to-rope-dark rounded-full"></div>
@@ -89,7 +85,7 @@ import { HabitThreadComponent } from './habit/habit-thread.component';
                     <div class="absolute top-1 left-2/3 w-2 h-3 bg-gradient-to-br from-rope-knot-light to-rope-knot-dark rounded-full shadow-md opacity-75"></div>
                 </div>
 
-                <div class="flex flex-wrap gap-8 pt-[4.8rem] justify-start">
+                <div class="flex flex-wrap gap-8 pt-[3.8rem] justify-start">
                     @for (habit of habitService.habits(); track habit.id; let i = $index) {
                         <app-habit-thread
                                 [habit]="habit"
