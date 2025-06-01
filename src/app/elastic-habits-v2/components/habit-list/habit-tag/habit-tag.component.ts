@@ -400,6 +400,6 @@ export class HabitTagComponent {
   getSubtleRotation(index: number): number {
     const pseudo = Math.sin(index * 34.567) * 43758.5453;
     const normalized = pseudo - Math.floor(pseudo);
-    return (normalized * 12) - 6;
+    return (normalized * 20) - 10; // Zwiększone z 12 do 20 (zakres -10 do +10 stopni)
   }
 }
