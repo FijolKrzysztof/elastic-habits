@@ -13,7 +13,7 @@ import { Habit } from '../../../models/habit.model';
          [class.add-button-container]="isAddButton"
          [style.margin-left]="getHorizontalOffset(index) + 'px'">
 
-      <div class="absolute origin-top z-10"
+      <div class="absolute origin-top z-0"
            [style.top]="'-52px'"
            [style.left]="'50%'"
            [style.transform]="'translateX(-50%)'"
@@ -90,7 +90,7 @@ import { Habit } from '../../../models/habit.model';
       </div>
 
       @if (!isAddButton) {
-        <div class="relative transition-all duration-300 ease-out habit-tag-container"
+        <div class="relative transition-all duration-300 ease-out habit-tag-container z-10"
              [class.selected]="isSelected()"
              [style.transform]="getTagTransform()"
              style="transform-origin: 50% 8px;">
