@@ -9,7 +9,7 @@ import { Habit } from '../../../models/habit.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="relative group w-24"
+    <div class="relative group w-32"
          [class.add-button-container]="isAddButton"
          [style.margin-left]="getHorizontalOffset(index) + 'px'">
 
@@ -68,7 +68,7 @@ import { Habit } from '../../../models/habit.model';
         }
 
         @if (isAddButton) {
-          <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-16 pointer-events-none"
+          <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-16 pointer-events-none"
                [style.transform]="'translateX(-50%) translateY(' + getHangLength(index) + 'px) rotate(' + getSubtleRotation(index) + 'deg)'"
                style="transform-origin: 50% 8px;">
           </div>
@@ -97,7 +97,7 @@ import { Habit } from '../../../models/habit.model';
 
           <button
             (click)="selectHabit()"
-            class="relative w-24 h-16 font-medium transition-all duration-300 focus:outline-none group habit-button"
+            class="relative w-32 h-16 font-medium transition-all duration-300 focus:outline-none group habit-button"
             [class]="habit && habit.id === habitService.currentHabitId()
               ? 'text-gray-800 shadow-2xl scale-110 z-10'
               : 'text-gray-700 hover:text-gray-900 shadow-xl hover:shadow-2xl'"
