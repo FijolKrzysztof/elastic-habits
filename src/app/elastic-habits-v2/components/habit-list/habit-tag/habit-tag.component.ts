@@ -147,12 +147,17 @@ import { Habit } from '../../../models/habit.model';
                   #editInput
                 />
               } @else {
-                <div class="flex items-center justify-center gap-1 px-1 py-0.5 rounded transition-all duration-200 hover:bg-black/5 cursor-pointer"
+                <!-- Podświetlenie z ołówkiem tylko dla wybranego elementu -->
+                <div class="flex items-center justify-center gap-1 px-1 py-0.5 rounded transition-all duration-200 editable-content"
+                     [class.is-selected]="habit && habit.id === habitService.currentHabitId()"
                      [class.cursor-pointer]="habit && habit.id === habitService.currentHabitId()"
                      (click)="startEditingIfCurrent($event)">
-                  <svg class="w-3 h-3 text-gray-700 opacity-70" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                  </svg>
+                  <!-- Ołówek widoczny tylko dla wybranego elementu -->
+                  @if (habit && habit.id === habitService.currentHabitId()) {
+                    <svg class="w-3 h-3 text-gray-700 opacity-70" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                    </svg>
+                  }
                   <span
                     class="text-base font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2"
                     [style.color]="getTextColor(habit?.color || '#10B981')"
@@ -234,17 +239,19 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      /* Efekty hover dla tagów - tylko skalowanie, bez zmiany wysokości */
-      .habit-tag-container:hover {
-        transform-origin: 50% 50%;
-        z-index: 20;
+      /* Hover na contencie z tekstem - tylko dla wybranego elementu */
+      .editable-content.is-selected:hover {
+        background-color: rgba(0, 0, 0, 0.05);
       }
 
-      .habit-tag-container:hover {
+      /* Efekty hover dla tagów - tylko skalowanie dla wybranych elementów */
+      .habit-tag-container.selected:hover {
+        transform-origin: 50% 50%;
+        z-index: 20;
         scale: 1.15;
       }
 
-      .habit-tag-container:hover .tag-background {
+      .habit-tag-container.selected:hover .tag-background {
         box-shadow:
           0 12px 24px rgba(0,0,0,0.35),
           0 8px 16px rgba(0,0,0,0.25),
@@ -253,7 +260,7 @@ import { Habit } from '../../../models/habit.model';
           inset 2px 0 6px rgba(0,0,0,0.08);
       }
 
-      .habit-tag-container:hover .tag-shadow {
+      .habit-tag-container.selected:hover .tag-shadow {
         transform: scale(1.2) rotate(2deg);
         opacity: 0.4;
       }
