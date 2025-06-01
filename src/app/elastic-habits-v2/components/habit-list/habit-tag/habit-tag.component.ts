@@ -142,8 +142,8 @@ import { Habit } from '../../../models/habit.model';
                   (keyup.enter)="saveEdit()"
                   (keyup.escape)="cancelEdit()"
                   (blur)="saveEdit()"
-                  class="w-full text-xs font-bold text-center leading-tight font-serif bg-white border border-black border-dashed rounded px-1 py-0.5 focus:outline-none focus:border-black"
-                  style="color: #2d1810;"
+                  class="w-full text-base font-bold text-center leading-tight bg-white border border-black border-dashed rounded px-1 py-0.5 focus:outline-none focus:border-black"
+                  style="color: #2d1810; font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive; font-weight: 500; letter-spacing: 0.5px;"
                   #editInput
                 />
               } @else {
