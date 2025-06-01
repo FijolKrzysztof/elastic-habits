@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HabitService } from '../../services/habit.service';
-import { HabitTagComponent } from './habit-tag/habit-tag.component';
+import { HabitThreadComponent } from './habit/habit-thread.component';
 
 @Component({
     selector: 'app-habit-list',
     standalone: true,
-    imports: [CommonModule, HabitTagComponent],
+    imports: [CommonModule, HabitThreadComponent],
     template: `
         <div class="mb-8 px-4">
             <div class="flex items-center gap-3 mb-8">
@@ -91,17 +91,17 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
 
                 <div class="flex flex-wrap gap-8 pt-[4.8rem] justify-start">
                     @for (habit of habitService.habits(); track habit.id; let i = $index) {
-                        <app-habit-tag
+                        <app-habit-thread
                                 [habit]="habit"
                                 [index]="i"
                                 [showDeleteButton]="habitService.habits().length > 1">
-                        </app-habit-tag>
+                        </app-habit-thread>
                     }
 
-                    <app-habit-tag
+                    <app-habit-thread
                             [isAddButton]="true"
                             [index]="habitService.habits().length">
-                    </app-habit-tag>
+                    </app-habit-thread>
                 </div>
             </div>
         </div>
@@ -132,13 +132,5 @@ import { HabitTagComponent } from './habit-tag/habit-tag.component';
     `
 })
 export class HabitListComponent {
-    nailPositions = [
-        { position: '1rem', rotation: -12 },           // lewy koniec
-        { position: 'calc(25% - (1rem + .75rem) * .25)', rotation: 8 },             // 1/4
-        { position: 'calc(50% - (1rem + .75rem) * .5)', rotation: -5 },            // środek
-        { position: 'calc(75% - (1rem + .75rem) * .75)', rotation: 15 },            // 3/4
-        { position: 'calc(100% - (1rem + .75rem))', rotation: 12 } // prawy koniec
-    ];
-
     constructor(public habitService: HabitService) {}
 }
