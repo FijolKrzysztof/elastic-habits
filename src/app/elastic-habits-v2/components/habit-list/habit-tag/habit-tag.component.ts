@@ -326,12 +326,22 @@ export class HabitTagComponent {
   }
 
   saveEdit(): void {
-    if (this.editingName.trim() && this.habit) {
-      this.habitService.updateHabitName(this.habit.id, this.editingName.trim());
-      this.isEditing.set(false);
-      this.editingName = '';
-    } else if (!this.editingName.trim() && this.habit) {
-      this.habitService.deleteHabit(this.habit.id);
+    if (this.habit) {
+      const trimmedName = this.editingName.trim();
+
+      if (trimmedName) {
+        // Nazwa nie jest pusta - zapisz zmiany
+        this.habitService.updateHabitName(this.habit.id, trimmedName);
+        this.isEditing.set(false);
+        this.editingName = '';
+      } else if (this.habit.name === 'Nowy nawyk') {
+        // Tylko usuń jeśli to był nowy nawyk bez nazwy
+        this.habitService.deleteHabit(this.habit.id);
+      } else {
+        // Przywróć poprzednią nazwę jeśli użytkownik wyczyścił pole
+        this.editingName = this.habit.name;
+        this.isEditing.set(false);
+      }
     }
   }
 
