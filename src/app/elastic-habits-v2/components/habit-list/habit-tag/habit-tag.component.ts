@@ -147,16 +147,16 @@ import { Habit } from '../../../models/habit.model';
                   #editInput
                 />
               } @else {
-                <div class="flex items-center justify-center gap-1">
-                  <svg class="w-3 h-3 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center justify-center gap-1 px-1 py-0.5 rounded transition-all duration-200 hover:bg-black/5 cursor-pointer"
+                     [class.cursor-pointer]="habit && habit.id === habitService.currentHabitId()"
+                     (click)="startEditingIfCurrent($event)">
+                  <svg class="w-3 h-3 text-gray-700 opacity-70" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                   </svg>
                   <span
                     class="text-base font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2"
-                    [class.cursor-pointer]="habit && habit.id === habitService.currentHabitId()"
                     [style.color]="getTextColor(habit?.color || '#10B981')"
                     style="font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive; font-weight: 500; letter-spacing: 0.5px;"
-                    (click)="startEditingIfCurrent($event)"
                   >
                     {{ habit?.name || 'Nowy nawyk' }}
                   </span>
