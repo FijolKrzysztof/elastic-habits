@@ -142,8 +142,8 @@ import { Habit } from '../../../models/habit.model';
                   (keyup.enter)="saveEdit()"
                   (keyup.escape)="cancelEdit()"
                   (blur)="saveEdit()"
-                  class="w-full text-xs font-bold text-center leading-tight font-serif bg-transparent border-none outline-none px-1"
-                  [style.color]="getTextColor(habit?.color || '#10B981')"
+                  class="w-full text-xs font-bold text-center leading-tight font-serif bg-white border border-gray-300 rounded px-1 py-0.5 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+                  style="color: #2d1810;"
                   #editInput
                 />
               } @else {
