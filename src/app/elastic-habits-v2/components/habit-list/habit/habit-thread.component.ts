@@ -92,8 +92,8 @@ import { Habit } from '../../../models/habit.model';
 
       @if (!isAddButton) {
         <div class="relative transition-all duration-300 ease-out habit-tag-container z-10"
-             [class.selected]="isSelected"
-             [class.non-selected]="!isSelected"
+             [class.selected]="isSelected()"
+             [class.non-selected]="!isSelected()"
              [style.transform]="getTagTransform()"
              [style.--hang-length]="getHangLength(index) + 'px'"
              [style.--rotation]="getSubtleRotation(index) + 'deg'"
@@ -174,9 +174,9 @@ export class HabitThreadComponent {
   // Computed translations - automatycznie aktualizują się gdy język się zmieni
   translations = computed(() => this.languageService.translations());
 
-  get isSelected(): boolean {
-    return this.habit ? this.habit.id === this.habitService.currentHabitId() : false;
-  }
+  isSelected = computed(() =>
+    this.habit ? this.habit.id === this.habitService.currentHabitId() : false
+  );
 
   onAddHabit(): void {
     // Używamy tłumaczenia dla nowego nawyku
@@ -203,13 +203,13 @@ export class HabitThreadComponent {
 
   getHangLength(index: number): number {
     const baseHang = -5;
-    return this.isSelected ? baseHang + 35 : baseHang;
+    return this.isSelected() ? baseHang + 35 : baseHang;
   }
 
   getTagTransform(): string {
     const hangLength = this.getHangLength(this.index);
     const baseTransform = `translateY(${hangLength}px)`;
-    const rotation = this.isSelected
+    const rotation = this.isSelected()
       ? Math.abs(this.getSubtleRotation(this.index))
       : -Math.abs(this.getSubtleRotation(this.index));
 

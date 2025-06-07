@@ -15,7 +15,7 @@ export class HabitService {
   private currentHabitIdSignal = signal<number>(this.getDefaultCurrentHabitId());
   private habitDataSignal = signal<Record<string, LevelKey>>(this.loadHabitData());
   private habitDescriptionsSignal = signal<Record<string, string>>(this.loadHabitDescriptions());
-  private selectedLevelSignal = signal<LevelKey>('easy');
+  private selectedLevelSignal = signal<LevelKey>('mini');
 
   readonly habits = this.habitsSignal.asReadonly();
   readonly currentHabitId = this.currentHabitIdSignal.asReadonly();
@@ -28,7 +28,7 @@ export class HabitService {
   );
 
   readonly levels: Record<LevelKey, Level> = {
-    easy: { name: 'Easy', color: '#10B981', bg: '#DCFCE7' },
+    mini: { name: 'Mini', color: '#10B981', bg: '#DCFCE7' },
     standard: { name: 'Standard', color: '#3B82F6', bg: '#DBEAFE' },
     plus: { name: 'Plus', color: '#EF4444', bg: '#FEE2E2' }
   };
@@ -241,7 +241,7 @@ export class HabitService {
       this.currentHabitIdSignal.set(1);
       this.habitDataSignal.set({});
       this.habitDescriptionsSignal.set({});
-      this.selectedLevelSignal.set('easy');
+      this.selectedLevelSignal.set('mini');
     } catch (error) {
       console.error('Błąd czyszczenia danych:', error);
     }
@@ -286,7 +286,7 @@ export class HabitService {
 
   private getDefaultDescription(level: LevelKey): string {
     const defaults: Record<LevelKey, string> = {
-      easy: '5 min',
+      mini: '5 min',
       standard: '15 min',
       plus: '30 min'
     };

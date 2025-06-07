@@ -25,7 +25,7 @@ import { DateService } from '../../../services/date.service';
           @if (habitService.getDayStatus(date)) {
             <svg
               class="w-13 h-13 transition-all duration-200"
-              [class.animate-check-easy]="isAnimating && animationLevel === 'easy'"
+              [class.animate-check-mini]="isAnimating && animationLevel === 'mini'"
               [class.animate-check-standard]="isAnimating && animationLevel === 'standard'"
               [class.animate-check-plus]="isAnimating && animationLevel === 'plus'"
               fill="none"
@@ -40,10 +40,10 @@ import { DateService } from '../../../services/date.service';
 
           @if (isAnimating && animationLevel) {
             <div class="absolute inset-0 pointer-events-none">
-              @if (animationLevel === 'easy') {
-                @for (particle of [1,2,3]; track particle) {
-                  <div class="absolute animate-confetti-easy-{{particle}} w-1 h-1 rounded-full opacity-0"
-                       [style.background-color]="getEasyColor(particle)"
+              @if (animationLevel === 'mini') {
+                @for (particle of [1, 2, 3]; track particle) {
+                  <div class="absolute animate-confetti-mini-{{particle}} w-1 h-1 rounded-full opacity-0"
+                       [style.background-color]="getMiniColor(particle)"
                        [style.left]="getConfettiStart(particle) + '%'"
                        [style.top]="getConfettiStart(particle + 2) + '%'">
                   </div>
@@ -51,7 +51,7 @@ import { DateService } from '../../../services/date.service';
               }
 
               @if (animationLevel === 'standard') {
-                @for (particle of [1,2,3,4,5]; track particle) {
+                @for (particle of [1, 2, 3, 4, 5]; track particle) {
                   <div class="absolute animate-confetti-standard-{{particle}} w-1.5 h-1.5 rounded-full opacity-0"
                        [style.background-color]="getStandardColor(particle)"
                        [style.left]="getConfettiStart(particle) + '%'"
@@ -61,7 +61,7 @@ import { DateService } from '../../../services/date.service';
               }
 
               @if (animationLevel === 'plus') {
-                @for (particle of [1,2,3,4,5,6,7,8,9,10]; track particle) {
+                @for (particle of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track particle) {
                   <div class="absolute animate-confetti-plus-{{particle}} w-2 h-2 opacity-0"
                        [class.rounded-full]="particle <= 5"
                        [class.rotate-45]="particle > 5"
@@ -78,13 +78,13 @@ import { DateService } from '../../../services/date.service';
         @if (isAnimating && animationLevel) {
           <div class="absolute inset-0 pointer-events-none opacity-0"
                [class.bg-gradient-to-br]="true"
-               [class.from-green-100]="animationLevel === 'easy'"
-               [class.to-green-200]="animationLevel === 'easy'"
+               [class.from-green-100]="animationLevel === 'mini'"
+               [class.to-green-200]="animationLevel === 'mini'"
                [class.from-blue-200]="animationLevel === 'standard'"
                [class.to-indigo-200]="animationLevel === 'standard'"
                [class.from-purple-200]="animationLevel === 'plus'"
                [class.to-pink-200]="animationLevel === 'plus'"
-               [class.animate-success-bg-easy]="animationLevel === 'easy'"
+               [class.animate-success-bg-mini]="animationLevel === 'mini'"
                [class.animate-success-bg-standard]="animationLevel === 'standard'"
                [class.animate-success-bg-plus]="animationLevel === 'plus'">
           </div>
@@ -144,7 +144,7 @@ export class CalendarDayComponent {
 
   private getAnimationDuration(level: string): number {
     switch (level) {
-      case 'easy': return 700;
+      case 'mini': return 700;
       case 'standard': return 900;
       case 'plus': return 1300;
       default: return 900;
@@ -164,9 +164,9 @@ export class CalendarDayComponent {
     return day === 0 || day === 6;
   }
 
-  getEasyColor(particle: number): string {
-    const easyColors = ['#10B981', '#34D399', '#6EE7B7'];
-    return easyColors[particle - 1] || '#10B981';
+  getMiniColor(particle: number): string {
+    const miniColors = ['#10B981', '#34D399', '#6EE7B7'];
+    return miniColors[particle - 1] || '#10B981';
   }
 
   getStandardColor(particle: number): string {

@@ -75,7 +75,7 @@ import {LevelEntry, LevelKey} from '../../../models/habit.model';
   `
 })
 export class LevelCardsComponent {
-  selectedLevel = signal<LevelKey>('easy');
+  selectedLevel = signal<LevelKey>('mini');
   editingDescription = signal<string | null>(null);
 
   levelSelected = output<LevelKey>();

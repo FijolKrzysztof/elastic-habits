@@ -10,7 +10,7 @@ export interface Level {
   bg: string;
 }
 
-export type LevelKey = 'easy' | 'standard' | 'plus';
+export type LevelKey = 'mini' | 'standard' | 'plus';
 
 export type LevelEntry = {
   key: LevelKey;
