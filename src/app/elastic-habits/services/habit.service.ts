@@ -8,19 +8,22 @@ export class HabitService {
   private readonly STORAGE_KEYS = {
     HABITS: 'habit-tracker-habits',
     HABIT_DATA: 'habit-tracker-habit-data',
-    HABIT_TARGETS: 'habit-tracker-habit-targets'
+    HABIT_TARGETS: 'habit-tracker-habit-targets',
+    HABIT_DESCRIPTIONS: 'habit-tracker-habit-descriptions'
   };
 
   private habitsSignal = signal<Habit[]>(this.loadHabits());
   private currentHabitIdSignal = signal<number>(this.getDefaultCurrentHabitId());
   private habitDataSignal = signal<Record<string, LevelKey>>(this.loadHabitData());
   private habitTargetsSignal = signal<Record<string, string>>(this.loadHabitTargets());
+  private habitDescriptionsSignal = signal<Record<string, string>>(this.loadHabitDescriptions());
   private selectedLevelSignal = signal<LevelKey>('mini');
 
   readonly habits = this.habitsSignal.asReadonly();
   readonly currentHabitId = this.currentHabitIdSignal.asReadonly();
   readonly habitData = this.habitDataSignal.asReadonly();
   readonly habitTargets = this.habitTargetsSignal.asReadonly();
+  readonly habitDescriptions = this.habitDescriptionsSignal.asReadonly();
   readonly selectedLevel = this.selectedLevelSignal.asReadonly();
 
   readonly currentHabit = computed(() =>
@@ -47,6 +50,11 @@ export class HabitService {
     effect(() => {
       this.habitTargets();
       this.saveHabitTargets();
+    });
+
+    effect(() => {
+      this.habitDescriptions();
+      this.saveHabitDescriptions();
     });
   }
 
@@ -91,6 +99,16 @@ export class HabitService {
     }
   }
 
+  private loadHabitDescriptions(): Record<string, string> {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEYS.HABIT_DESCRIPTIONS);
+      return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+      console.error('Błąd ładowania opisów nawyków:', error);
+      return {};
+    }
+  }
+
   private saveHabits(): void {
     try {
       localStorage.setItem(this.STORAGE_KEYS.HABITS, JSON.stringify(this.habits()));
@@ -110,6 +128,14 @@ export class HabitService {
   private saveHabitTargets(): void {
     try {
       localStorage.setItem(this.STORAGE_KEYS.HABIT_TARGETS, JSON.stringify(this.habitTargets()));
+    } catch (error) {
+      console.error('Błąd zapisywania opisów nawyków:', error);
+    }
+  }
+
+  private saveHabitDescriptions(): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEYS.HABIT_DESCRIPTIONS, JSON.stringify(this.habitDescriptions()));
     } catch (error) {
       console.error('Błąd zapisywania opisów nawyków:', error);
     }
@@ -162,6 +188,16 @@ export class HabitService {
       }
     });
     this.habitTargetsSignal.set(newTargets);
+
+    // Clean up habit descriptions
+    const descriptions = this.habitDescriptions();
+    const newDescriptions: Record<string, string> = {};
+    Object.keys(descriptions).forEach(key => {
+      if (key !== habitId.toString()) {
+        newDescriptions[key] = descriptions[key];
+      }
+    });
+    this.habitDescriptionsSignal.set(newDescriptions);
 
     if (this.currentHabitId() === habitId) {
       const remainingHabit = this.habits().find(h => h.id !== habitId);
@@ -227,6 +263,19 @@ export class HabitService {
     }));
   }
 
+  getHabitDescription(): string {
+    const key = this.currentHabitId().toString();
+    return this.habitDescriptions()[key] || '';
+  }
+
+  updateHabitDescription(description: string): void {
+    const key = this.currentHabitId().toString();
+    this.habitDescriptionsSignal.update(prev => ({
+      ...prev,
+      [key]: description.trim()
+    }));
+  }
+
   clearAllData(): void {
     try {
       Object.values(this.STORAGE_KEYS).forEach(key => {
@@ -240,6 +289,7 @@ export class HabitService {
       this.currentHabitIdSignal.set(1);
       this.habitDataSignal.set({});
       this.habitTargetsSignal.set({});
+      this.habitDescriptionsSignal.set({});
       this.selectedLevelSignal.set('mini');
     } catch (error) {
       console.error('Błąd czyszczenia danych:', error);
@@ -252,6 +302,7 @@ export class HabitService {
         habits: this.habits(),
         habitData: this.habitData(),
         habitTargets: this.habitTargets(),
+        habitDescriptions: this.habitDescriptions(),
         exportDate: new Date().toISOString()
       };
       return JSON.stringify(data, null, 2);
@@ -268,6 +319,7 @@ export class HabitService {
       if (data.habits) this.habitsSignal.set(data.habits);
       if (data.habitData) this.habitDataSignal.set(data.habitData);
       if (data.habitTargets) this.habitTargetsSignal.set(data.habitTargets);
+      if (data.habitDescriptions) this.habitDescriptionsSignal.set(data.habitDescriptions);
 
       if (data.habits && data.habits.length > 0) {
         this.currentHabitIdSignal.set(data.habits[0].id);

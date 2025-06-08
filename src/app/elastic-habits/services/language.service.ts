@@ -83,7 +83,7 @@ export class LanguageService {
       editHabit: 'Edit Habit',
       deleteHabit: 'Delete Habit',
       habitName: 'Habit Name',
-      habitDescription: 'Description',
+      habitDescription: 'Your daily goal',
       newHabit: 'New Habit',
 
       // Days of week
@@ -115,7 +115,7 @@ export class LanguageService {
       editHabit: 'Edytuj Nawyk',
       deleteHabit: 'Usuń Nawyk',
       habitName: 'Nazwa Nawyku',
-      habitDescription: 'Opis',
+      habitDescription: 'Twój codzienny cel',
       newHabit: 'Nowy Nawyk',
 
       // Days of week
