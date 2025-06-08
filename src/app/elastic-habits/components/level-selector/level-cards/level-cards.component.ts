@@ -43,28 +43,29 @@ import {LevelEntry, LevelKey} from '../../../models/habit.model';
             </div>
           </div>
 
-          <div class="description-area">
-            @if (editingDescription() === habitService.currentHabitId() + '-' + level.key) {
-              <div class="description-edit" (click)="$event.stopPropagation()">
+          <div class="target-area">
+            @if (editingTarget() === habitService.currentHabitId() + '-' + level.key) {
+              <div class="target-edit" (click)="$event.stopPropagation()">
                 <input
                   type="text"
-                  [value]="habitService.getHabitDescription(level.key)"
-                  (input)="updateDescription(level.key, $event)"
-                  (blur)="editingDescription.set(null)"
-                  (keyup.enter)="editingDescription.set(null)"
-                  (keyup.escape)="editingDescription.set(null)"
-                  class="description-input"
+                  [value]="habitService.getHabitTarget(level.key)"
+                  (input)="updateTarget(level.key, $event)"
+                  (blur)="editingTarget.set(null)"
+                  (keyup.enter)="editingTarget.set(null)"
+                  (keyup.escape)="editingTarget.set(null)"
+                  class="target-input"
                   placeholder="np. 20 pompek, 10 min biegania"
                   #descInput
                 />
               </div>
             } @else {
-              <div class="description-display" (click)="startEditing(level.key); $event.stopPropagation()">
+              <div class="target-display" (click)="startEditing(level.key); $event.stopPropagation()">
                 <svg class="edit-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                  <path
+                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                 </svg>
-                <span class="description-text">
-                  {{ habitService.getHabitDescription(level.key) || (selectedLevel() === level.key ? 'Kliknij aby opisać...' : 'Wybierz aby edytować...') }}
+                <span class="target-text">
+                  {{ habitService.getHabitTarget(level.key) || (selectedLevel() === level.key ? 'Kliknij aby opisać...' : 'Wybierz aby edytować...') }}
                 </span>
               </div>
             }
@@ -76,7 +77,7 @@ import {LevelEntry, LevelKey} from '../../../models/habit.model';
 })
 export class LevelCardsComponent {
   selectedLevel = signal<LevelKey>('mini');
-  editingDescription = signal<string | null>(null);
+  editingTarget = signal<string | null>(null);
 
   levelSelected = output<LevelKey>();
 
@@ -107,12 +108,12 @@ export class LevelCardsComponent {
       return;
     }
 
-    this.editingDescription.set(`${this.habitService.currentHabitId()}-${level}`);
+    this.editingTarget.set(`${this.habitService.currentHabitId()}-${level}`);
   }
 
-  updateDescription(level: LevelKey, event: Event): void {
+  updateTarget(level: LevelKey, event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.habitService.updateHabitDescription(level, target.value);
+    this.habitService.updateHabitTarget(level, target.value);
   }
 
   private animateProgressBars(): void {

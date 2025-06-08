@@ -17,7 +17,7 @@ import { HabitService } from '../../../services/habit.service';
         </div>
         <div class="habit-info">
           <h2 class="habit-name">{{ habitService.currentHabit()?.name }}</h2>
-          <p class="habit-subtitle">Wybierz intensywność treningu</p>
+          <p class="habit-subtitle">{{ getHabitSubtitle() }}</p>
         </div>
       </div>
     }
@@ -29,6 +29,13 @@ export class HabitHeaderComponent {
   getHabitGradient(): string {
     const color = this.habitService.currentHabit()?.color || '#3b82f6';
     return `linear-gradient(135deg, ${color}, ${this.adjustColor(color, -20)})`;
+  }
+
+  getHabitSubtitle(): string {
+    const currentHabit = this.habitService.currentHabit();
+    if (!currentHabit) return '';
+
+    return this.habitService.getHabitGeneralDescription() || 'Rozwijaj swój nawyk';
   }
 
   private adjustColor(color: string, amount: number): string {

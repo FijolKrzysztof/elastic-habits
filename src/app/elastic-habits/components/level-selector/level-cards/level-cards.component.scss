@@ -222,12 +222,12 @@
     0 0 2px rgba(0, 0, 0, 0.03);
 }
 
-.description-area {
+.target-area {
   margin-top: 12px;
   position: relative;
 }
 
-.description-display {
+.target-display {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -250,7 +250,7 @@
   }
 }
 
-.description-text {
+.target-text {
   font-family: 'Caveat', 'Kalam', cursive;
   font-size: 1.25rem;
   color: #2d3748;
@@ -284,12 +284,12 @@
     opacity: 0.7;
   }
 
-  .level-card.selected .description-display:hover & {
+  .level-card.selected .target-display:hover & {
     opacity: 1;
   }
 }
 
-.description-input {
+.target-input {
   width: 100%;
   padding: 6px 8px;
   border: 1px dashed #718096;
@@ -346,7 +346,7 @@
     color: #047857;
   }
 
-  .description-text {
+  .target-text {
     transform: rotate(-0.3deg);
     color: #065f46;
   }
@@ -381,7 +381,7 @@
     color: #1d4ed8;
   }
 
-  .description-text {
+  .target-text {
     transform: rotate(0.2deg);
     color: #1e40af;
   }
@@ -440,7 +440,7 @@
     color: #b91c1c;
   }
 
-  .description-text {
+  .target-text {
     transform: rotate(-0.1deg);
     color: #b91c1c;
   }
@@ -550,7 +550,7 @@
     font-size: 0.95rem;
   }
 
-  .description-text {
+  .target-text {
     font-size: 1.2rem;
   }
 
