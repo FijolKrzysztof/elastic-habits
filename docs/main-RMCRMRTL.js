@@ -143,12 +143,12 @@ ${n.map((r,i)=>`${i+1}) ${r.toString()}`).join(`
 
       
 
-      .habit-tag-container[_ngcontent-%COMP%]:hover   .habit-tag-inner[_ngcontent-%COMP%] {
+      .habit-tag-container.non-selected[_ngcontent-%COMP%]:hover   .habit-tag-inner[_ngcontent-%COMP%] {
         transform: scale(1.1);
         z-index: 20;
       }
 
-      .habit-tag-container[_ngcontent-%COMP%]:hover   .tag-shadow[_ngcontent-%COMP%] {
+      .habit-tag-container.non-selected[_ngcontent-%COMP%]:hover   .tag-shadow[_ngcontent-%COMP%] {
         transform: scale(1.05);
         opacity: 0.3;
       }`]})};var J_=(e,t)=>t.id;function X_(e,t){if(e&1&&x(0,"app-habit-thread",21),e&2){let n=t.$implicit,r=t.$index,i=C();de("habit",n)("index",r)("showDeleteButton",i.habitService.habits().length>1)}}var Bs=class e{constructor(t){this.habitService=t}static \u0275fac=function(n){return new(n||e)(V(me))};static \u0275cmp=Q({type:e,selectors:[["app-habit-list"]],standalone:!0,features:[K],decls:24,vars:2,consts:[[1,"px-4"],[1,"relative","min-h-40","px-4"],[1,"absolute","left-4","right-4","h-4"],[1,"relative","w-full","h-full"],[1,"absolute","inset-0","bg-gradient-to-b","from-rope-shadow","via-rope-base","to-rope-dark","rounded-full"],[1,"absolute","inset-0","bg-gradient-to-b","from-rope-light","via-rope","to-rope-dark","rounded-full"],[1,"absolute","inset-0","opacity-80","rounded-full",2,"background",`repeating-conic-gradient(
