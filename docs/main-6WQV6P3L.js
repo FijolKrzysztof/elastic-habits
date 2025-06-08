@@ -141,8 +141,6 @@ ${n.map((r,i)=>`${i+1}) ${r.toString()}`).join(`
         display: block;
       }
 
-      
-
       .habit-tag-container.non-selected[_ngcontent-%COMP%]:hover   .habit-tag-inner[_ngcontent-%COMP%] {
         transform: scale(1.1);
         z-index: 20;
