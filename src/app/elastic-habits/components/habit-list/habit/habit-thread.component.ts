@@ -165,7 +165,6 @@ export class HabitThreadComponent {
   private languageService = inject(LanguageService);
   public habitService = inject(HabitService);
 
-  // Computed translations - automatycznie aktualizują się gdy język się zmieni
   translations = computed(() => this.languageService.translations());
 
   isSelected = computed(() =>
@@ -173,7 +172,6 @@ export class HabitThreadComponent {
   );
 
   onAddHabit(): void {
-    // Używamy tłumaczenia dla nowego nawyku
     const newHabitName = this.translations().habitName || 'New Habit';
     const newHabitId = this.habitService.addHabit(newHabitName);
     this.habitService.setCurrentHabit(newHabitId);
@@ -204,10 +202,9 @@ export class HabitThreadComponent {
     const hangLength = this.getHangLength(this.index);
     const baseTransform = `translateY(${hangLength}px)`;
 
-    // Nie-wybrane: obrót w lewo, Wybrane: obrót w prawo
     const rotation = this.isSelected()
-      ? Math.abs(this.getSubtleRotation(this.index))   // prawo (dodatni)
-      : -Math.abs(this.getSubtleRotation(this.index)); // lewo (ujemny)
+      ? Math.abs(this.getSubtleRotation(this.index))
+      : -Math.abs(this.getSubtleRotation(this.index));
 
     return `${baseTransform} rotate(${rotation}deg)`;
   }

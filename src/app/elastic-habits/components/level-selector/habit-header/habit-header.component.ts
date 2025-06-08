@@ -145,7 +145,6 @@ export class HabitHeaderComponent {
     const currentDescription = this.habitService.getHabitDescription();
     const defaultDescription = this.languageService.translations().habitDescription;
 
-    // If current description is empty or is the default, start with empty input
     const descriptionToEdit = (currentDescription && currentDescription !== defaultDescription)
       ? currentDescription
       : '';
@@ -154,7 +153,6 @@ export class HabitHeaderComponent {
     this.originalDescriptionSignal.set(currentDescription);
     this.isEditingDescriptionSignal.set(true);
 
-    // Focus the input after view update
     setTimeout(() => {
       this.descriptionInput?.nativeElement.focus();
       this.descriptionInput?.nativeElement.select();

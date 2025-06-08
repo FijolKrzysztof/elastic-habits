@@ -3,7 +3,6 @@ import { Injectable, signal, computed } from '@angular/core';
 export type LanguageCode = 'en' | 'pl';
 
 export interface Translations {
-  // Habit related
   addHabit: string;
   editHabit: string;
   deleteHabit: string;
@@ -11,7 +10,6 @@ export interface Translations {
   habitDescription: string;
   newHabit: string;
 
-  // Days of week
   monday: string;
   tuesday: string;
   wednesday: string;
@@ -20,7 +18,6 @@ export interface Translations {
   saturday: string;
   sunday: string;
 
-  // Months
   january: string;
   february: string;
   march: string;
@@ -41,13 +38,10 @@ export interface Translations {
 export class LanguageService {
   private currentLanguageSignal = signal<LanguageCode>('en');
 
-  // Readonly signal for external access
   readonly currentLanguage = this.currentLanguageSignal.asReadonly();
 
-  // Computed translations that automatically update when language changes
   readonly translations = computed(() => this.getTranslationsFor(this.currentLanguage()));
 
-  // Computed arrays for calendar - automatically translated
   readonly months = computed(() => [
     this.translations().january,
     this.translations().february,
@@ -66,19 +60,18 @@ export class LanguageService {
   readonly weekDays = computed(() => {
     const t = this.translations();
     return [
-      t.monday.slice(0, 3),    // Pon / Mon
-      t.tuesday.slice(0, 3),   // Wt / Tue
-      t.wednesday.slice(0, 3), // Śr / Wed
-      t.thursday.slice(0, 3),  // Czw / Thu
-      t.friday.slice(0, 3),    // Pt / Fri
-      t.saturday.slice(0, 3),  // Sob / Sat
-      t.sunday.slice(0, 3)     // Ndz / Sun
+      t.monday.slice(0, 3),
+      t.tuesday.slice(0, 3),
+      t.wednesday.slice(0, 3),
+      t.thursday.slice(0, 3),
+      t.friday.slice(0, 3),
+      t.saturday.slice(0, 3),
+      t.sunday.slice(0, 3)
     ];
   });
 
   private translationsData: Record<LanguageCode, Translations> = {
     en: {
-      // Habit related
       addHabit: 'Add Habit',
       editHabit: 'Edit Habit',
       deleteHabit: 'Delete Habit',
@@ -86,7 +79,6 @@ export class LanguageService {
       habitDescription: 'Your daily goal',
       newHabit: 'New Habit',
 
-      // Days of week
       monday: 'Monday',
       tuesday: 'Tuesday',
       wednesday: 'Wednesday',
@@ -95,7 +87,6 @@ export class LanguageService {
       saturday: 'Saturday',
       sunday: 'Sunday',
 
-      // Months
       january: 'January',
       february: 'February',
       march: 'March',
@@ -110,7 +101,6 @@ export class LanguageService {
       december: 'December',
     },
     pl: {
-      // Habit related
       addHabit: 'Dodaj Nawyk',
       editHabit: 'Edytuj Nawyk',
       deleteHabit: 'Usuń Nawyk',
@@ -118,7 +108,6 @@ export class LanguageService {
       habitDescription: 'Twój codzienny cel',
       newHabit: 'Nowy Nawyk',
 
-      // Days of week
       monday: 'Poniedziałek',
       tuesday: 'Wtorek',
       wednesday: 'Środa',
@@ -127,7 +116,6 @@ export class LanguageService {
       saturday: 'Sobota',
       sunday: 'Niedziela',
 
-      // Months
       january: 'Styczeń',
       february: 'Luty',
       march: 'Marzec',

@@ -30,7 +30,6 @@ export interface Language {
 export class LanguageSelectorComponent {
   private languageService = inject(LanguageService);
 
-  // Computed property for current language - automatycznie reaguje na zmiany
   selectedLanguage = computed(() => this.languageService.currentLanguage());
 
   languages: Language[] = [

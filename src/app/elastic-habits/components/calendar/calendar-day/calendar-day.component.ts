@@ -106,12 +106,9 @@ export class CalendarDayComponent {
     public habitService: HabitService,
     public dateService: DateService
   ) {
-    // Effect który reaguje na zmiany statusu tego konkretnego dnia
     effect(() => {
       const currentStatus = this.habitService.getDayStatus(this.date);
-      const selectedLevel = this.habitService.getSelectedLevel();
 
-      // Sprawdź czy status się zmienił z null na jakiś poziom
       if (this.previousStatus === null && currentStatus) {
         this.triggerAnimation(currentStatus);
       }
@@ -122,7 +119,6 @@ export class CalendarDayComponent {
 
   onDayClick(): void {
     if (!this.isFutureDate()) {
-      // Emituj tylko datę - poziom jest już zarządzany przez serwis
       this.dayClicked.emit({ date: this.date });
     }
   }
