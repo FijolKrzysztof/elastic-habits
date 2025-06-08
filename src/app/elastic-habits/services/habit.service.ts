@@ -34,24 +34,22 @@ export class HabitService {
   };
 
   constructor() {
-    // Nasłuchiwanie zmian i automatyczne zapisywanie tylko dla trwałych danych
     effect(() => {
-      this.habits(); // odczytanie sygnału
+      this.habits();
       this.saveHabits();
     });
 
     effect(() => {
-      this.habitData(); // odczytanie sygnału
+      this.habitData();
       this.saveHabitData();
     });
 
     effect(() => {
-      this.habitDescriptions(); // odczytanie sygnału
+      this.habitDescriptions();
       this.saveHabitDescriptions();
     });
   }
 
-  // Metody ładowania z localStorage
   private loadHabits(): Habit[] {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEYS.HABITS);
@@ -69,7 +67,6 @@ export class HabitService {
   }
 
   private getDefaultCurrentHabitId(): number {
-    // Zawsze zaczynamy od pierwszego nawyku z listy
     const habits = this.loadHabits();
     return habits.length > 0 ? habits[0].id : 1;
   }
@@ -94,7 +91,6 @@ export class HabitService {
     }
   }
 
-  // Metody zapisywania do localStorage
   private saveHabits(): void {
     try {
       localStorage.setItem(this.STORAGE_KEYS.HABITS, JSON.stringify(this.habits()));
@@ -119,7 +115,6 @@ export class HabitService {
     }
   }
 
-  // Metody publiczne - bez zmian w logice biznesowej
   addHabit(name: string): number {
     const newId = Math.max(...this.habits().map(h => h.id)) + 1;
     const colors = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444', '#6B7280'];
@@ -215,7 +210,13 @@ export class HabitService {
 
   getHabitDescription(level: LevelKey): string {
     const key = `${this.currentHabitId()}-${level}`;
-    return this.habitDescriptions()[key] || this.getDefaultDescription(level);
+    const descriptions = this.habitDescriptions();
+
+    if (key in descriptions) {
+      return descriptions[key];
+    }
+
+    return this.getDefaultDescription(level);
   }
 
   updateHabitDescription(level: LevelKey, description: string): void {
@@ -226,14 +227,12 @@ export class HabitService {
     }));
   }
 
-  // Metoda do czyszczenia wszystkich danych (opcjonalna)
   clearAllData(): void {
     try {
       Object.values(this.STORAGE_KEYS).forEach(key => {
         localStorage.removeItem(key);
       });
 
-      // Resetowanie do wartości domyślnych
       this.habitsSignal.set([
         { id: 1, name: 'Ćwiczenia', color: '#10B981' },
         { id: 2, name: 'Czytanie', color: '#3B82F6' }
@@ -247,7 +246,6 @@ export class HabitService {
     }
   }
 
-  // Metoda do eksportu danych (opcjonalna)
   exportData(): string {
     try {
       const data = {
@@ -263,7 +261,6 @@ export class HabitService {
     }
   }
 
-  // Metoda do importu danych (opcjonalna)
   importData(jsonData: string): boolean {
     try {
       const data = JSON.parse(jsonData);
@@ -272,7 +269,6 @@ export class HabitService {
       if (data.habitData) this.habitDataSignal.set(data.habitData);
       if (data.habitDescriptions) this.habitDescriptionsSignal.set(data.habitDescriptions);
 
-      // Po imporcie ustawiamy pierwszy nawyk jako aktualny
       if (data.habits && data.habits.length > 0) {
         this.currentHabitIdSignal.set(data.habits[0].id);
       }
