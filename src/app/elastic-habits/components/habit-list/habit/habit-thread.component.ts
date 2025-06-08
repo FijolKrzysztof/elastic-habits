@@ -143,13 +143,13 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      /* Hover efekt: powiększenie zachowując obrót */
-      .habit-tag-container:hover .habit-tag-inner {
+      /* Hover efekt tylko dla niewybranych nawykow */
+      .habit-tag-container.non-selected:hover .habit-tag-inner {
         transform: scale(1.1);
         z-index: 20;
       }
 
-      .habit-tag-container:hover .tag-shadow {
+      .habit-tag-container.non-selected:hover .tag-shadow {
         transform: scale(1.05);
         opacity: 0.3;
       }
