@@ -18,15 +18,35 @@ import { LanguageService } from '../../../services/language.service';
           </svg>
         </div>
         <div class="habit-info">
-          <h2 class="habit-name">{{ habitService.currentHabit()?.name }}</h2>
-
-          <div class="target-area">
-            @if (!isEditing()) {
-              <div class="target-display" (click)="startEditing()">
-                <span class="target-text">{{ getHabitDescription() }}</span>
-                <svg class="edit-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <div class="name-area">
+            @if (!isEditingName()) {
+              <div class="name-display" (click)="startEditingName()">
+                <svg class="edit-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                 </svg>
+                <h2 class="habit-name">{{ habitService.currentHabit()?.name }}</h2>
+              </div>
+            } @else {
+              <input
+                #nameInput
+                type="text"
+                class="name-input"
+                [(ngModel)]="editingName"
+                (blur)="saveName()"
+                (keydown)="onNameKeyDown($event)"
+                (click)="$event.stopPropagation()"
+                [placeholder]="languageService.translations().habitName"
+              />
+            }
+          </div>
+
+          <div class="target-area">
+            @if (!isEditingDescription()) {
+              <div class="target-display" (click)="startEditingDescription()">
+                <svg class="edit-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+                <span class="target-text">{{ getHabitDescription() }}</span>
               </div>
             } @else {
               <input
@@ -35,7 +55,7 @@ import { LanguageService } from '../../../services/language.service';
                 class="target-input"
                 [(ngModel)]="editingDescription"
                 (blur)="saveDescription()"
-                (keydown)="onKeyDown($event)"
+                (keydown)="onDescriptionKeyDown($event)"
                 (click)="$event.stopPropagation()"
                 [placeholder]="languageService.translations().habitDescription"
               />
@@ -51,12 +71,17 @@ export class HabitHeaderComponent {
   readonly languageService = inject(LanguageService);
 
   @ViewChild('descriptionInput') descriptionInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('nameInput') nameInput!: ElementRef<HTMLInputElement>;
 
-  private isEditingSignal = signal(false);
+  private isEditingDescriptionSignal = signal(false);
+  private isEditingNameSignal = signal(false);
   private editingDescriptionSignal = signal('');
+  private editingNameSignal = signal('');
   private originalDescriptionSignal = signal('');
+  private originalNameSignal = signal('');
 
-  readonly isEditing = this.isEditingSignal.asReadonly();
+  readonly isEditingDescription = this.isEditingDescriptionSignal.asReadonly();
+  readonly isEditingName = this.isEditingNameSignal.asReadonly();
 
   get editingDescription(): string {
     return this.editingDescriptionSignal();
@@ -64,6 +89,14 @@ export class HabitHeaderComponent {
 
   set editingDescription(value: string) {
     this.editingDescriptionSignal.set(value);
+  }
+
+  get editingName(): string {
+    return this.editingNameSignal();
+  }
+
+  set editingName(value: string) {
+    this.editingNameSignal.set(value);
   }
 
   getHabitGradient(): string {
@@ -76,7 +109,45 @@ export class HabitHeaderComponent {
     return currentDescription || this.languageService.translations().habitDescription;
   }
 
-  startEditing(): void {
+  startEditingName(): void {
+    const currentName = this.habitService.currentHabit()?.name || '';
+
+    this.editingNameSignal.set(currentName);
+    this.originalNameSignal.set(currentName);
+    this.isEditingNameSignal.set(true);
+
+    setTimeout(() => {
+      this.nameInput?.nativeElement.focus();
+      this.nameInput?.nativeElement.select();
+    });
+  }
+
+  saveName(): void {
+    if (!this.isEditingName()) return;
+
+    const newName = this.editingName.trim();
+    if (newName && this.habitService.currentHabit()) {
+      this.habitService.updateHabitName(this.habitService.currentHabitId(), newName);
+    }
+    this.isEditingNameSignal.set(false);
+  }
+
+  cancelNameEditing(): void {
+    this.editingNameSignal.set(this.originalNameSignal());
+    this.isEditingNameSignal.set(false);
+  }
+
+  onNameKeyDown(event: KeyboardEvent): void {
+    event.stopPropagation();
+
+    if (event.key === 'Enter') {
+      this.saveName();
+    } else if (event.key === 'Escape') {
+      this.cancelNameEditing();
+    }
+  }
+
+  startEditingDescription(): void {
     const currentDescription = this.habitService.getHabitDescription();
     const defaultDescription = this.languageService.translations().habitDescription;
 
@@ -87,7 +158,7 @@ export class HabitHeaderComponent {
 
     this.editingDescriptionSignal.set(descriptionToEdit);
     this.originalDescriptionSignal.set(currentDescription);
-    this.isEditingSignal.set(true);
+    this.isEditingDescriptionSignal.set(true);
 
     // Focus the input after view update
     setTimeout(() => {
@@ -97,25 +168,25 @@ export class HabitHeaderComponent {
   }
 
   saveDescription(): void {
-    if (!this.isEditing()) return;
+    if (!this.isEditingDescription()) return;
 
     const newDescription = this.editingDescription.trim();
     this.habitService.updateHabitDescription(newDescription);
-    this.isEditingSignal.set(false);
+    this.isEditingDescriptionSignal.set(false);
   }
 
-  cancelEditing(): void {
+  cancelDescriptionEditing(): void {
     this.editingDescriptionSignal.set(this.originalDescriptionSignal());
-    this.isEditingSignal.set(false);
+    this.isEditingDescriptionSignal.set(false);
   }
 
-  onKeyDown(event: KeyboardEvent): void {
+  onDescriptionKeyDown(event: KeyboardEvent): void {
     event.stopPropagation();
 
     if (event.key === 'Enter') {
       this.saveDescription();
     } else if (event.key === 'Escape') {
-      this.cancelEditing();
+      this.cancelDescriptionEditing();
     }
   }
 

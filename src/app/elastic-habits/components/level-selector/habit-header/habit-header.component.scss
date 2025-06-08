@@ -71,6 +71,26 @@
   .habit-info {
     flex: 1;
 
+    .name-area {
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .name-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 2px 4px;
+      cursor: pointer;
+      min-height: 32px;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+
     .habit-name {
       font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive;
       font-size: 1.1rem;
@@ -80,6 +100,40 @@
       transform: rotate(-0.3deg);
       letter-spacing: 0.5px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      flex: 1;
+    }
+
+    .name-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 6px 8px;
+      border: 1px dashed #8b6914;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.6);
+      font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive;
+      font-size: 1.1rem;
+      color: #654321;
+      font-weight: 600;
+      transform: rotate(-0.1deg);
+      letter-spacing: 0.5px;
+      box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.05),
+        0 1px 2px rgba(255, 255, 255, 0.8);
+
+      &:focus {
+        outline: none;
+        border-color: #654321;
+        background: rgba(255, 255, 255, 0.8);
+        animation: handwritingShake 0.1s ease-in-out infinite;
+        box-shadow:
+          inset 0 1px 3px rgba(0, 0, 0, 0.08),
+          0 2px 4px rgba(255, 255, 255, 0.9);
+      }
+
+      &::placeholder {
+        color: #9ca3af;
+        font-style: italic;
+      }
     }
 
     .target-area {
@@ -90,7 +144,7 @@
     .target-display {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       padding: 2px 4px;
       cursor: pointer;
       min-height: 26px;
@@ -114,6 +168,7 @@
       text-shadow:
         0.5px 0.5px 1px rgba(0, 0, 0, 0.08),
         0 0 2px rgba(0, 0, 0, 0.02);
+      flex: 1;
 
       &:empty::before {
         content: 'Kliknij aby opisać...';
@@ -127,8 +182,10 @@
       transform: rotate(-2deg);
       opacity: 0.5;
       transition: opacity 0.2s ease;
+      flex-shrink: 0;
 
-      .target-display:hover & {
+      .target-display:hover &,
+      .name-display:hover & {
         opacity: 0.8;
       }
     }
@@ -177,8 +234,17 @@
       font-size: 1rem;
     }
 
+    .name-input {
+      font-size: 1rem;
+    }
+
     .target-text, .target-input {
       font-size: 0.9rem;
+    }
+
+    .edit-icon {
+      width: 16px;
+      height: 16px;
     }
 
     .habit-badge {
