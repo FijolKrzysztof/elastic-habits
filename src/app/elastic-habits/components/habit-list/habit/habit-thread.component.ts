@@ -97,15 +97,18 @@ import { Habit } from '../../../models/habit.model';
              [style.transform]="getTagTransform()"
              [style.--hang-length]="getHangLength(index) + 'px'"
              [style.--rotation]="getSubtleRotation(index) + 'deg'"
+             [style.--is-selected]="isSelected() ? '1' : '0'"
              style="transform-origin: 50% 8px;">
 
-          <app-habit-tag
-            [habit]="habit"
-            [index]="index">
-          </app-habit-tag>
+          <div class="habit-tag-inner transition-transform duration-300 ease-out">
+            <app-habit-tag
+              [habit]="habit"
+              [index]="index">
+            </app-habit-tag>
 
-          <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm tag-shadow transition-all duration-300 -z-10"
-               style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
+            <div class="absolute inset-0 top-2 left-1 bg-black/20 blur-sm rounded-sm tag-shadow transition-all duration-300 -z-10"
+                 style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);">
+            </div>
           </div>
         </div>
       }
@@ -140,14 +143,15 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      /* Teraz hover nie będzie zmieniał transformacji */
-      .habit-tag-container:hover {
-        z-index: 20 !important;
-        /* Usuwamy jakiekolwiek zmiany transform przy hover */
+      /* Hover efekt: powiększenie zachowując obrót */
+      .habit-tag-container:hover .habit-tag-inner {
+        transform: scale(1.1);
+        z-index: 20;
       }
 
       .habit-tag-container:hover .tag-shadow {
-        /* Standardowy cień bez zmian przy hover */
+        transform: scale(1.05);
+        opacity: 0.3;
       }
     </style>
   `
@@ -200,10 +204,10 @@ export class HabitThreadComponent {
     const hangLength = this.getHangLength(this.index);
     const baseTransform = `translateY(${hangLength}px)`;
 
-    // Obrót tylko dla wybranych nawyków
+    // Nie-wybrane: obrót w lewo, Wybrane: obrót w prawo
     const rotation = this.isSelected()
-      ? Math.abs(this.getSubtleRotation(this.index))
-      : 0; // Brak obrotu dla nie-wybranych
+      ? Math.abs(this.getSubtleRotation(this.index))   // prawo (dodatni)
+      : -Math.abs(this.getSubtleRotation(this.index)); // lewo (ujemny)
 
     return `${baseTransform} rotate(${rotation}deg)`;
   }
