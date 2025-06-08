@@ -77,17 +77,38 @@
     }
 
     .name-display {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 2px 4px;
+      display: inline-block;
       cursor: pointer;
-      min-height: 32px;
       border-radius: 3px;
       transition: all 0.2s ease;
+      position: relative;
+      padding: 2px 0;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(139, 105, 20, 0.3) 20%,
+          rgba(139, 105, 20, 0.4) 50%,
+          rgba(139, 105, 20, 0.3) 80%,
+          transparent 100%
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.2);
+
+        &::after {
+          transform: scaleX(1);
+        }
       }
     }
 
@@ -100,7 +121,6 @@
       transform: rotate(-0.3deg);
       letter-spacing: 0.5px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-      flex: 1;
     }
 
     .name-input {
@@ -142,17 +162,38 @@
     }
 
     .target-display {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 2px 4px;
+      display: inline-block;
       cursor: pointer;
-      min-height: 26px;
       border-radius: 3px;
       transition: all 0.2s ease;
+      position: relative;
+      padding: 2px 0;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(139, 105, 20, 0.3) 20%,
+          rgba(139, 105, 20, 0.4) 50%,
+          rgba(139, 105, 20, 0.3) 80%,
+          transparent 100%
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.2);
+
+        &::after {
+          transform: scaleX(1);
+        }
       }
     }
 
@@ -168,25 +209,11 @@
       text-shadow:
         0.5px 0.5px 1px rgba(0, 0, 0, 0.08),
         0 0 2px rgba(0, 0, 0, 0.02);
-      flex: 1;
 
       &:empty::before {
         content: 'Kliknij aby opisać...';
         color: #9ca3af;
         font-style: italic;
-      }
-    }
-
-    .edit-icon {
-      color: #8b6914;
-      transform: rotate(-2deg);
-      opacity: 0.5;
-      transition: opacity 0.2s ease;
-      flex-shrink: 0;
-
-      .target-display:hover &,
-      .name-display:hover & {
-        opacity: 0.8;
       }
     }
 
@@ -240,11 +267,6 @@
 
     .target-text, .target-input {
       font-size: 0.9rem;
-    }
-
-    .edit-icon {
-      width: 16px;
-      height: 16px;
     }
 
     .habit-badge {

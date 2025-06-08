@@ -61,15 +61,10 @@ import { Habit } from '../../../models/habit.model';
             #editInput
           />
         } @else {
-          <div class="flex items-center justify-center gap-1 px-1 py-0.5 rounded transition-all duration-200 editable-content"
+          <div class="flex items-center justify-center px-1 py-0.5 rounded transition-all duration-200 editable-content"
                [class.is-selected]="isSelected"
                [class.cursor-pointer]="isSelected"
                (click)="startEditingIfCurrent($event)">
-            @if (isSelected) {
-              <svg class="w-3 h-3 text-gray-700 opacity-70" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-              </svg>
-            }
             <span
               class="text-base font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2"
               [style.color]="getTextColor(habit?.color || '#10B981')"
@@ -124,8 +119,35 @@ import { Habit } from '../../../models/habit.model';
       .focus\\:ring-leather:focus { --tw-ring-color: var(--leather); }
       .focus\\:border-leather:focus { border-color: var(--leather); }
 
+      .editable-content.is-selected {
+        position: relative;
+      }
+
+      .editable-content.is-selected::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(45, 24, 16, 0.4) 20%,
+        rgba(45, 24, 16, 0.6) 50%,
+        rgba(45, 24, 16, 0.4) 80%,
+        transparent 100%
+        );
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+      }
+
       .editable-content.is-selected:hover {
         background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .editable-content.is-selected:hover::after {
+        transform: scaleX(1);
       }
 
       button:focus {
