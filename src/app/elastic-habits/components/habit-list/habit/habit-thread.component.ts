@@ -140,23 +140,13 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      /* Hover tylko dla NIE-wybranych metkek */
-      .habit-tag-container.non-selected:hover {
-        z-index: 20;
-        transform: scale(1.15) translateY(var(--hang-length)) rotate(var(--rotation)) !important;
+      /* Teraz hover nie będzie zmieniał transformacji */
+      .habit-tag-container:hover {
+        z-index: 20 !important;
+        /* Usuwamy jakiekolwiek zmiany transform przy hover */
       }
 
-      .habit-tag-container.non-selected:hover .tag-shadow {
-        transform: scale(1.05) rotate(1deg);
-        opacity: 0.3;
-      }
-
-      /* Wybrane metki - brak hover efektów */
-      .habit-tag-container.selected {
-        /* Bez hover efektów */
-      }
-
-      .habit-tag-container.selected .tag-shadow {
+      .habit-tag-container:hover .tag-shadow {
         /* Standardowy cień bez zmian przy hover */
       }
     </style>
@@ -209,9 +199,11 @@ export class HabitThreadComponent {
   getTagTransform(): string {
     const hangLength = this.getHangLength(this.index);
     const baseTransform = `translateY(${hangLength}px)`;
+
+    // Obrót tylko dla wybranych nawyków
     const rotation = this.isSelected()
       ? Math.abs(this.getSubtleRotation(this.index))
-      : -Math.abs(this.getSubtleRotation(this.index));
+      : 0; // Brak obrotu dla nie-wybranych
 
     return `${baseTransform} rotate(${rotation}deg)`;
   }
