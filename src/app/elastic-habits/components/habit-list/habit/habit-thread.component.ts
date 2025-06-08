@@ -143,7 +143,6 @@ import { Habit } from '../../../models/habit.model';
         display: block;
       }
 
-      /* Hover efekt tylko dla niewybranych nawykow */
       .habit-tag-container.non-selected:hover .habit-tag-inner {
         transform: scale(1.1);
         z-index: 20;
