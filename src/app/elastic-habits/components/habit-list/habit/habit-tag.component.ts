@@ -56,7 +56,7 @@ import { Habit } from '../../../models/habit.model';
             (keyup.enter)="saveEdit()"
             (keyup.escape)="cancelEdit()"
             (blur)="saveEdit()"
-            class="w-full text-base font-bold text-center leading-tight bg-white border border-black border-dashed rounded px-1 py-0.5 focus:outline-none focus:border-black"
+            class="w-full text-sm font-bold text-center leading-tight bg-white border border-black border-dashed rounded px-1 py-0.5 focus:outline-none focus:border-black"
             style="color: #2d1810; font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive; font-weight: 500; letter-spacing: 0.5px;"
             #editInput
           />
@@ -66,7 +66,7 @@ import { Habit } from '../../../models/habit.model';
                [class.cursor-pointer]="isSelected"
                (click)="startEditingIfCurrent($event)">
             <span
-              class="text-base font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2"
+              class="text-sm font-bold drop-shadow-sm text-center leading-tight max-w-full overflow-hidden line-clamp-2"
               [style.color]="getTextColor(habit?.color || '#10B981')"
               style="font-family: 'Kalam', 'Caveat', 'Patrick Hand', cursive; font-weight: 500; letter-spacing: 0.5px;"
             >

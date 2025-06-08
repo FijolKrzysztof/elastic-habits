@@ -8,7 +8,6 @@ export interface Translations {
   deleteHabit: string;
   habitName: string;
   habitDescription: string;
-  newHabit: string;
 
   monday: string;
   tuesday: string;
@@ -75,9 +74,8 @@ export class LanguageService {
       addHabit: 'Add Habit',
       editHabit: 'Edit Habit',
       deleteHabit: 'Delete Habit',
-      habitName: 'Habit Name',
+      habitName: 'Habit',
       habitDescription: 'Your daily goal',
-      newHabit: 'New Habit',
 
       monday: 'Monday',
       tuesday: 'Tuesday',
@@ -104,9 +102,8 @@ export class LanguageService {
       addHabit: 'Dodaj Nawyk',
       editHabit: 'Edytuj Nawyk',
       deleteHabit: 'Usuń Nawyk',
-      habitName: 'Nazwa Nawyku',
+      habitName: 'Nawyk',
       habitDescription: 'Twój codzienny cel',
-      newHabit: 'Nowy Nawyk',
 
       monday: 'Poniedziałek',
       tuesday: 'Wtorek',
