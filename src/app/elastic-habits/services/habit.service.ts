@@ -62,14 +62,14 @@ export class HabitService {
     try {
       const stored = localStorage.getItem(this.STORAGE_KEYS.HABITS);
       return stored ? JSON.parse(stored) : [
-        { id: 1, name: 'Ćwiczenia', color: '#10B981' },
-        { id: 2, name: 'Czytanie', color: '#3B82F6' }
+        { id: 1, name: 'Workout', color: '#10B981' },
+        { id: 2, name: 'Reading', color: '#3B82F6' }
       ];
     } catch (error) {
       console.error('Błąd ładowania nawyków:', error);
       return [
-        { id: 1, name: 'Ćwiczenia', color: '#10B981' },
-        { id: 2, name: 'Czytanie', color: '#3B82F6' }
+        { id: 1, name: 'Workout', color: '#10B981' },
+        { id: 2, name: 'Reading', color: '#3B82F6' }
       ];
     }
   }
@@ -189,7 +189,6 @@ export class HabitService {
     });
     this.habitTargetsSignal.set(newTargets);
 
-    // Clean up habit descriptions
     const descriptions = this.habitDescriptions();
     const newDescriptions: Record<string, string> = {};
     Object.keys(descriptions).forEach(key => {
